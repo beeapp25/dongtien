@@ -42,31 +42,55 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;min-height:100vh}
 /* ── LOGIN ── */
-#ls{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 30% 20%,#1a2744 0%,#080d18 60%)}
-.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:360px;margin-bottom:14px}
-.pc{background:linear-gradient(135deg,#151e30,#0f1520);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 15px rgba(0,0,0,0.3)}
-.pc:active{transform:scale(.95);box-shadow:0 2px 8px rgba(0,0,0,0.4)}
-.pca{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
-.pcn{font-size:13px;font-weight:600;color:#e2e8f0}.pci{font-size:10px;color:#6b7280}
-.add-pb{background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.15);border-radius:16px;padding:14px;color:#6b7280;font-size:12px;cursor:pointer;font-family:inherit;width:100%;max-width:360px;transition:background .2s}
-.add-pb:active{background:rgba(255,255,255,0.06)}
-.pin-s{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:260px}
-.pin-lbl{font-size:13px;color:#9ca3af}
-.pin-dots{display:flex;gap:10px}
-.pin-dot{width:32px;height:32px;border-radius:50%;background:#151e30;border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s}
-.pin-dot.on{background:#3b82f6;border-color:#3b82f6;box-shadow:0 0 14px rgba(59,130,246,0.55)}
-.pin-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
-.pk{padding:16px;background:#151e30;border:1px solid rgba(255,255,255,0.07);border-radius:14px;font-size:18px;font-weight:600;color:#e2e8f0;cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent;transition:background .15s,transform .1s}
-.pk:active{background:#1e2d45;transform:scale(.93)}
-.cf{background:#111827;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:20px;width:100%;max-width:360px;display:flex;flex-direction:column;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
-.cf input{background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:10px;padding:11px 14px;font-size:13px;font-family:inherit;width:100%;outline:none;transition:border-color .2s}
+#ls{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 20px;background:#080d18;position:relative;overflow:hidden}
+.ls-orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;animation:orb-drift 10s ease-in-out infinite}
+.ls-orb1{width:380px;height:380px;background:radial-gradient(circle,rgba(37,99,235,0.2) 0%,transparent 70%);top:-120px;left:-80px}
+.ls-orb2{width:280px;height:280px;background:radial-gradient(circle,rgba(139,92,246,0.16) 0%,transparent 70%);bottom:-80px;right:-60px;animation-delay:-5s}
+.ls-orb3{width:220px;height:220px;background:radial-gradient(circle,rgba(20,184,166,0.12) 0%,transparent 70%);top:50%;left:55%;animation-delay:-2.5s}
+@keyframes orb-drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(18px,-14px) scale(1.06)}66%{transform:translate(-12px,18px) scale(0.94)}}
+.ls-inner{display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:420px;position:relative;z-index:1}
+@media(min-width:640px){.ls-inner{flex-direction:row;align-items:flex-start;max-width:740px;gap:52px}
+.ls-brand{flex:0 0 200px;align-items:flex-start;text-align:left}.ls-content{flex:1}}
+.ls-brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding-top:8px}
+.ls-logo{font-size:60px;line-height:1;filter:drop-shadow(0 6px 20px rgba(37,99,235,0.5));animation:logo-pulse 4s ease-in-out infinite}
+@keyframes logo-pulse{0%,100%{filter:drop-shadow(0 6px 20px rgba(37,99,235,0.5))}50%{filter:drop-shadow(0 8px 28px rgba(99,102,241,0.7))}}
+.ls-title{font-size:30px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(135deg,#f1f5f9 30%,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ls-sub{font-size:12px;color:#4b5563;margin-top:2px}
+.ls-divider{width:40px;height:2px;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:2px;margin-top:4px}
+.ls-content{width:100%}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:12px}
+.pc{background:linear-gradient(145deg,#151e30,#0e1420);border:1px solid rgba(255,255,255,0.07);border-radius:22px;padding:22px 12px 18px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .18s,box-shadow .18s,border-color .18s;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
+.pc:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,0.55);border-color:rgba(255,255,255,0.13)}
+.pc:active{transform:scale(.93);box-shadow:0 2px 10px rgba(0,0,0,0.5)}
+.pca{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.5),0 0 0 3px rgba(255,255,255,0.08)}
+.pcn{font-size:13px;font-weight:700;color:#f1f5f9}
+.pci{font-size:10px;color:#4b5563;background:rgba(255,255,255,0.04);padding:2px 8px;border-radius:20px}
+.add-pb{background:rgba(255,255,255,0.02);border:1.5px dashed rgba(255,255,255,0.1);border-radius:18px;padding:16px;color:#4b5563;font-size:12px;cursor:pointer;font-family:inherit;width:100%;transition:all .2s}
+.add-pb:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.2);color:#9ca3af}
+/* PIN screen */
+.pin-s{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%}
+.pin-user{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.pin-ava{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,0.5)}
+.pin-lbl{font-size:16px;font-weight:700;color:#f1f5f9}
+.pin-dots{display:flex;gap:14px}
+.pin-dot{width:18px;height:18px;border-radius:50%;background:#1a2236;border:2px solid rgba(255,255,255,0.1);transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.pin-dot.on{background:#3b82f6;border-color:#3b82f6;box-shadow:0 0 16px rgba(59,130,246,0.7);transform:scale(1.2)}
+.pin-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:260px}
+.pk{aspect-ratio:1;max-height:72px;background:linear-gradient(160deg,#1a2540,#111827);border:1px solid rgba(255,255,255,0.07);border-radius:50%;font-size:20px;font-weight:600;color:#e2e8f0;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,0.45),0 1px 0 rgba(255,255,255,0.06) inset;transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent;user-select:none}
+.pk:active{transform:scale(.86);box-shadow:0 2px 6px rgba(0,0,0,0.6)}
+.forgot-pin{background:none;border:none;color:#4b5563;font-size:11px;cursor:pointer;font-family:inherit;padding:4px 8px;transition:color .2s}
+.forgot-pin:hover{color:#60a5fa}
+/* Create form */
+.cf{background:linear-gradient(145deg,#111827,#0e1520);border:1px solid rgba(255,255,255,0.07);border-radius:22px;padding:22px;width:100%;display:flex;flex-direction:column;gap:13px;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+.cf input{background:#080d18;border:1px solid rgba(255,255,255,0.08);color:#e8eaf0;border-radius:11px;padding:12px 14px;font-size:13px;font-family:inherit;width:100%;outline:none;transition:border-color .2s,box-shadow .2s}
 .cf input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
 .cr{display:flex;gap:8px;flex-wrap:wrap}
 .cc{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .15s,box-shadow .15s}
-.cc.on{border-color:#fff;transform:scale(1.15);box-shadow:0 0 12px rgba(255,255,255,0.3)}
-.lg-btn{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(37,99,235,0.45);transition:transform .15s,box-shadow .15s}
-.lg-btn:active{transform:scale(.97);box-shadow:0 2px 8px rgba(37,99,235,0.3)}
-.lg-back{background:none;border:none;color:#6b7280;font-size:12px;cursor:pointer;font-family:inherit;padding:8px}
+.cc.on{border-color:#fff;transform:scale(1.18);box-shadow:0 0 14px rgba(255,255,255,0.35)}
+.lg-btn{background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(37,99,235,0.5);transition:transform .15s,box-shadow .15s}
+.lg-btn:active{transform:scale(.97);box-shadow:0 3px 10px rgba(37,99,235,0.3)}
+.lg-back{background:none;border:none;color:#4b5563;font-size:12px;cursor:pointer;font-family:inherit;padding:8px;transition:color .2s}
+.lg-back:hover{color:#9ca3af}
 /* ── APP ── */
 #app{max-width:480px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}
 .hdr{background:linear-gradient(180deg,#111827 0%,#0c1120 100%);padding:14px 16px 0;border-bottom:1px solid rgba(var(--tc-rgb),0.18);transition:border-color .4s}
@@ -110,7 +134,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;mi
 .abtn:active{transform:scale(.94)}
 .abtn.sm{padding:4px 9px;font-size:10px}
 /* Forms */
-.fc{background:#111827;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;animation:sd .2s ease;box-shadow:0 6px 24px rgba(0,0,0,0.4)}
+.fc{background:linear-gradient(160deg,#131c2e,#0f1520);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:15px;display:flex;flex-direction:column;gap:8px;animation:sd .2s ease;box-shadow:0 8px 32px rgba(0,0,0,0.5),0 1px 0 rgba(255,255,255,0.04) inset}
 @keyframes sd{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .fc input,.fc select{background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none;transition:border-color .2s,box-shadow .2s}
@@ -119,15 +143,15 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;mi
 .mr{display:flex;gap:6px}
 .mr input,.mr select{flex:1}
 .mr select{width:90px;flex-shrink:0}
-.sbtn{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:none;border-radius:11px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(34,197,94,0.35);transition:transform .15s}
-.sbtn:active{transform:scale(.97)}
+.sbtn{background:linear-gradient(135deg,#16a34a,#059669);color:#fff;border:none;border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 22px rgba(34,197,94,0.45),0 1px 0 rgba(255,255,255,0.1) inset;transition:transform .15s,box-shadow .15s;letter-spacing:.2px}
+.sbtn:active{transform:scale(.97);box-shadow:0 3px 10px rgba(34,197,94,0.3)}
 .fh{font-size:10px;color:#60a5fa;min-height:13px}
 .fl{font-size:10px;color:#6b7280;margin-bottom:1px}
 /* Records */
 .rl{display:flex;flex-direction:column;gap:5px}
-.ri{background:#111827;border-radius:12px;padding:10px 13px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,0.05);border-left:3px solid #374151;gap:6px}
-.ri.thu,.ri.revenue{border-left-color:#22c55e}
-.ri.chi,.ri.expense{border-left-color:#ef4444}
+.ri{background:linear-gradient(135deg,#111827,#0e1520);border-radius:13px;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,0.06);border-left:3px solid #374151;gap:6px;box-shadow:0 2px 10px rgba(0,0,0,0.3);transition:box-shadow .2s}
+.ri.thu,.ri.revenue{border-left-color:#22c55e;box-shadow:0 2px 10px rgba(0,0,0,0.3),-2px 0 12px rgba(34,197,94,0.08)}
+.ri.chi,.ri.expense{border-left-color:#ef4444;box-shadow:0 2px 10px rgba(0,0,0,0.3),-2px 0 12px rgba(239,68,68,0.08)}
 .rli{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
 .rc{font-size:12px;font-weight:600;color:#e2e8f0}
 .rn{font-size:10px;color:#6b7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -171,10 +195,12 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;mi
 .lbadge{font-size:9px;border-radius:20px;padding:2px 7px}
 .lbadge.cho{background:rgba(20,83,45,0.8);color:#4ade80}.lbadge.di{background:rgba(69,10,10,0.8);color:#f87171}
 .ln-acts{display:flex;gap:5px}
-.ln-acts button{flex:1;padding:9px;border-radius:10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;border:none;transition:transform .1s}
-.ln-acts button:active{transform:scale(.94)}
-.btn-mp{background:rgba(30,58,95,0.8);color:#60a5fa}.btn-mu{background:rgba(28,31,43,0.8);color:#6b7280}
-.btn-edit{background:rgba(28,36,18,0.8);color:#4ade80}.btn-del{background:rgba(30,10,10,0.8);color:#f87171}
+.ln-acts button{flex:1;padding:10px;border-radius:11px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:transform .1s,box-shadow .1s}
+.ln-acts button:active{transform:scale(.93)}
+.btn-mp{background:linear-gradient(135deg,rgba(37,99,235,0.3),rgba(30,58,95,0.5));color:#60a5fa;box-shadow:0 3px 10px rgba(37,99,235,0.15)}
+.btn-mu{background:rgba(28,31,43,0.8);color:#6b7280}
+.btn-edit{background:linear-gradient(135deg,rgba(22,163,74,0.25),rgba(20,83,45,0.4));color:#4ade80;box-shadow:0 3px 10px rgba(34,197,94,0.12)}
+.btn-del{background:linear-gradient(135deg,rgba(220,38,38,0.2),rgba(30,10,10,0.5));color:#f87171;box-shadow:0 3px 10px rgba(239,68,68,0.1)}
 /* Invest */
 .icard{background:#111827;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;box-shadow:0 3px 12px rgba(0,0,0,0.3)}
 .irow{display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px}
@@ -263,30 +289,55 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;mi
 
 <!-- ══ LOGIN ══ -->
 <div id="ls">
-  <div style="font-size:52px;margin-bottom:10px">💼</div>
-  <div style="font-size:26px;font-weight:700;color:#fff;margin-bottom:4px">Dòng Tiền</div>
-  <div style="font-size:12px;color:#6b7280;margin-bottom:28px">Quản lý tài chính gia đình</div>
-  <div id="prof-wrap" style="width:100%;max-width:360px">
-    <div id="prof-grid" class="pg"></div>
-    <button class="add-pb" onclick="showCreate()">＋ Thêm thành viên</button>
-  </div>
-  <div id="pin-wrap" class="pin-s hid">
-    <div class="pin-lbl" id="pin-lbl">Nhập PIN</div>
-    <div class="pin-dots" id="pin-dots"></div>
-    <div class="pin-kp" id="pin-kp"></div>
-    <button class="lg-back" onclick="showProfs()">← Quay lại</button>
-  </div>
-  <div id="create-wrap" class="cf hid">
-    <div style="font-size:13px;font-weight:700;color:#fff">Tạo hồ sơ mới</div>
-    <input type="text" id="new-name" placeholder="Tên (VD: Bố, Mẹ, An, Quân...)"/>
-    <div class="fl">Màu đại diện</div>
-    <div class="cr" id="color-row"></div>
-    <input type="text" id="new-pin" placeholder="PIN 4 số (tuỳ chọn)" inputmode="numeric" maxlength="4"/>
-    <div style="background:#111827;border-radius:9px;padding:10px;font-size:11px;color:#6b7280;line-height:1.5">
-      💡 Sau khi tạo hồ sơ, chủ cửa hàng vào <b style="color:#f1f5f9">Cài đặt → Phân quyền</b> để cấp quyền truy cập cửa hàng cho thành viên này.
+  <div class="ls-orb ls-orb1"></div>
+  <div class="ls-orb ls-orb2"></div>
+  <div class="ls-orb ls-orb3"></div>
+  <div class="ls-inner">
+    <div class="ls-brand">
+      <div class="ls-logo">💼</div>
+      <div class="ls-title">Dòng Tiền</div>
+      <div class="ls-sub">Quản lý tài chính thông minh</div>
+      <div class="ls-divider"></div>
     </div>
-    <button class="lg-btn" onclick="createProfile()">Tạo hồ sơ</button>
-    <button class="lg-back" onclick="showProfs()">← Quay lại</button>
+    <div class="ls-content">
+      <div id="prof-wrap">
+        <div id="prof-grid" class="pg"></div>
+        <button class="add-pb" onclick="showCreate()">＋ Thêm thành viên</button>
+      </div>
+      <div id="pin-wrap" class="pin-s hid">
+        <div class="pin-user">
+          <div class="pin-ava" id="pin-ava-ico"></div>
+          <div class="pin-lbl" id="pin-lbl">Nhập PIN</div>
+        </div>
+        <div class="pin-dots" id="pin-dots"></div>
+        <div class="pin-kp" id="pin-kp"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:4px">
+          <button class="lg-back" onclick="showProfs()">← Quay lại</button>
+          <button class="forgot-pin" onclick="forgotPIN()">Quên PIN?</button>
+        </div>
+      </div>
+      <div id="create-wrap" class="cf hid">
+        <div style="font-size:14px;font-weight:700;color:#fff">✨ Tạo hồ sơ mới</div>
+        <input type="text" id="new-name" placeholder="Tên (VD: Bố, Mẹ, An, Quân...)"/>
+        <div class="fl">Màu đại diện</div>
+        <div class="cr" id="color-row"></div>
+        <input type="text" id="new-pin" placeholder="PIN 4 số (tuỳ chọn)" inputmode="numeric" maxlength="4"/>
+        <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.15);border-radius:10px;padding:10px 12px;font-size:11px;color:#6b7280;line-height:1.5">
+          💡 Sau khi tạo, chủ cửa hàng vào <b style="color:#f1f5f9">Cài đặt → Phân quyền</b> để cấp quyền.
+        </div>
+        <button class="lg-btn" onclick="createProfile()">Tạo hồ sơ</button>
+        <button class="lg-back" onclick="showProfs()">← Quay lại</button>
+      </div>
+      <!-- Quên PIN recovery -->
+      <div id="forgot-wrap" class="cf hid">
+        <div style="font-size:14px;font-weight:700;color:#f59e0b">🔑 Đặt lại PIN</div>
+        <div style="font-size:11px;color:#9ca3af;line-height:1.6">Nhập <b style="color:#f1f5f9">đúng tên hồ sơ</b> để xác nhận, sau đó đặt PIN mới.</div>
+        <input type="text" id="forgot-name" placeholder="Nhập tên hồ sơ để xác nhận"/>
+        <input type="text" id="forgot-newpin" placeholder="PIN mới (4 số, để trống = bỏ PIN)" inputmode="numeric" maxlength="4"/>
+        <button class="lg-btn" style="background:linear-gradient(135deg,#d97706,#b45309);box-shadow:0 6px 20px rgba(217,119,6,0.4)" onclick="confirmForgotPIN()">✓ Đặt lại PIN</button>
+        <button class="lg-back" onclick="showProfs()">← Quay lại</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1000,7 +1051,7 @@ async function loadUsersFromCloud(){
 function ini(n){return n.trim().split(/\s+/).map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 function showProfs(){
   ['prof-wrap'].forEach(id=>document.getElementById(id).classList.remove('hid'));
-  ['pin-wrap','create-wrap'].forEach(id=>document.getElementById(id).classList.add('hid'));
+  ['pin-wrap','create-wrap','forgot-wrap'].forEach(id=>document.getElementById(id).classList.add('hid'));
   // Load profiles from cloud first, then render
   loadUsersFromCloud().then(()=>renderPCards()).catch(()=>renderPCards());
 }
@@ -1025,11 +1076,31 @@ function loginUser(uid){
   const u=allUsers.find(x=>x.id===uid);if(!u)return;
   if(!u.pin){doLogin(u);return;}
   pinTgt=u;pinBuf='';
-  document.getElementById('prof-wrap').classList.add('hid');document.getElementById('pin-wrap').classList.remove('hid');
+  ['prof-wrap','forgot-wrap','create-wrap'].forEach(id=>document.getElementById(id).classList.add('hid'));
+  document.getElementById('pin-wrap').classList.remove('hid');
   document.getElementById('pin-lbl').textContent='PIN của '+u.name;
+  const ava=document.getElementById('pin-ava-ico');
+  if(ava){ava.style.background=u.color;ava.textContent=ini(u.name);}
   renderPK();renderPD();
 }
-function renderPD(){document.getElementById('pin-dots').innerHTML=Array.from({length:4},(_,i)=>`<div class="pin-dot ${i<pinBuf.length?'on':''}">${i<pinBuf.length?'●':''}</div>`).join('');}
+function renderPD(){document.getElementById('pin-dots').innerHTML=Array.from({length:4},(_,i)=>`<div class="pin-dot ${i<pinBuf.length?'on':''}"></div>`).join('');}
+function forgotPIN(){
+  ['pin-wrap','prof-wrap','create-wrap'].forEach(id=>document.getElementById(id).classList.add('hid'));
+  document.getElementById('forgot-wrap').classList.remove('hid');
+  document.getElementById('forgot-name').value='';
+  document.getElementById('forgot-newpin').value='';
+}
+function confirmForgotPIN(){
+  const name=document.getElementById('forgot-name').value.trim();
+  const newPin=document.getElementById('forgot-newpin').value.trim();
+  if(!name)return toast('⚠️ Nhập tên hồ sơ!','#f59e0b');
+  if(newPin&&!/^\d{4}$/.test(newPin))return toast('⚠️ PIN phải đúng 4 số!','#f59e0b');
+  const u=allUsers.find(x=>x.name.toLowerCase()===name.toLowerCase());
+  if(!u)return toast('❌ Không tìm thấy hồ sơ "'+name+'"','#ef4444');
+  u.pin=newPin||'';saveAllUsers();
+  toast('✓ Đặt lại PIN thành công cho '+u.name+'!');
+  showProfs();
+}
 function renderPK(){document.getElementById('pin-kp').innerHTML=[1,2,3,4,5,6,7,8,9,'⌫',0,'✓'].map(k=>`<div class="pk" onclick="pinPress('${k}')">${k}</div>`).join('');}
 function pinPress(k){
   if(k==='⌫')pinBuf=pinBuf.slice(0,-1);
