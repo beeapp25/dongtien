@@ -145,6 +145,11 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;mi
 .mr select{width:90px;flex-shrink:0}
 .sbtn{background:linear-gradient(135deg,#16a34a,#059669);color:#fff;border:none;border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 22px rgba(34,197,94,0.45),0 1px 0 rgba(255,255,255,0.1) inset;transition:transform .15s,box-shadow .15s;letter-spacing:.2px}
 .sbtn:active{transform:scale(.97);box-shadow:0 3px 10px rgba(34,197,94,0.3)}
+/* Mic button */
+.mic-btn{display:flex;align-items:center;justify-content:center;gap:7px;background:rgba(var(--tc-rgb),0.1);border:1.5px solid rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;transition:all .2s}
+.mic-btn:hover{background:rgba(var(--tc-rgb),0.18)}
+.mic-btn.listening{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.5);color:#ef4444;animation:mic-pulse 1.2s ease-in-out infinite}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,0.35)}50%{box-shadow:0 0 0 9px rgba(239,68,68,0)}}
 .fh{font-size:10px;color:#60a5fa;min-height:13px}
 .fl{font-size:10px;color:#6b7280;margin-bottom:1px}
 /* Records */
@@ -391,6 +396,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;mi
       <input type="date" id="tc-date"/>
       <div class="fl">Ví <span style="color:#ef4444">*</span></div>
       <select id="tc-wallet" style="border-color:#2563eb"></select>
+      <button class="mic-btn" id="mic-tc" onclick="startVoice('tc')">🎤 Nhập bằng giọng nói</button>
       <button class="sbtn" onclick="addTC()">💾 Lưu</button>
     </div>
     <div id="tc-list" class="rl"></div>
@@ -445,6 +451,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;mi
         <input type="text" id="sh-note" placeholder="Ghi chú (tuỳ chọn)"/>
         <div class="fl">Ví <span style="color:#ef4444">*</span></div>
         <select id="sh-wallet" style="border-color:#2563eb"></select>
+        <button class="mic-btn" id="mic-sh" onclick="startVoice('sh')">🎤 Nhập bằng giọng nói</button>
         <button class="sbtn" onclick="addSH()">💾 Lưu</button>
       </div>
       <div id="sh-list" class="rl"></div>
@@ -574,6 +581,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:#080d18;color:#e8eaf0;mi
       <div class="fl">Ngày trả cố định hàng tháng (nếu có)</div>
       <input type="number" id="ln-payday" placeholder="VD: 15 (ngày 15 mỗi tháng)" inputmode="numeric" min="1" max="31"/>
       <input type="text" id="ln-note" placeholder="Ghi chú (mục đích, điều kiện...)"/>
+      <button class="mic-btn" id="mic-ln" onclick="startVoice('ln')">🎤 Nhập bằng giọng nói</button>
       <button class="sbtn" id="ln-sbtn" onclick="addLN()">💾 Lưu</button>
     </div>
     <div id="ln-list" style="display:flex;flex-direction:column;gap:5px"></div>
@@ -1386,6 +1394,10 @@ function showTab(id,btn){
   document.querySelectorAll('.mod').forEach(m=>m.classList.add('hid'));
   document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.remove('hid');btn.classList.add('active');
+  // Reset tất cả form về đóng khi chuyển tab
+  ['form-ln','form-tc','form-sh','form-inv','form-rec'].forEach(fid=>{
+    const el=document.getElementById(fid);if(el)el.classList.add('hid');
+  });
   // Per-tab accent color
   const c=btn.dataset.color||'#3b82f6';
   const rgb=btn.dataset.rgb||'59,130,246';
@@ -1660,24 +1672,23 @@ function doTransfer(){
   const toW=walletData.find(x=>x.id===toId);
   const dt=new Date(date+'T'+new Date().toTimeString().slice(0,8)).toISOString();
   const tid=Date.now();
-  // Always record in tcData for wallet balance tracking
-  tcData.push({id:tid,type:'chi',category:'Chuyển ví',amount:amt,currency:'VND',walletId:fromId,note:note+' → '+(toW?.name||'?'),date,dt});
-  tcData.push({id:tid+1,type:'thu',category:'Chuyển ví',amount:amt,currency:'VND',walletId:toId,note:note+' ← '+(fromW?.name||'?'),date,dt});
-  save('tcData',tcData);
-  // If FROM wallet belongs to a store → log in store's shData so members can see
-  if(fromW?.storeId){
-    const destName=toW?.name||(toW?.storeId?'ví cửa hàng':'ví cá nhân Quang');
-    shData.push({id:tid+2,storeId:fromW.storeId,type:'transfer-out',category:'Chuyển tiền đi',
-      amount:amt,currency:'VND',walletId:fromId,note:`${note} → ${destName}`,date,dt});
+  const fromIsStore=!!fromW?.storeId, toIsStore=!!toW?.storeId;
+  // Ví cá nhân → tcData | Ví cửa hàng → shData (tránh lẫn lộn Cá Nhân vs Cửa Hàng)
+  if(!fromIsStore){
+    tcData.push({id:tid,type:'chi',category:'Chuyển ví',amount:amt,currency:'VND',walletId:fromId,note:note+' → '+(toW?.name||'?'),date,dt});
+  } else {
+    shData.push({id:tid,storeId:fromW.storeId,type:'transfer-out',category:'Chuyển tiền đi',
+      amount:amt,currency:'VND',walletId:fromId,note:`${note} → ${toW?.name||'?'}`,date,dt});
     saveShDataForStore(fromW.storeId);
   }
-  // If TO wallet belongs to a store → log in store's shData
-  if(toW?.storeId){
-    const srcName=fromW?.name||(fromW?.storeId?'ví cửa hàng':'ví cá nhân');
-    shData.push({id:tid+3,storeId:toW.storeId,type:'transfer-in',category:'Tiền về cửa hàng',
-      amount:amt,currency:'VND',walletId:toId,note:`${note} ← ${srcName}`,date,dt});
+  if(!toIsStore){
+    tcData.push({id:tid+1,type:'thu',category:'Chuyển ví',amount:amt,currency:'VND',walletId:toId,note:note+' ← '+(fromW?.name||'?'),date,dt});
+  } else {
+    shData.push({id:tid+1,storeId:toW.storeId,type:'transfer-in',category:'Tiền về cửa hàng',
+      amount:amt,currency:'VND',walletId:toId,note:`${note} ← ${fromW?.name||'?'}`,date,dt});
     saveShDataForStore(toW.storeId);
   }
+  save('tcData',tcData);
   closeModal('modal-transfer');
   document.getElementById('tr-amt').value='';document.getElementById('tr-amt').dataset.raw='0';
   document.getElementById('tr-note').value='';
@@ -1844,11 +1855,16 @@ function saveEditTC(){
   save('tcData',tcData);closeModal('modal-edit-tc');renderTC();renderWallets();toast('✓ Đã cập nhật giao dịch');
 }
 function renderTC(){
-  const thu=tcData.filter(r=>r.type==='thu'&&(r.currency||'VND')==='VND').reduce((s,r)=>s+r.amount,0);
-  const chi=tcData.filter(r=>r.type==='chi'&&(r.currency||'VND')==='VND').reduce((s,r)=>s+r.amount,0);
+  // Loại bỏ entries thuộc ví cửa hàng (tránh lẫn tcData/shData cũ)
+  const personalTc=tcData.filter(r=>{
+    const w=r.walletId?walletData.find(x=>x.id===r.walletId):null;
+    return !w?.storeId;
+  });
+  const thu=personalTc.filter(r=>r.type==='thu'&&(r.currency||'VND')==='VND').reduce((s,r)=>s+r.amount,0);
+  const chi=personalTc.filter(r=>r.type==='chi'&&(r.currency||'VND')==='VND').reduce((s,r)=>s+r.amount,0);
   document.getElementById('tc-thu').textContent=fmt(thu);document.getElementById('tc-chi').textContent=fmt(chi);
   const du=thu-chi,de=document.getElementById('tc-du');de.textContent=fmt(du);de.className='val '+(du>=0?'pos':'neg');
-  const filtered=tcFilter==='all'?[...tcData]:tcData.filter(r=>r.type===tcFilter);
+  const filtered=tcFilter==='all'?[...personalTc]:personalTc.filter(r=>r.type===tcFilter);
   const list=document.getElementById('tc-list');
   if(!filtered.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:14px;font-size:11px">Chưa có giao dịch nào</div>';return;}
   list.innerHTML=filtered.reverse().map(r=>{
@@ -2761,6 +2777,167 @@ function renderRec(){
       ${sorted.map(recItem).join('')}
     </div>`;
   }).join('');
+}
+
+// ══════ VOICE INPUT ══════
+let _voiceRec=null,_voiceMode=null;
+
+function _parseAmt(txt){
+  const t=txt.toLowerCase();
+  const mults=[
+    [/(\d+(?:[,\.]\d+)?)\s*t[ỷy]\b/,1e9],
+    [/(\d+(?:[,\.]\d+)?)\s*tri[eệ]u\b/,1e6],
+    [/(\d+(?:[,\.]\d+)?)\s*ngh[iì]n\b/,1e3],
+    [/(\d+(?:[,\.]\d+)?)\s*ng[aà]n\b/,1e3],
+    [/(\d+(?:[,\.]\d+)?)\s*k\b/,1e3],
+  ];
+  for(const [re,mult] of mults){
+    const m=t.match(re);
+    if(m){const n=parseFloat(m[1].replace(',','.'));if(!isNaN(n))return Math.round(n*mult);}
+  }
+  const plain=t.match(/(\d[\d\.]*\d|\d{1,3})/);
+  if(plain){return parseInt(plain[1].replace(/\./g,''))||0;}
+  return 0;
+}
+
+function _parseType(txt,mode){
+  const t=txt.toLowerCase();
+  if(mode==='tc'){
+    if(/\b(chi|tiêu|mua|trả|bỏ ra|nộp|đóng|thuê|mất)\b/.test(t))return 'chi';
+    if(/\b(thu|nhận|được|lương|thưởng|bán|nạp|hoàn tiền|có thêm)\b/.test(t))return 'thu';
+    return null;
+  }
+  if(mode==='sh'){
+    if(/\b(chi|tiêu|mua|nhập hàng|trả|nộp|thuê|mất)\b/.test(t))return 'expense';
+    if(/\b(thu|bán|doanh thu|nhận|được|khách trả)\b/.test(t))return 'revenue';
+    return null;
+  }
+  if(mode==='ln'){
+    if(/\b(cho vay|tôi cho|cho mượn|mình cho)\b/.test(t))return 'cho';
+    if(/\b(đi vay|tôi vay|mình vay|mượn của|vay của|nợ)\b/.test(t))return 'di';
+    return null;
+  }
+  return null;
+}
+
+function _parseCatTC(txt,type){
+  const t=txt.toLowerCase();
+  if(type==='thu'){
+    if(/lương|tiền công|tháng lương/.test(t))return 'Lương';
+    if(/thưởng/.test(t))return 'Thưởng';
+    if(/kinh doanh|bán hàng/.test(t))return 'Kinh doanh';
+    if(/đầu tư|cổ tức|lãi suất/.test(t))return 'Đầu tư';
+    return null;
+  }
+  if(/\b(ăn|uống|cơm|phở|bún|bánh|cafe|cà phê|bia|nhậu|buffet|quán|đồ ăn|bữa|bữa ăn|nước uống)\b/.test(t))return 'Ăn uống';
+  if(/\b(xăng|xe|grab|taxi|bus|xe buýt|xe ôm|uber|giao thông|đi lại|di chuyển|đường)\b/.test(t))return 'Di chuyển';
+  if(/\b(mua sắm|shopping|quần|áo|giày|dép|thời trang|shop|đồ dùng)\b/.test(t))return 'Mua sắm';
+  if(/\b(điện|nước|internet|wifi|điện thoại|hóa đơn|bill|tiền nhà|thuê nhà|gas)\b/.test(t))return 'Hóa đơn';
+  if(/\b(game|phim|giải trí|xem|cinema|rạp|nhạc|concert|du lịch|vui chơi)\b/.test(t))return 'Giải trí';
+  if(/\b(thuốc|bác sĩ|bệnh viện|y tế|sức khỏe|khám|khám bệnh|viện)\b/.test(t))return 'Sức khỏe';
+  return null;
+}
+
+function _parseCatSH(txt,type){
+  const t=txt.toLowerCase();
+  if(type==='revenue'){
+    if(/hoàn trả|hoàn lại/.test(t))return 'Hoàn trả';
+    return 'Doanh thu';
+  }
+  if(/nhập hàng|nhập|hàng hóa/.test(t))return 'Nhập hàng';
+  if(/lương|nhân viên|\bnv\b/.test(t))return 'Lương NV';
+  if(/marketing|quảng cáo|ads/.test(t))return 'Marketing';
+  if(/điện|nước|internet|hóa đơn|bill/.test(t))return 'Hóa đơn';
+  if(/vận hành|chi phí/.test(t))return 'Chi phí vận hành';
+  return null;
+}
+
+function _setMI(id,val){
+  const el=document.getElementById(id);if(!el)return;
+  el.dataset.raw=String(val);
+  el.value=val>0?val.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.'):'';
+}
+
+function _extractNote(text){
+  return text
+    .replace(/\d+(?:[,\.]\d+)?\s*(?:tỷ|triệu|nghìn|ngàn|k)\b/gi,'')
+    .replace(/\b(tôi vừa|tôi đã|mình vừa|mình đã|vừa|đã|chi|tiêu|mua|trả|bỏ ra|thu|nhận|được|bán|cho vay|đi vay|mượn|nợ)\b/gi,'')
+    .replace(/\s{2,}/g,' ').trim();
+}
+
+function _applyVoice(mode,text){
+  const amt=_parseAmt(text);
+  const type=_parseType(text,mode);
+
+  if(mode==='tc'){
+    document.getElementById('form-tc').classList.remove('hid');
+    const t=type||'chi';
+    document.getElementById('tc-type').value=t;
+    updCatTC();
+    if(amt>0)_setMI('tc-amt',amt);
+    const cat=_parseCatTC(text,t);
+    if(cat){const s=document.getElementById('tc-cat');for(let o of s.options){if(o.text===cat){s.value=o.value;break;}}}
+    const note=_extractNote(text);
+    if(note)document.getElementById('tc-note').value=note;
+    toast('🎤 '+(t==='chi'?'Chi':'Thu')+' '+fmt(amt)+'đ'+(cat?' · '+cat:''));
+
+  }else if(mode==='sh'){
+    document.getElementById('form-sh').classList.remove('hid');
+    const t=type||'expense';
+    document.getElementById('sh-type').value=t;
+    updCatSH();
+    if(amt>0)_setMI('sh-amt',amt);
+    const cat=_parseCatSH(text,t);
+    if(cat){const s=document.getElementById('sh-cat');for(let o of s.options){if(o.text===cat){s.value=o.value;break;}}}
+    const note=_extractNote(text);
+    if(note)document.getElementById('sh-note').value=note;
+    toast('🎤 '+(t==='expense'?'Chi phí':'Doanh thu')+' '+fmt(amt)+'đ'+(cat?' · '+cat:''));
+
+  }else if(mode==='ln'){
+    document.getElementById('form-ln').classList.remove('hid');
+    const dir=type;
+    if(dir)document.getElementById('ln-dir').value=dir;
+    if(amt>0)_setMI('ln-amt',amt);
+    // Try extract person name
+    const nm=text.match(/(?:cho\s+|vay\s+(?:của\s+)?|mượn\s+(?:của\s+)?)([A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯẠ-ỹ][a-zA-ZÀ-ỹ]+(?:\s+[A-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠƯẠ-ỹ][a-zA-ZÀ-ỹ]+)*)/);
+    if(nm&&nm[1])document.getElementById('ln-name').value=nm[1].trim();
+    const note=_extractNote(text);
+    if(note)document.getElementById('ln-note').value=note;
+    const ds=dir==='cho'?'Cho vay':dir==='di'?'Đi vay':'Nợ/Vay';
+    toast('🎤 '+ds+' '+fmt(amt)+'đ');
+  }
+}
+
+function startVoice(mode){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){toast('⚠️ Dùng Chrome để nhập bằng giọng nói!','#f59e0b');return;}
+  const btn=document.getElementById('mic-'+mode);
+  // Toggle off if same mode already active
+  if(_voiceRec&&_voiceMode===mode){_voiceRec.stop();return;}
+  if(_voiceRec){try{_voiceRec.stop();}catch(e){}}
+  _voiceMode=mode;
+  _voiceRec=new SR();
+  _voiceRec.lang='vi-VN';
+  _voiceRec.continuous=false;
+  _voiceRec.interimResults=false;
+  _voiceRec.maxAlternatives=3;
+  _voiceRec.onstart=()=>{
+    if(btn){btn.classList.add('listening');btn.innerHTML='🔴 Đang nghe… (bấm để dừng)';}
+  };
+  _voiceRec.onresult=e=>{
+    const text=e.results[0][0].transcript;
+    _applyVoice(mode,text);
+  };
+  _voiceRec.onerror=e=>{
+    if(e.error==='not-allowed')toast('❌ Hãy cho phép quyền microphone!','#ef4444');
+    else if(e.error==='no-speech')toast('⚠️ Không nghe thấy gì, thử lại nhé','#f59e0b');
+    else if(e.error!=='aborted')toast('❌ Lỗi mic: '+e.error,'#ef4444');
+  };
+  _voiceRec.onend=()=>{
+    if(btn){btn.classList.remove('listening');btn.innerHTML='🎤 Nhập bằng giọng nói';}
+    _voiceRec=null;_voiceMode=null;
+  };
+  _voiceRec.start();
 }
 
 // ══════ RENDER ALL ══════
