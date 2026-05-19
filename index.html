@@ -716,22 +716,22 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <div id="sh-cost-module" class="hid">
         <div class="cost-stabs">
           <button class="cost-stab on" id="cstab-ing" onclick="setCostView('ing')">🥬 Nguyên liệu</button>
-          <button class="cost-stab" id="cstab-recipe" onclick="setCostView('recipe')">📋 Công thức món</button>
+          <button class="cost-stab" id="cstab-semi" onclick="setCostView('semi')">🧪 Bán TP</button>
+          <button class="cost-stab" id="cstab-recipe" onclick="setCostView('recipe')">📋 Thành phẩm</button>
         </div>
         <!-- Ingredients view -->
         <div id="cv-ing">
-          <div class="bar"><span class="st">Kho nguyên liệu</span><button class="abtn" onclick="tog('form-ing')">＋ Thêm</button></div>
-          <div id="form-ing" class="fc hid">
-            <input type="hidden" id="ing-edit-id"/>
-            <input type="text" id="ing-name" placeholder="Tên nguyên liệu (VD: Đường trắng, Sữa đặc...)"/>
-            <input type="text" id="ing-unit" placeholder="Đơn vị / ghi chú (VD: gói 1kg = 26.000₫)"/>
-            <button class="sbtn" id="ing-save-btn" onclick="saveIng()">💾 Lưu nguyên liệu</button>
-          </div>
+          <div class="bar"><span class="st">Kho nguyên liệu</span><button class="abtn" onclick="openIngModal()">＋ Thêm</button></div>
           <div id="ing-list" class="rl" style="gap:6px"></div>
         </div>
-        <!-- Recipes view -->
+        <!-- Semi-finished view -->
+        <div id="cv-semi" class="hid">
+          <div class="bar"><span class="st">Bán thành phẩm</span><button class="abtn" onclick="openSemiModal()">＋ Tạo</button></div>
+          <div id="semi-list" class="rl" style="gap:8px"></div>
+        </div>
+        <!-- Final product view -->
         <div id="cv-recipe" class="hid">
-          <div class="bar"><span class="st">Công thức món</span><button class="abtn" onclick="openRecipeModal()">＋ Tạo</button></div>
+          <div class="bar"><span class="st">Thành phẩm</span><button class="abtn" onclick="openRecipeModal()">＋ Tạo</button></div>
           <div id="recipe-list" class="rl" style="gap:8px"></div>
         </div>
       </div>
@@ -1116,21 +1116,76 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
   </div>
 </div>
 
-<!-- Recipe Modal -->
+<!-- Ingredient Modal -->
+<div id="modal-ing" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-ing')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr"><span class="modal-ttl" id="ing-modal-ttl">➕ Nguyên liệu mới</span><button class="modal-close" onclick="closeModal('modal-ing')">×</button></div>
+    <input type="hidden" id="ing-edit-id"/>
+    <div class="fl">Tên nguyên liệu</div>
+    <input type="text" id="ing-name" placeholder="VD: Trà ô long nhài, Đường trắng, Cốc size M..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div class="fl" style="margin-top:6px">Thông tin đóng gói <span style="color:#4b5563;font-weight:400">(1 gói / hộp / túi / chiếc...)</span></div>
+    <div class="fr" style="gap:6px">
+      <div style="flex:0 0 80px">
+        <div class="fl" style="font-size:9px">Đơn vị ĐG</div>
+        <input type="text" id="ing-pkgunit" placeholder="gói, hộp..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+      </div>
+      <div style="flex:1">
+        <div class="fl" style="font-size:9px">Số lượng trong 1 ĐG</div>
+        <input type="number" id="ing-pkgqty" placeholder="VD: 500" inputmode="decimal" oninput="updIngPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+      </div>
+      <div style="flex:0 0 72px">
+        <div class="fl" style="font-size:9px">Đơn vị tính</div>
+        <input type="text" id="ing-useunit" placeholder="g, ml, chiếc" oninput="updIngPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+      </div>
+    </div>
+    <div class="fl" style="margin-top:6px">Giá nhập 1 đơn vị đóng gói (₫)</div>
+    <input type="text" id="ing-pkgprice" class="mi" inputmode="numeric" placeholder="VD: 26.000" data-raw="0" oninput="onMI(this);updIngPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div id="ing-preview" class="rc-preview" style="margin-top:8px;min-height:0"></div>
+    <div style="font-size:10px;color:#6b7280;margin-top:4px">💡 Điện: 1 số điện = 4.000₫ · Nước: 1000 lít = 30.000₫</div>
+    <button class="sbtn" onclick="saveIng()">💾 Lưu nguyên liệu</button>
+  </div>
+</div>
+
+<!-- Semi-finished Modal (Bán thành phẩm) -->
+<div id="modal-semi" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-semi')">
+  <div class="modal-card" onclick="event.stopPropagation()" style="max-height:90vh;overflow-y:auto">
+    <div class="modal-hdr"><span class="modal-ttl" id="semi-modal-ttl">🧪 Bán thành phẩm mới</span><button class="modal-close" onclick="closeModal('modal-semi')">×</button></div>
+    <input type="hidden" id="semi-edit-id"/>
+    <div class="fl">Tên bán thành phẩm</div>
+    <input type="text" id="semi-name" placeholder="VD: Cốt trà ô long nhài, Nước đường..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div class="fr" style="gap:6px;margin-top:6px">
+      <div style="flex:1">
+        <div class="fl">Lượng làm ra</div>
+        <input type="number" id="semi-outqty" placeholder="VD: 2000" inputmode="decimal" oninput="updSemiPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+      </div>
+      <div style="flex:0 0 90px">
+        <div class="fl">Đơn vị</div>
+        <input type="text" id="semi-outunit" placeholder="ml, g..." oninput="updSemiPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+      </div>
+    </div>
+    <div class="fl" style="margin-top:6px">Nguyên liệu cần dùng</div>
+    <div id="semi-items" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
+    <button onclick="addSemiItem()" style="width:100%;padding:8px;background:rgba(var(--tc-rgb),0.08);border:1.5px dashed rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">＋ Thêm nguyên liệu</button>
+    <div id="semi-preview" class="rc-preview" style="margin-top:8px;min-height:0"></div>
+    <button class="sbtn" onclick="saveSemi()">💾 Lưu bán thành phẩm</button>
+  </div>
+</div>
+
+<!-- Recipe Modal (Thành phẩm) -->
 <div id="modal-recipe" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-recipe')">
   <div class="modal-card" onclick="event.stopPropagation()" style="max-height:90vh;overflow-y:auto">
-    <div class="modal-hdr"><span class="modal-ttl">📋 Công thức mới</span><button class="modal-close" onclick="closeModal('modal-recipe')">×</button></div>
-    <div class="fl">Tên món</div>
-    <input type="text" id="rc-name" placeholder="VD: Nước đường 600ml, Cà phê sữa..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
-    <div class="fr">
+    <div class="modal-hdr"><span class="modal-ttl">📋 Thành phẩm mới</span><button class="modal-close" onclick="closeModal('modal-recipe')">×</button></div>
+    <div class="fl">Tên thành phẩm</div>
+    <input type="text" id="rc-name" placeholder="VD: Trà ô long nhài sữa size M..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div class="fr" style="gap:6px;margin-top:6px">
       <div style="flex:1"><div class="fl">Số phần làm ra</div><input type="text" id="rc-servings" class="mi" inputmode="numeric" value="1" data-raw="1" oninput="onMI(this);updRcPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/></div>
       <div style="flex:1"><div class="fl">Giá bán / phần (₫)</div><input type="text" id="rc-sell" class="mi" inputmode="numeric" placeholder="0" data-raw="0" oninput="onMI(this);updRcPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/></div>
     </div>
-    <div class="fl">Nguyên liệu & Chi phí</div>
+    <div class="fl" style="margin-top:6px">Thành phần <span style="color:#4b5563;font-weight:400;font-size:10px">(chọn nguyên liệu hoặc bán thành phẩm)</span></div>
     <div id="rc-items" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
-    <button onclick="addRcItem()" style="width:100%;padding:8px;background:rgba(var(--tc-rgb),0.08);border:1.5px dashed rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">＋ Thêm nguyên liệu</button>
+    <button onclick="addRcItem()" style="width:100%;padding:8px;background:rgba(var(--tc-rgb),0.08);border:1.5px dashed rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">＋ Thêm thành phần</button>
     <div id="rc-preview" class="rc-preview" style="margin-top:8px"></div>
-    <button class="sbtn" onclick="saveRecipe()">💾 Lưu công thức</button>
+    <button class="sbtn" onclick="saveRecipe()">💾 Lưu thành phẩm</button>
   </div>
 </div>
 
@@ -1492,8 +1547,9 @@ async function doLogin(u){
   // Show syncing indicator
   const stag=document.getElementById('stag');
   stag.textContent='⏳ Đang đồng bộ...';stag.style.color='#f59e0b';stag.classList.add('show');
-  // Sync from cloud first
+  // Sync from cloud first (data + permissions)
   await syncFromCloud(u.id);
+  await syncPermsFromCloud();
   stag.textContent='✓ Đã lưu';stag.style.color='#22c55e';
   setTimeout(()=>stag.classList.remove('show'),2000);
   // Load data (from localStorage which now has cloud data)
@@ -1578,10 +1634,36 @@ function startRealTimeSync(uid){
 }
 function resetMod(k,fn){if(!confirm('Xoá toàn bộ?\nKhông thể hoàn tác!'))return;const m={tcData,shData,invData,lnData,recData};if(m[k]){m[k].length=0;save(k,m[k]);fn();}toast('🗑 Đã xoá');}
 
-// ══════ GLOBAL PERMISSIONS (not per-user, shared across profiles) ══════
+// ══════ GLOBAL PERMISSIONS (shared across profiles, synced to Firebase) ══════
 const PERMS_KEY='__dT_v7_perms';
 function getPerms(){try{return JSON.parse(localStorage.getItem(PERMS_KEY)||'{}')}catch{return{}}}
-function setPerms(p){localStorage.setItem(PERMS_KEY,JSON.stringify(p))}
+function setPerms(p){
+  localStorage.setItem(PERMS_KEY,JSON.stringify(p));
+  // Sync to Firebase so perms survive across devices/browsers/PWA cache clears
+  if(fbDb)dbSet(PERMS_KEY,JSON.stringify(p)).catch(e=>console.warn('perms sync:',e));
+}
+async function syncPermsFromCloud(){
+  if(!fbDb)return;
+  try{
+    const raw=await dbGet(PERMS_KEY);
+    if(!raw)return;
+    const cp=typeof raw==='string'?JSON.parse(raw):raw;
+    const lp=getPerms();
+    // Merge: cloud wins for existing entries, keep any local-only entries
+    const merged={...lp};
+    Object.entries(cp).forEach(([sid,cv])=>{
+      if(!merged[sid]){merged[sid]=cv;}
+      else{
+        // Merge members: cloud authoritative, add any local-only members
+        const cm=(cv.members||[]);const lm=(lp[sid]?.members||[]);
+        const all=[...cm];
+        lm.forEach(m=>{if(!all.find(x=>x.userId===m.userId))all.push(m);});
+        merged[sid]={...cv,members:all};
+      }
+    });
+    localStorage.setItem(PERMS_KEY,JSON.stringify(merged));
+  }catch(e){console.warn('syncPermsFromCloud:',e.message);}
+}
 function regStore(store){
   const p=getPerms();
   if(!p[store.id])p[store.id]={ownerId:CU.id,ownerName:CU.name,name:store.name,members:[]};
@@ -1886,7 +1968,7 @@ function importData(input){
       if(d.shData){shData=migrSH(d.shData);save('shData',shData);}
       if(d.invData){invData=migrINV(d.invData);save('invData',invData);}
       if(d.lnData){lnData=migrLN(d.lnData);save('lnData',lnData);}
-      if(d.storeData){storeData=d.storeData;save('storeData',storeData);curStoreId=storeData[0]?.id||null;}
+      if(d.storeData){storeData=d.storeData;save('storeData',storeData.filter(s=>!s._ownerId));curStoreId=storeData[0]?.id||null;}
       if(d.recData){recData=migrRec(d.recData);save('recData',recData);}
       if(d.walletData){walletData=migrW(d.walletData);save('walletData',walletData);}
       if(d.features){features={...features,...d.features};save('features',features);}
@@ -2545,7 +2627,7 @@ function createStoreFromWizard(){
   const sid=Date.now();
   const storeType=getSwType();
   const store={id:sid,name,storeType,platforms:[...document.querySelectorAll('#plat-grid .plat-chip.on')].map(el=>el.dataset.val),hasDebt:document.getElementById('sw-debt').checked};
-  storeData.push(store);save('storeData',storeData);curStoreId=sid;
+  storeData.push(store);save('storeData',storeData.filter(s=>!s._ownerId));curStoreId=sid;
   regStore(store); // Register in global perms for sharing
   if(document.getElementById('sw-create-wallets').checked){
     let ts=Date.now();
@@ -2564,14 +2646,14 @@ function createStoreFromWizard(){
 function switchStoreFromSel(){curStoreId=Number(document.getElementById('store-sel').value)||storeData[0]?.id;updShWallet();updShTypeBadge();setShView('txn');renderSH();}
 function renameStoreCurrent(){
   const s=storeData.find(x=>x.id===curStoreId);const n=prompt('Đổi tên:',s?.name);
-  if(!n?.trim())return;s.name=n.trim();save('storeData',storeData);renderStoresSel();renderSH();updRecOpts();toast('✓ Đã đổi tên');
+  if(!n?.trim())return;s.name=n.trim();save('storeData',storeData.filter(s=>!s._ownerId));renderStoresSel();renderSH();updRecOpts();toast('✓ Đã đổi tên');
 }
 function delStore(){
   if(storeData.length<=1)return toast('⚠️ Cần ít nhất 1 cửa hàng!','#f59e0b');
   const s=storeData.find(x=>x.id===curStoreId);if(!confirm(`Xoá "${s?.name}"?`))return;
   storeData.splice(storeData.findIndex(x=>x.id===curStoreId),1);
   shData=shData.filter(r=>r.storeId!==curStoreId);
-  curStoreId=storeData[0]?.id||null;save('storeData',storeData);save('shData',shData);
+  curStoreId=storeData[0]?.id||null;save('storeData',storeData.filter(s=>!s._ownerId));save('shData',shData);
   updWScopeOpts();updRecOpts();updWSelects();renderShState();renderWallets();
 }
 function renderStoresSel(){
@@ -2579,28 +2661,40 @@ function renderStoresSel(){
   sel.innerHTML=storeData.map(s=>`<option value="${s.id}" ${s.id===curStoreId?'selected':''}>${s.name}</option>`).join('');
 }
 let shFilterMode='month';
-// ══════ MODULE: COST CALCULATOR (F&B) ══════
+// ══════ MODULE: COST CALCULATOR (F&B) v2 ══════
 function getIngData(sid){return JSON.parse(localStorage.getItem('ingData_'+sid)||'[]');}
 function saveIngData(sid,d){localStorage.setItem('ingData_'+sid,JSON.stringify(d));}
+function getSemiData(sid){return JSON.parse(localStorage.getItem('semiData_'+sid)||'[]');}
+function saveSemiData(sid,d){localStorage.setItem('semiData_'+sid,JSON.stringify(d));}
 function getRecipeData(sid){return JSON.parse(localStorage.getItem('recipeData_'+sid)||'[]');}
 function saveRecipeData(sid,d){localStorage.setItem('recipeData_'+sid,JSON.stringify(d));}
 
-// Store type
+// ── Cost calculation helpers ──
+function ingUnitPrice(ing){if(!ing||!ing.pkgQty||!ing.pkgPrice)return 0;return ing.pkgPrice/ing.pkgQty;}
+function calcSemiTotalCost(semi,ings){return(semi.items||[]).reduce((s,it)=>{const g=ings.find(x=>x.id===it.ingId);return s+(g?ingUnitPrice(g)*(it.qty||0):0);},0);}
+function calcSemiUnitCost(semi,ings){if(!semi.outputQty)return 0;return calcSemiTotalCost(semi,ings)/semi.outputQty;}
+function calcRecipeTotalCost(recipe,ings,semis){
+  return(recipe.items||[]).reduce((s,it)=>{
+    if(it.type==='ing'){const g=ings.find(x=>x.id===it.refId);return s+(g?ingUnitPrice(g)*(it.qty||0):0);}
+    if(it.type==='semi'){const sm=semis.find(x=>x.id===it.refId);return s+(sm?calcSemiUnitCost(sm,ings)*(it.qty||0):0);}
+    return s;
+  },0);
+}
+
+// ── Store type ──
 function pickSwType(el){document.querySelectorAll('#sw-type-grid .type-chip').forEach(e=>e.classList.remove('on'));el.classList.add('on');}
 function getSwType(){return document.querySelector('#sw-type-grid .type-chip.on')?.dataset.stype||'food';}
 function pickStoreTypeMod(el){document.querySelectorAll('#stype-grid .type-chip').forEach(e=>e.classList.remove('on'));el.classList.add('on');}
 function openStoreTypeModal(){
-  const s=storeData.find(x=>x.id===curStoreId);
-  const cur=s?.storeType||'other';
+  const s=storeData.find(x=>x.id===curStoreId);const cur=s?.storeType||'other';
   document.querySelectorAll('#stype-grid .type-chip').forEach(e=>e.classList.toggle('on',e.dataset.stype===cur));
   document.getElementById('modal-store-type').classList.remove('hid');
 }
 function saveStoreType(){
   const sel=document.querySelector('#stype-grid .type-chip.on')?.dataset.stype;if(!sel)return;
   const s=storeData.find(x=>x.id===curStoreId);
-  if(s){s.storeType=sel;save('storeData',storeData);}
-  closeModal('modal-store-type');
-  updShTypeBadge();
+  if(s){s.storeType=sel;save('storeData',storeData.filter(s=>!s._ownerId));}
+  closeModal('modal-store-type');updShTypeBadge();
   if(sel==='food'){setShView('cost');}else{setShView('txn');}
   toast('✓ Đã cập nhật loại cửa hàng');
 }
@@ -2609,13 +2703,12 @@ function updShTypeBadge(){
   const TYPE_LABELS={food:'🍜',retail:'🛍️',service:'💼',other:'📦'};
   const btn=document.getElementById('sh-type-btn');
   if(btn)btn.textContent=TYPE_LABELS[s?.storeType||'other']||'🏷️';
-  // Show/hide cost tab
   const isFood=s?.storeType==='food';
   const tabsEl=document.querySelector('.store-main-tabs');
   if(tabsEl)tabsEl.style.display=isFood?'':'none';
 }
 
-// View switching
+// ── View switching ──
 let _shView='txn';
 function setShView(v){
   const s=storeData.find(x=>x.id===curStoreId);
@@ -2631,72 +2724,311 @@ function setShView(v){
 let _costView='ing';
 function setCostView(v){
   _costView=v;
-  document.getElementById('cstab-ing').classList.toggle('on',v==='ing');
-  document.getElementById('cstab-recipe').classList.toggle('on',v==='recipe');
-  document.getElementById('cv-ing').classList.toggle('hid',v!=='ing');
-  document.getElementById('cv-recipe').classList.toggle('hid',v!=='recipe');
+  ['ing','semi','recipe'].forEach(t=>{
+    document.getElementById('cstab-'+t)?.classList.toggle('on',t===v);
+    document.getElementById('cv-'+t)?.classList.toggle('hid',t!==v);
+  });
 }
-function renderCostModule(){renderIngList();renderRecipeList();}
+function renderCostModule(){renderIngList();renderSemiList();renderRecipeList();}
 
 // ── INGREDIENTS ──
-function renderIngList(){
-  const ings=getIngData(curStoreId);
-  const list=document.getElementById('ing-list');if(!list)return;
-  if(!ings.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có nguyên liệu.<br/>Nhấn <b>＋ Thêm</b> để bắt đầu!</div>';return;}
-  list.innerHTML=ings.map(g=>`<div class="ing-row">
-    <div><div class="ing-n">${g.name}</div>${g.unit?`<div class="ing-u">${g.unit}</div>`:''}</div>
-    <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
-      <button class="xbtn" style="color:#60a5fa" onclick="editIng(${g.id})">✏️</button>
-      <button class="xbtn" onclick="delIng(${g.id})">×</button>
-    </div>
-  </div>`).join('');
+function openIngModal(editId=null){
+  const pp=document.getElementById('ing-pkgprice');
+  document.getElementById('ing-edit-id').value='';
+  document.getElementById('ing-name').value='';
+  document.getElementById('ing-pkgunit').value='';
+  document.getElementById('ing-pkgqty').value='';
+  document.getElementById('ing-useunit').value='';
+  pp.value='';pp.dataset.raw='0';
+  document.getElementById('ing-preview').innerHTML='';
+  if(editId){
+    const g=getIngData(curStoreId).find(x=>x.id===editId);
+    if(g){
+      document.getElementById('ing-edit-id').value=editId;
+      document.getElementById('ing-name').value=g.name||'';
+      document.getElementById('ing-pkgunit').value=g.pkgUnit||'';
+      document.getElementById('ing-pkgqty').value=g.pkgQty||'';
+      document.getElementById('ing-useunit').value=g.useUnit||'';
+      pp.value=g.pkgPrice?(g.pkgPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.') :'';
+      pp.dataset.raw=g.pkgPrice||0;
+    }
+    document.getElementById('ing-modal-ttl').textContent='✏️ Sửa nguyên liệu';
+  }else{
+    document.getElementById('ing-modal-ttl').textContent='➕ Nguyên liệu mới';
+  }
+  updIngPreview();
+  document.getElementById('modal-ing').classList.remove('hid');
+}
+function updIngPreview(){
+  const pkgQty=parseFloat(document.getElementById('ing-pkgqty').value)||0;
+  const useUnit=document.getElementById('ing-useunit').value.trim();
+  const pkgPrice=Number(document.getElementById('ing-pkgprice').dataset.raw)||0;
+  const pkgUnit=document.getElementById('ing-pkgunit').value.trim();
+  const prev=document.getElementById('ing-preview');
+  if(!pkgQty||!pkgPrice){prev.innerHTML='';return;}
+  const up=pkgPrice/pkgQty;
+  const upDisp=fmt(Math.round(up*1000)/1000);
+  prev.innerHTML=`<div class="rc-stat"><div class="rc-stat-v">${upDisp}</div><div class="rc-stat-l">₫ / ${useUnit||'đơn vị'}</div></div><div class="rc-stat"><div class="rc-stat-v">${fmt(pkgPrice)}</div><div class="rc-stat-l">1 ${pkgUnit||'gói'} · ${pkgQty}${useUnit}</div></div>`;
 }
 function saveIng(){
   const name=document.getElementById('ing-name').value.trim();
   if(!name)return toast('⚠️ Nhập tên nguyên liệu!','#f59e0b');
-  const unit=document.getElementById('ing-unit').value.trim();
+  const pkgUnit=document.getElementById('ing-pkgunit').value.trim();
+  const pkgQty=parseFloat(document.getElementById('ing-pkgqty').value)||0;
+  const useUnit=document.getElementById('ing-useunit').value.trim();
+  const pkgPrice=Number(document.getElementById('ing-pkgprice').dataset.raw)||0;
+  if(!pkgQty)return toast('⚠️ Nhập số lượng trong 1 gói!','#f59e0b');
+  if(!pkgPrice)return toast('⚠️ Nhập giá nhập!','#f59e0b');
   const editId=document.getElementById('ing-edit-id').value;
   const ings=getIngData(curStoreId);
   if(editId){
     const idx=ings.findIndex(x=>x.id===Number(editId));
-    if(idx>=0)ings[idx]={...ings[idx],name,unit};
-    document.getElementById('ing-edit-id').value='';
-    document.getElementById('ing-save-btn').textContent='💾 Lưu nguyên liệu';
-  }else{ings.push({id:Date.now(),name,unit});}
+    if(idx>=0)ings[idx]={...ings[idx],name,pkgUnit,pkgQty,useUnit,pkgPrice};
+  }else{ings.push({id:Date.now(),name,pkgUnit,pkgQty,useUnit,pkgPrice});}
   saveIngData(curStoreId,ings);
-  document.getElementById('ing-name').value='';document.getElementById('ing-unit').value='';
-  document.getElementById('form-ing').classList.add('hid');
-  renderIngList();toast('✓ Đã lưu nguyên liệu');
-}
-function editIng(id){
-  const g=getIngData(curStoreId).find(x=>x.id===id);if(!g)return;
-  document.getElementById('ing-name').value=g.name;
-  document.getElementById('ing-unit').value=g.unit||'';
-  document.getElementById('ing-edit-id').value=id;
-  document.getElementById('ing-save-btn').textContent='✏️ Cập nhật';
-  document.getElementById('form-ing').classList.remove('hid');
+  closeModal('modal-ing');
+  renderIngList();renderSemiList();renderRecipeList();
+  toast('✓ Đã lưu nguyên liệu');
 }
 function delIng(id){
-  if(!confirm('Xoá nguyên liệu này?'))return;
+  if(!confirm('Xoá nguyên liệu này? Các công thức dùng nguyên liệu này sẽ bị ảnh hưởng.'))return;
   saveIngData(curStoreId,getIngData(curStoreId).filter(x=>x.id!==id));
-  renderIngList();toast('✓ Đã xoá');
+  renderIngList();renderSemiList();renderRecipeList();toast('✓ Đã xoá');
+}
+function renderIngList(){
+  const ings=getIngData(curStoreId);
+  const list=document.getElementById('ing-list');if(!list)return;
+  if(!ings.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có nguyên liệu nào.<br/>Nhấn <b>＋ Thêm</b> để bắt đầu!</div>';return;}
+  list.innerHTML=ings.map(g=>{
+    const up=ingUnitPrice(g);
+    return`<div class="ing-row">
+    <div style="flex:1;min-width:0">
+      <div class="ing-n">${g.name}</div>
+      ${g.pkgQty?`<div class="ing-u">1 ${g.pkgUnit||'gói'} = ${g.pkgQty}${g.useUnit||''} · ${fmt(g.pkgPrice)}₫</div>`:''}
+      ${up?`<div class="ing-price">${fmt(Math.round(up*1000)/1000)} / ${g.useUnit||'đơn vị'}</div>`:''}
+    </div>
+    <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
+      <button class="xbtn" style="color:#60a5fa" onclick="openIngModal(${g.id})">✏️</button>
+      <button class="xbtn" onclick="delIng(${g.id})">×</button>
+    </div>
+  </div>`;
+  }).join('');
 }
 
-// ── RECIPES ──
+// ── SEMI-FINISHED (BÁN THÀNH PHẨM) ──
+let _semiItems=[],_semiEditId=null;
+const _ISS='background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:7px 8px;font-size:11px;font-family:inherit;outline:none';
+function openSemiModal(editId=null){
+  _semiEditId=editId||null;_semiItems=[];
+  document.getElementById('semi-edit-id').value='';
+  document.getElementById('semi-name').value='';
+  document.getElementById('semi-outqty').value='';
+  document.getElementById('semi-outunit').value='';
+  document.getElementById('semi-preview').innerHTML='';
+  if(editId){
+    const s=getSemiData(curStoreId).find(x=>x.id===editId);
+    if(s){
+      document.getElementById('semi-edit-id').value=editId;
+      document.getElementById('semi-name').value=s.name||'';
+      document.getElementById('semi-outqty').value=s.outputQty||'';
+      document.getElementById('semi-outunit').value=s.outputUnit||'';
+      _semiItems=(s.items||[]).map(x=>({...x}));
+    }
+    document.getElementById('semi-modal-ttl').textContent='✏️ Sửa bán thành phẩm';
+  }else{
+    document.getElementById('semi-modal-ttl').textContent='🧪 Bán thành phẩm mới';
+  }
+  renderSemiItems();updSemiPreview();
+  document.getElementById('modal-semi').classList.remove('hid');
+}
+function _ingUnit(ingId,ings){if(!ingId)return'';const g=ings.find(x=>x.id===ingId);return g?.useUnit||'';}
+function renderSemiItems(){
+  const ings=getIngData(curStoreId);
+  const ingOpts='<option value="">— Chọn nguyên liệu —</option>'+ings.map(g=>`<option value="${g.id}">${g.name}${g.pkgQty?' ('+g.pkgQty+g.useUnit+')':''}</option>`).join('');
+  document.getElementById('semi-items').innerHTML=_semiItems.map((it,i)=>`
+    <div style="display:flex;align-items:center;gap:5px">
+      <select style="flex:1;${_ISS}" onchange="_semiItems[${i}].ingId=Number(this.value)||null;renderSemiItems();updSemiPreview()">
+        ${ingOpts.replace(`value="${it.ingId}"`,`value="${it.ingId}" selected`)}
+      </select>
+      <input type="number" inputmode="decimal" placeholder="Qty" value="${it.qty||''}"
+        oninput="_semiItems[${i}].qty=parseFloat(this.value)||0;updSemiPreview()"
+        style="width:80px;${_ISS};text-align:right"/>
+      <span style="font-size:10px;color:#6b7280;flex-shrink:0;width:28px">${_ingUnit(it.ingId,ings)}</span>
+      <button onclick="removeSemiItem(${i})" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:18px;padding:0 2px;flex-shrink:0">×</button>
+    </div>`).join('');
+}
+function addSemiItem(){_semiItems.push({ingId:null,qty:0});renderSemiItems();updSemiPreview();}
+function removeSemiItem(i){_semiItems.splice(i,1);renderSemiItems();updSemiPreview();}
+function updSemiPreview(){
+  const ings=getIngData(curStoreId);
+  const outQty=parseFloat(document.getElementById('semi-outqty').value)||0;
+  const outUnit=document.getElementById('semi-outunit').value.trim();
+  const total=_semiItems.reduce((s,it)=>{const g=ings.find(x=>x.id===it.ingId);return s+(g?ingUnitPrice(g)*(it.qty||0):0);},0);
+  const unitCost=outQty>0?total/outQty:0;
+  const prev=document.getElementById('semi-preview');
+  if(!total&&!outQty){prev.innerHTML='';return;}
+  prev.innerHTML=`<div class="rc-stat"><div class="rc-stat-v">${fmt(Math.round(total))}</div><div class="rc-stat-l">Tổng cost</div></div>`+
+    (outQty?`<div class="rc-stat"><div class="rc-stat-v">${fmt(Math.round(unitCost*1000)/1000)}</div><div class="rc-stat-l">₫ / ${outUnit||'đơn vị'}</div></div>`:'');
+}
+function saveSemi(){
+  const name=document.getElementById('semi-name').value.trim();
+  if(!name)return toast('⚠️ Nhập tên bán thành phẩm!','#f59e0b');
+  const outputQty=parseFloat(document.getElementById('semi-outqty').value)||0;
+  if(!outputQty)return toast('⚠️ Nhập lượng làm ra!','#f59e0b');
+  const outputUnit=document.getElementById('semi-outunit').value.trim();
+  const editId=document.getElementById('semi-edit-id').value;
+  const semis=getSemiData(curStoreId);
+  const obj={name,outputQty,outputUnit,items:_semiItems.filter(x=>x.ingId&&x.qty>0)};
+  if(editId){
+    const idx=semis.findIndex(x=>x.id===Number(editId));
+    if(idx>=0)semis[idx]={...semis[idx],...obj};
+  }else{semis.push({id:Date.now(),...obj});}
+  saveSemiData(curStoreId,semis);
+  closeModal('modal-semi');renderSemiList();renderRecipeList();
+  toast('✓ Đã lưu bán thành phẩm');
+}
+function delSemi(id){
+  if(!confirm('Xoá bán thành phẩm này?'))return;
+  saveSemiData(curStoreId,getSemiData(curStoreId).filter(x=>x.id!==id));
+  renderSemiList();renderRecipeList();toast('✓ Đã xoá');
+}
+function renderSemiList(){
+  const semis=getSemiData(curStoreId);
+  const ings=getIngData(curStoreId);
+  const list=document.getElementById('semi-list');if(!list)return;
+  if(!semis.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có bán thành phẩm.<br/>Nhấn <b>＋ Tạo</b> để bắt đầu!</div>';return;}
+  list.innerHTML=semis.map(sm=>{
+    const total=calcSemiTotalCost(sm,ings);
+    const uc=calcSemiUnitCost(sm,ings);
+    return`<div class="recipe-card">
+      <div class="recipe-head" onclick="document.getElementById('scb-${sm.id}').classList.toggle('hid')">
+        <div style="flex:1;min-width:0">
+          <div class="recipe-nm">${sm.name}</div>
+          <div style="font-size:10px;color:#6b7280;margin-top:2px">Làm ra ${sm.outputQty}${sm.outputUnit||''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+          <div class="recipe-cost-badge">${fmt(Math.round(uc*1000)/1000)}/${sm.outputUnit||'đv'}</div>
+          <button class="xbtn" style="color:#60a5fa" onclick="event.stopPropagation();openSemiModal(${sm.id})">✏️</button>
+          <button class="xbtn" onclick="event.stopPropagation();delSemi(${sm.id})">×</button>
+        </div>
+      </div>
+      <div id="scb-${sm.id}" class="recipe-body hid">
+        ${(sm.items||[]).map(it=>{const g=ings.find(x=>x.id===it.ingId);const cost=g?ingUnitPrice(g)*it.qty:0;return`<div class="recipe-ing-row"><span style="color:#e2e8f0">${g?g.name:'?'} <span style="color:#4b5563;font-size:9px">(${it.qty}${g?.useUnit||''})</span></span><span style="color:var(--tc);font-weight:600">${fmt(Math.round(cost))}</span></div>`;}).join('')}
+        <div style="padding-top:7px;display:flex;justify-content:space-between"><span style="font-size:10px;color:#6b7280">Tổng cost</span><span style="font-size:13px;font-weight:700;color:#f1f5f9">${fmt(Math.round(total))}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:10px;color:#6b7280">Cost / ${sm.outputUnit||'đv'}</span><span style="font-size:13px;font-weight:700;color:var(--tc)">${fmt(Math.round(uc*1000)/1000)}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── FINAL RECIPES (THÀNH PHẨM) ──
 let _rcItems=[],_rcEditId=null;
+function openRecipeModal(editId=null){
+  _rcEditId=editId||null;_rcItems=[];
+  document.getElementById('rc-name').value='';
+  const sv=document.getElementById('rc-servings');sv.value='1';sv.dataset.raw='1';
+  const se=document.getElementById('rc-sell');se.value='';se.dataset.raw='0';
+  if(editId){
+    const r=getRecipeData(curStoreId).find(x=>x.id===editId);
+    if(r){
+      document.getElementById('rc-name').value=r.name;
+      sv.value=r.servings||1;sv.dataset.raw=r.servings||1;
+      se.value=r.sellPrice?(r.sellPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.'):'' ;se.dataset.raw=r.sellPrice||0;
+      _rcItems=r.items.map(x=>({...x}));
+    }
+    document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='✏️ Sửa thành phẩm';
+  }else{
+    document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='📋 Thành phẩm mới';
+  }
+  renderRcItems();updRcPreview();
+  document.getElementById('modal-recipe').classList.remove('hid');
+}
+function _rcItemKey(it){return it.refId?(it.type==='semi'?`semi_${it.refId}`:`ing_${it.refId}`):''}
+function _rcUnitLabel(it,ings,semis){
+  if(!it.refId)return'';
+  if(it.type==='ing'){const g=ings.find(x=>x.id===it.refId);return g?.useUnit||'';}
+  const sm=semis.find(x=>x.id===it.refId);return sm?.outputUnit||'';
+}
+function _rcItemCostVal(it,ings,semis){
+  if(!it.refId||!it.qty)return 0;
+  if(it.type==='ing'){const g=ings.find(x=>x.id===it.refId);return g?ingUnitPrice(g)*it.qty:0;}
+  const sm=semis.find(x=>x.id===it.refId);return sm?calcSemiUnitCost(sm,ings)*it.qty:0;
+}
+function renderRcItems(){
+  const ings=getIngData(curStoreId);const semis=getSemiData(curStoreId);
+  const ingOpts=ings.map(g=>`<option value="ing_${g.id}">${g.name}${g.pkgQty?' ('+g.pkgQty+g.useUnit+')':''}</option>`).join('');
+  const semiOpts=semis.length?'<optgroup label="🧪 Bán thành phẩm">'+semis.map(sm=>`<option value="semi_${sm.id}">${sm.name} / ${sm.outputUnit||'đv'}</option>`).join('')+'</optgroup>':'';
+  const allOpts='<option value="">— Chọn —</option><optgroup label="🥬 Nguyên liệu">'+ingOpts+'</optgroup>'+semiOpts;
+  document.getElementById('rc-items').innerHTML=_rcItems.map((it,i)=>{
+    const selKey=_rcItemKey(it);
+    const uLbl=_rcUnitLabel(it,ings,semis);
+    const cost=_rcItemCostVal(it,ings,semis);
+    return`<div style="display:flex;align-items:center;gap:4px">
+      <select style="flex:1;${_ISS}" onchange="_rcChg(${i},this.value)">
+        ${allOpts.replace(`value="${selKey}"`,`value="${selKey}" selected`)}
+      </select>
+      <input type="number" inputmode="decimal" placeholder="Qty" value="${it.qty||''}"
+        oninput="_rcItems[${i}].qty=parseFloat(this.value)||0;updRcPreview()"
+        style="width:72px;${_ISS};text-align:right"/>
+      <span style="font-size:10px;color:#6b7280;flex-shrink:0;width:24px;text-align:left">${uLbl}</span>
+      <span style="font-size:10px;font-weight:700;color:var(--tc);flex-shrink:0;min-width:52px;text-align:right">${cost>0?fmt(Math.round(cost)):''}</span>
+      <button onclick="removeRcItem(${i})" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:18px;padding:0 2px;flex-shrink:0">×</button>
+    </div>`;
+  }).join('');
+}
+function _rcChg(i,val){
+  if(!val){_rcItems[i]={type:'ing',refId:null,qty:_rcItems[i].qty||0};}
+  else{const[t,id]=val.split('_');_rcItems[i]={type:t,refId:Number(id),qty:_rcItems[i].qty||0};}
+  renderRcItems();updRcPreview();
+}
+function addRcItem(){_rcItems.push({type:'ing',refId:null,qty:0});renderRcItems();updRcPreview();}
+function removeRcItem(i){_rcItems.splice(i,1);renderRcItems();updRcPreview();}
+function updRcPreview(){
+  const ings=getIngData(curStoreId);const semis=getSemiData(curStoreId);
+  const servings=Number(document.getElementById('rc-servings')?.dataset.raw)||1;
+  const sell=Number(document.getElementById('rc-sell')?.dataset.raw)||0;
+  const total=_rcItems.reduce((s,it)=>s+_rcItemCostVal(it,ings,semis),0);
+  const perServ=Math.round(total/Math.max(servings,1));
+  const margin=sell>0?((sell-perServ)/sell*100).toFixed(1):null;
+  const mColor=Number(margin)>=50?'#22c55e':Number(margin)>=30?'#f59e0b':'#ef4444';
+  document.getElementById('rc-preview').innerHTML=`
+    <div class="rc-stat"><div class="rc-stat-v">${fmt(Math.round(total))}</div><div class="rc-stat-l">Tổng cost</div></div>
+    <div class="rc-stat"><div class="rc-stat-v">${fmt(perServ)}</div><div class="rc-stat-l">Cost/phần</div></div>
+    ${sell>0?`<div class="rc-stat"><div class="rc-stat-v" style="color:${mColor}">${margin}%</div><div class="rc-stat-l">Lợi nhuận</div></div>`:''}`;
+}
+function saveRecipe(){
+  const name=document.getElementById('rc-name').value.trim();
+  if(!name)return toast('⚠️ Nhập tên thành phẩm!','#f59e0b');
+  if(!_rcItems.length)return toast('⚠️ Thêm ít nhất 1 thành phần!','#f59e0b');
+  const servings=Number(document.getElementById('rc-servings').dataset.raw)||1;
+  const sellPrice=Number(document.getElementById('rc-sell').dataset.raw)||0;
+  const validItems=_rcItems.filter(x=>x.refId&&x.qty>0);
+  const recipes=getRecipeData(curStoreId);
+  if(_rcEditId){
+    const idx=recipes.findIndex(x=>x.id===_rcEditId);
+    if(idx>=0)recipes[idx]={...recipes[idx],name,servings,sellPrice,items:validItems};
+  }else{recipes.push({id:Date.now(),name,servings,sellPrice,items:validItems});}
+  saveRecipeData(curStoreId,recipes);
+  closeModal('modal-recipe');renderRecipeList();toast('✓ Đã lưu thành phẩm');
+}
+function delRecipe(id){
+  if(!confirm('Xoá thành phẩm này?'))return;
+  saveRecipeData(curStoreId,getRecipeData(curStoreId).filter(x=>x.id!==id));
+  renderRecipeList();toast('✓ Đã xoá');
+}
 function renderRecipeList(){
   const recipes=getRecipeData(curStoreId);
+  const ings=getIngData(curStoreId);const semis=getSemiData(curStoreId);
   const list=document.getElementById('recipe-list');if(!list)return;
-  if(!recipes.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có công thức.<br/>Nhấn <b>＋ Tạo</b> để bắt đầu!</div>';return;}
-  const ings=getIngData(curStoreId);
+  if(!recipes.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có thành phẩm.<br/>Nhấn <b>＋ Tạo</b> để bắt đầu!</div>';return;}
   list.innerHTML=recipes.map(r=>{
-    const total=r.items.reduce((s,x)=>s+(x.cost||0),0);
+    const total=calcRecipeTotalCost(r,ings,semis);
     const servings=r.servings||1;
     const perServ=Math.round(total/servings);
     const sell=r.sellPrice||0;
     const margin=sell>0?((sell-perServ)/sell*100).toFixed(1):null;
     const mColor=Number(margin)>=50?'#22c55e':Number(margin)>=30?'#f59e0b':'#ef4444';
-    return `<div class="recipe-card">
+    return`<div class="recipe-card">
       <div class="recipe-head" onclick="document.getElementById('rcb-${r.id}').classList.toggle('hid')">
         <div style="flex:1;min-width:0">
           <div class="recipe-nm">${r.name}</div>
@@ -2710,87 +3042,19 @@ function renderRecipeList(){
         </div>
       </div>
       <div id="rcb-${r.id}" class="recipe-body hid">
-        ${r.items.map(it=>{const g=ings.find(x=>x.id===it.ingId);return`<div class="recipe-ing-row"><span style="color:#e2e8f0">${g?g.name:it.ingName||'?'}${g?.unit?` <span style="color:#4b5563;font-size:9px">(${g.unit})</span>`:''}</span><span style="color:var(--tc);font-weight:600">${fmt(it.cost)}</span></div>`;}).join('')}
-        <div style="padding-top:7px;display:flex;justify-content:space-between">
-          <span style="font-size:10px;color:#6b7280">Tổng cost</span>
-          <span style="font-size:13px;font-weight:700;color:#f1f5f9">${fmt(total)}</span>
-        </div>
+        ${(r.items||[]).map(it=>{
+          const cost=_rcItemCostVal(it,ings,semis);
+          let label;
+          if(it.type==='ing'){const g=ings.find(x=>x.id===it.refId);label=g?`${g.name} (${it.qty}${g.useUnit||''})`:it.refId?'Đã xoá':'?';}
+          else{const sm=semis.find(x=>x.id===it.refId);label=sm?`${sm.name} (${it.qty}${sm.outputUnit||''})`:it.refId?'Đã xoá':'?';}
+          return`<div class="recipe-ing-row"><span style="color:#e2e8f0">${label}</span><span style="color:var(--tc);font-weight:600">${fmt(Math.round(cost))}</span></div>`;
+        }).join('')}
+        <div style="padding-top:7px;display:flex;justify-content:space-between"><span style="font-size:10px;color:#6b7280">Tổng cost</span><span style="font-size:13px;font-weight:700;color:#f1f5f9">${fmt(Math.round(total))}</span></div>
         ${servings>1?`<div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:10px;color:#6b7280">Cost / phần</span><span style="font-size:13px;font-weight:700;color:var(--tc)">${fmt(perServ)}</span></div>`:''}
         ${sell>0?`<div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:10px;color:#6b7280">Lợi nhuận / phần</span><span style="font-size:13px;font-weight:700;color:${mColor}">${fmt(sell-perServ)} (${margin}%)</span></div>`:''}
       </div>
     </div>`;
   }).join('');
-}
-function openRecipeModal(editId=null){
-  _rcEditId=editId||null;_rcItems=[];
-  if(editId){
-    const r=getRecipeData(curStoreId).find(x=>x.id===editId);
-    if(r){
-      document.getElementById('rc-name').value=r.name;
-      const sv=document.getElementById('rc-servings');sv.value=r.servings||1;sv.dataset.raw=r.servings||1;
-      const se=document.getElementById('rc-sell');se.value=r.sellPrice?r.sellPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.'):'' ;se.dataset.raw=r.sellPrice||0;
-      _rcItems=r.items.map(x=>({...x}));
-    }
-    document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='✏️ Sửa công thức';
-  }else{
-    document.getElementById('rc-name').value='';
-    const sv=document.getElementById('rc-servings');sv.value='1';sv.dataset.raw='1';
-    const se=document.getElementById('rc-sell');se.value='';se.dataset.raw='0';
-    document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='📋 Công thức mới';
-  }
-  renderRcItems();updRcPreview();
-  document.getElementById('modal-recipe').classList.remove('hid');
-}
-function renderRcItems(){
-  const ings=getIngData(curStoreId);
-  const ingOpts=`<option value="">— Chọn nguyên liệu —</option>`+ings.map(g=>`<option value="${g.id}">${g.name}${g.unit?' ('+g.unit+')':''}</option>`).join('');
-  const IS='background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:7px 8px;font-size:11px;font-family:inherit;outline:none';
-  document.getElementById('rc-items').innerHTML=_rcItems.map((item,i)=>`
-    <div style="display:flex;align-items:center;gap:5px">
-      <select style="flex:1;${IS}" onchange="_rcItems[${i}].ingId=Number(this.value)||null;_rcItems[${i}].ingName=this.options[this.selectedIndex]?.text||'';updRcPreview()">
-        ${ingOpts.replace(`value="${item.ingId}"`,`value="${item.ingId}" selected`)}
-      </select>
-      <input type="text" class="mi" inputmode="numeric" placeholder="₫ cost" data-raw="${item.cost||0}"
-        value="${item.cost?(item.cost).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')  :''}"
-        oninput="onMI(this);_rcItems[${i}].cost=Number(this.dataset.raw);updRcPreview()"
-        style="width:95px;${IS};text-align:right"/>
-      <button onclick="removeRcItem(${i})" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:18px;padding:0 3px;flex-shrink:0">×</button>
-    </div>`).join('');
-}
-function addRcItem(){_rcItems.push({ingId:null,ingName:'',cost:0});renderRcItems();updRcPreview();}
-function removeRcItem(i){_rcItems.splice(i,1);renderRcItems();updRcPreview();}
-function updRcPreview(){
-  const servings=Number(document.getElementById('rc-servings')?.dataset.raw)||1;
-  const sell=Number(document.getElementById('rc-sell')?.dataset.raw)||0;
-  const total=_rcItems.reduce((s,r)=>s+(r.cost||0),0);
-  const perServ=Math.round(total/Math.max(servings,1));
-  const margin=sell>0?((sell-perServ)/sell*100).toFixed(1):null;
-  const mColor=Number(margin)>=50?'#22c55e':Number(margin)>=30?'#f59e0b':'#ef4444';
-  document.getElementById('rc-preview').innerHTML=`
-    <div class="rc-stat"><div class="rc-stat-v">${fmt(total)}</div><div class="rc-stat-l">Tổng cost</div></div>
-    <div class="rc-stat"><div class="rc-stat-v">${fmt(perServ)}</div><div class="rc-stat-l">Cost/phần</div></div>
-    ${sell>0?`<div class="rc-stat"><div class="rc-stat-v" style="color:${mColor}">${margin}%</div><div class="rc-stat-l">Lợi nhuận</div></div>`:''}`;
-}
-function saveRecipe(){
-  const name=document.getElementById('rc-name').value.trim();
-  if(!name)return toast('⚠️ Nhập tên món!','#f59e0b');
-  if(!_rcItems.length)return toast('⚠️ Thêm ít nhất 1 nguyên liệu!','#f59e0b');
-  const servings=Number(document.getElementById('rc-servings').dataset.raw)||1;
-  const sellPrice=Number(document.getElementById('rc-sell').dataset.raw)||0;
-  const recipes=getRecipeData(curStoreId);
-  if(_rcEditId){
-    const idx=recipes.findIndex(x=>x.id===_rcEditId);
-    if(idx>=0)recipes[idx]={...recipes[idx],name,servings,sellPrice,items:[..._rcItems]};
-  }else{
-    recipes.push({id:Date.now(),name,servings,sellPrice,items:[..._rcItems]});
-  }
-  saveRecipeData(curStoreId,recipes);
-  closeModal('modal-recipe');renderRecipeList();toast('✓ Đã lưu công thức');
-}
-function delRecipe(id){
-  if(!confirm('Xoá công thức này?'))return;
-  saveRecipeData(curStoreId,getRecipeData(curStoreId).filter(x=>x.id!==id));
-  renderRecipeList();toast('✓ Đã xoá');
 }
 
 function changeShMonth(d){
