@@ -447,6 +447,12 @@ body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-share
 .ing-n{font-size:12px;font-weight:600;color:#e2e8f0}
 .ing-u{font-size:10px;color:#6b7280;margin-top:3px}
 .ing-price{font-size:10px;color:var(--tc);margin-top:2px;font-weight:600}
+.cat-hdr{display:flex;align-items:center;gap:7px;padding:7px 10px;background:rgba(var(--tc-rgb),0.07);border-radius:9px;cursor:pointer;user-select:none;margin-bottom:2px;-webkit-tap-highlight-color:transparent}
+.cat-hdr:active{filter:brightness(1.2)}
+.cat-hdr-nm{font-size:11px;font-weight:700;color:var(--tc);flex:1}
+.cat-hdr-cnt{font-size:10px;color:#6b7280}
+.cat-hdr-arr{font-size:10px;color:#6b7280;width:12px;text-align:center}
+.cat-body{display:flex;flex-direction:column;gap:5px;padding-bottom:6px}
 .recipe-card{background:linear-gradient(135deg,var(--bg-card),var(--bg-form2));border:1px solid rgba(var(--tc-rgb),0.15);border-radius:13px;overflow:hidden}
 .recipe-head{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;gap:8px}
 .recipe-nm{font-size:13px;font-weight:700;color:#f1f5f9}
@@ -685,12 +691,12 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <div id="sh-cost-module" class="hid">
         <div class="cost-stabs">
           <button class="cost-stab on" id="cstab-ing" onclick="setCostView('ing')">🥬 Nguyên liệu</button>
-          <button class="cost-stab" id="cstab-semi" onclick="setCostView('semi')">🧪 Bán TP</button>
+          <button class="cost-stab" id="cstab-semi" onclick="setCostView('semi')">🧪 Bán thành phẩm</button>
           <button class="cost-stab" id="cstab-recipe" onclick="setCostView('recipe')">📋 Thành phẩm</button>
         </div>
         <!-- Ingredients view -->
         <div id="cv-ing">
-          <div class="bar"><span class="st">Kho nguyên liệu</span><button class="abtn" onclick="openIngModal()">＋ Thêm</button></div>
+          <div class="bar"><span class="st">Nguyên liệu</span><button class="abtn" style="background:rgba(255,255,255,0.07);margin-right:4px" onclick="openIngCatsModal()">📁 Danh mục</button><button class="abtn" onclick="openIngModal()">＋ Thêm</button></div>
           <div id="ing-list" class="rl" style="gap:6px"></div>
         </div>
         <!-- Semi-finished view -->
@@ -1080,6 +1086,8 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <input type="hidden" id="ing-edit-id"/>
     <div class="fl">Tên nguyên liệu</div>
     <input type="text" id="ing-name" placeholder="VD: Trà ô long nhài, Đường trắng, Cốc size M..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div class="fl" style="margin-top:6px">Danh mục</div>
+    <select id="ing-cat" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"></select>
     <div class="fl" style="margin-top:6px">Thông tin đóng gói <span style="color:#4b5563;font-weight:400">(1 gói / hộp / túi / chiếc...)</span></div>
     <div class="fr" style="gap:6px">
       <div style="flex:0 0 80px">
@@ -1098,8 +1106,21 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <div class="fl" style="margin-top:6px">Giá nhập 1 đơn vị đóng gói (₫)</div>
     <input type="text" id="ing-pkgprice" class="mi" inputmode="numeric" placeholder="VD: 26.000" data-raw="0" oninput="onMI(this);updIngPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <div id="ing-preview" class="rc-preview" style="margin-top:8px;min-height:0"></div>
-    <div style="font-size:10px;color:#6b7280;margin-top:4px">💡 Điện: 1 số điện = 4.000₫ · Nước: 1000 lít = 30.000₫</div>
+    <div style="font-size:10px;color:#6b7280;margin-top:4px">💡 Điện: 1 số điện ≈ 4.000₫ · Nước máy: 1.000 lít ≈ 30.000₫ · Nước sôi: cộng thêm điện/gas đun (~200–500₫/lít)</div>
     <button class="sbtn" onclick="saveIng()">💾 Lưu nguyên liệu</button>
+  </div>
+</div>
+
+<!-- Ingredient Categories Modal -->
+<div id="modal-ing-cats" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-ing-cats')">
+  <div class="modal-card" onclick="event.stopPropagation()" style="max-height:85vh;overflow-y:auto">
+    <div class="modal-hdr"><span class="modal-ttl">📁 Danh mục nguyên liệu</span><button class="modal-close" onclick="closeModal('modal-ing-cats')">×</button></div>
+    <div id="cats-list" style="display:flex;flex-direction:column;gap:6px;min-height:20px"></div>
+    <div class="fl" style="margin-top:10px">Thêm danh mục mới</div>
+    <div class="fr" style="gap:6px">
+      <input type="text" id="new-cat-name" placeholder="VD: Nguyên liệu chính, Vật tư, Hương liệu..." style="flex:1;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;outline:none" onkeydown="if(event.key==='Enter')addIngCat()"/>
+      <button class="abtn" onclick="addIngCat()">＋ Thêm</button>
+    </div>
   </div>
 </div>
 
@@ -2755,6 +2776,64 @@ function setCostView(v){
 }
 function renderCostModule(){renderIngList();renderSemiList();renderRecipeList();}
 
+// ── INGREDIENT CATEGORIES ──
+function getIngCats(sid){return JSON.parse(localStorage.getItem('ingCats_'+sid)||'[]');}
+function saveIngCats(sid,d){localStorage.setItem('ingCats_'+sid,JSON.stringify(d));}
+let _collCats=new Set();
+function toggleCatCollapse(catId){
+  if(_collCats.has(catId))_collCats.delete(catId);else _collCats.add(catId);
+  renderIngList();
+}
+function openIngCatsModal(){
+  renderIngCatsList();
+  document.getElementById('modal-ing-cats').classList.remove('hid');
+}
+function renderIngCatsList(){
+  const cats=getIngCats(curStoreId);
+  const el=document.getElementById('cats-list');if(!el)return;
+  if(!cats.length){el.innerHTML='<div style="color:#6b7280;font-size:11px;text-align:center;padding:10px">Chưa có danh mục nào.</div>';return;}
+  el.innerHTML=cats.map(c=>`<div style="display:flex;align-items:center;gap:6px">
+    <input type="text" value="${c.name.replace(/"/g,'&quot;')}" style="flex:1;${_ISS}" onblur="renameIngCat(${c.id},this.value.trim())" onkeydown="if(event.key==='Enter')this.blur()"/>
+    <button class="xbtn" onclick="delIngCat(${c.id})">×</button>
+  </div>`).join('');
+}
+function addIngCat(){
+  const inp=document.getElementById('new-cat-name');
+  const name=inp.value.trim();if(!name)return toast('⚠️ Nhập tên danh mục!','#f59e0b');
+  const cats=getIngCats(curStoreId);
+  cats.push({id:Date.now(),name});
+  saveIngCats(curStoreId,cats);
+  inp.value='';renderIngCatsList();renderIngList();
+  toast('✓ Đã thêm danh mục "'+name+'"');
+}
+function renameIngCat(id,name){
+  if(!name)return;
+  const cats=getIngCats(curStoreId);
+  const c=cats.find(x=>x.id===id);
+  if(c&&c.name!==name){c.name=name;saveIngCats(curStoreId,cats);renderIngList();}
+}
+function delIngCat(id){
+  if(!confirm('Xoá danh mục này?\nCác nguyên liệu trong đó sẽ thành "Chưa phân loại".'))return;
+  saveIngCats(curStoreId,getIngCats(curStoreId).filter(x=>x.id!==id));
+  saveIngData(curStoreId,getIngData(curStoreId).map(g=>g.catId===id?{...g,catId:null}:g));
+  renderIngCatsList();renderIngList();
+  toast('✓ Đã xoá danh mục');
+}
+function _ingRowHtml(g){
+  const up=ingUnitPrice(g);
+  return`<div class="ing-row">
+    <div style="flex:1;min-width:0">
+      <div class="ing-n">${g.name}</div>
+      ${g.pkgQty?`<div class="ing-u">1 ${g.pkgUnit||'gói'} = ${g.pkgQty}${g.useUnit||''} · ${fmt(g.pkgPrice)}</div>`:''}
+      ${up?`<div class="ing-price">${fmt(Math.round(up*1000)/1000)} / ${g.useUnit||'đơn vị'}</div>`:''}
+    </div>
+    <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
+      <button class="xbtn" style="color:#60a5fa" onclick="openIngModal(${g.id})">✏️</button>
+      <button class="xbtn" onclick="delIng(${g.id})">×</button>
+    </div>
+  </div>`;
+}
+
 // ── INGREDIENTS ──
 function openIngModal(editId=null){
   const pp=document.getElementById('ing-pkgprice');
@@ -2765,6 +2844,13 @@ function openIngModal(editId=null){
   document.getElementById('ing-useunit').value='';
   pp.value='';pp.dataset.raw='0';
   document.getElementById('ing-preview').innerHTML='';
+  // Populate category selector
+  const catSel=document.getElementById('ing-cat');
+  if(catSel){
+    const cats=getIngCats(curStoreId);
+    catSel.innerHTML='<option value="">— Không phân loại —</option>'+cats.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  }
+  let editedCatId=null;
   if(editId){
     const g=getIngData(curStoreId).find(x=>x.id===editId);
     if(g){
@@ -2775,11 +2861,13 @@ function openIngModal(editId=null){
       document.getElementById('ing-useunit').value=g.useUnit||'';
       pp.value=g.pkgPrice?(g.pkgPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.') :'';
       pp.dataset.raw=g.pkgPrice||0;
+      editedCatId=g.catId||null;
     }
     document.getElementById('ing-modal-ttl').textContent='✏️ Sửa nguyên liệu';
   }else{
     document.getElementById('ing-modal-ttl').textContent='➕ Nguyên liệu mới';
   }
+  if(catSel)catSel.value=editedCatId||'';
   updIngPreview();
   document.getElementById('modal-ing').classList.remove('hid');
 }
@@ -2792,7 +2880,7 @@ function updIngPreview(){
   if(!pkgQty||!pkgPrice){prev.innerHTML='';return;}
   const up=pkgPrice/pkgQty;
   const upDisp=fmt(Math.round(up*1000)/1000);
-  prev.innerHTML=`<div class="rc-stat"><div class="rc-stat-v">${upDisp}</div><div class="rc-stat-l">₫ / ${useUnit||'đơn vị'}</div></div><div class="rc-stat"><div class="rc-stat-v">${fmt(pkgPrice)}</div><div class="rc-stat-l">1 ${pkgUnit||'gói'} · ${pkgQty}${useUnit}</div></div>`;
+  prev.innerHTML=`<div class="rc-stat"><div class="rc-stat-v">${upDisp}</div><div class="rc-stat-l">/ ${useUnit||'đơn vị'}</div></div><div class="rc-stat"><div class="rc-stat-v">${fmt(pkgPrice)}</div><div class="rc-stat-l">1 ${pkgUnit||'gói'} · ${pkgQty}${useUnit}</div></div>`;
 }
 function saveIng(){
   const name=document.getElementById('ing-name').value.trim();
@@ -2803,12 +2891,14 @@ function saveIng(){
   const pkgPrice=Number(document.getElementById('ing-pkgprice').dataset.raw)||0;
   if(!pkgQty)return toast('⚠️ Nhập số lượng trong 1 gói!','#f59e0b');
   if(!pkgPrice)return toast('⚠️ Nhập giá nhập!','#f59e0b');
+  const catIdRaw=document.getElementById('ing-cat')?.value;
+  const catId=catIdRaw?Number(catIdRaw):null;
   const editId=document.getElementById('ing-edit-id').value;
   const ings=getIngData(curStoreId);
   if(editId){
     const idx=ings.findIndex(x=>x.id===Number(editId));
-    if(idx>=0)ings[idx]={...ings[idx],name,pkgUnit,pkgQty,useUnit,pkgPrice};
-  }else{ings.push({id:Date.now(),name,pkgUnit,pkgQty,useUnit,pkgPrice});}
+    if(idx>=0)ings[idx]={...ings[idx],name,pkgUnit,pkgQty,useUnit,pkgPrice,catId};
+  }else{ings.push({id:Date.now(),name,pkgUnit,pkgQty,useUnit,pkgPrice,catId});}
   saveIngData(curStoreId,ings);
   closeModal('modal-ing');
   renderIngList();renderSemiList();renderRecipeList();
@@ -2828,7 +2918,7 @@ function renderIngList(){
     return`<div class="ing-row">
     <div style="flex:1;min-width:0">
       <div class="ing-n">${g.name}</div>
-      ${g.pkgQty?`<div class="ing-u">1 ${g.pkgUnit||'gói'} = ${g.pkgQty}${g.useUnit||''} · ${fmt(g.pkgPrice)}₫</div>`:''}
+      ${g.pkgQty?`<div class="ing-u">1 ${g.pkgUnit||'gói'} = ${g.pkgQty}${g.useUnit||''} · ${fmt(g.pkgPrice)}</div>`:''}
       ${up?`<div class="ing-price">${fmt(Math.round(up*1000)/1000)} / ${g.useUnit||'đơn vị'}</div>`:''}
     </div>
     <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
@@ -2892,7 +2982,7 @@ function updSemiPreview(){
   const prev=document.getElementById('semi-preview');
   if(!total&&!outQty){prev.innerHTML='';return;}
   prev.innerHTML=`<div class="rc-stat"><div class="rc-stat-v">${fmt(Math.round(total))}</div><div class="rc-stat-l">Tổng cost</div></div>`+
-    (outQty?`<div class="rc-stat"><div class="rc-stat-v">${fmt(Math.round(unitCost*1000)/1000)}</div><div class="rc-stat-l">₫ / ${outUnit||'đơn vị'}</div></div>`:'');
+    (outQty?`<div class="rc-stat"><div class="rc-stat-v">${fmt(Math.round(unitCost*1000)/1000)}</div><div class="rc-stat-l">/ ${outUnit||'đơn vị'}</div></div>`:'');
 }
 function saveSemi(){
   const name=document.getElementById('semi-name').value.trim();
