@@ -314,38 +314,6 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;
 .plat-chip.on .pchk::after{content:'✓';font-size:10px;color:#fff}
 
 /* ══ THEMES ══ */
-/* 🌌 Tím Ngọc */
-body[data-theme="purple"]{
-  --bg:#0a0814;
-  --bg-card:#15102a;
-  --bg-card2:#0e0920;
-  --bg-surf:#1c1438;
-  --bg-surf2:#150f2c;
-  --bg-form:#191230;
-  --bg-form2:#120d22;
-  --bg-input:#221840;
-  --bg-key:#1e1645;
-}
-/* 🌿 Xanh Rừng */
-body[data-theme="green"]{
-  --bg:#060e0c;
-  --bg-card:#0d1f1a;
-  --bg-card2:#091712;
-  --bg-surf:#132820;
-  --bg-surf2:#0e2018;
-  --bg-form:#102618;
-  --bg-form2:#0c1e14;
-  --bg-input:#1a3028;
-  --bg-key:#1a2e22;
-}
-
-/* 🌸 Hồng Đêm */
-body[data-theme="rose"]{
-  --bg:#120810;--bg-card:#1e1020;--bg-card2:#180c18;
-  --bg-surf:#281428;--bg-surf2:#200f20;
-  --bg-form:#241028;--bg-form2:#1c0c20;
-  --bg-input:#301838;--bg-key:#2c1438;
-}
 /* ⬜ Trắng Sứ */
 body[data-theme="white"]{
   --bg:#f0f4ff;--bg-card:#ffffff;--bg-card2:#e8eeff;
@@ -502,13 +470,13 @@ body[data-theme="white"] .recipe-nm,body[data-theme="pink"] .recipe-nm{color:#1e
 body[data-theme="white"] .recipe-ing-row,body[data-theme="pink"] .recipe-ing-row{border-color:rgba(0,0,0,0.06)}
 body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#475569;background:var(--bg-surf);border-color:rgba(0,0,0,0.1)}
 /* Theme switcher UI */
-.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.theme-chip{border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border:2px solid transparent;transition:all .2s;-webkit-tap-highlight-color:transparent}
-.theme-chip:active{transform:scale(.93)}
-.theme-chip.active{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,0.15)}
-.theme-chip .th-dot{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,0.12)}
-.theme-chip .th-name{font-size:10px;font-weight:600;color:#e2e8f0;text-align:center}
-.theme-chip .th-sub{font-size:9px;color:#6b7280}
+.theme-bar{display:flex;border-radius:14px;overflow:hidden;border:1.5px solid rgba(128,128,128,0.2)}
+.theme-chip{flex:1;padding:10px 6px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;border:none;border-right:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);transition:background .2s;-webkit-tap-highlight-color:transparent}
+.theme-chip:last-child{border-right:none}
+.theme-chip:active{filter:brightness(1.15)}
+.theme-chip.active{background:rgba(255,255,255,0.13)}
+.theme-chip .th-dot{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.18)}
+.theme-chip .th-name{font-size:11px;font-weight:600;color:var(--tc);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -956,36 +924,18 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <span class="coll-arr open" id="arr-sect-theme">›</span>
     </div>
     <div id="sect-theme" class="card full" style="gap:10px">
-      <div class="theme-grid">
+      <div class="theme-bar">
         <div class="theme-chip" id="th-dark" onclick="applyTheme('dark')">
           <div class="th-dot" style="background:linear-gradient(135deg,#151e30,#080d18)"></div>
           <div class="th-name">Đêm Tối</div>
-          <div class="th-sub">Mặc định</div>
-        </div>
-        <div class="theme-chip" id="th-purple" onclick="applyTheme('purple')">
-          <div class="th-dot" style="background:linear-gradient(135deg,#1c1438,#0a0814)"></div>
-          <div class="th-name">Tím Ngọc</div>
-          <div class="th-sub">Huyền bí</div>
-        </div>
-        <div class="theme-chip" id="th-green" onclick="applyTheme('green')">
-          <div class="th-dot" style="background:linear-gradient(135deg,#132820,#060e0c)"></div>
-          <div class="th-name">Xanh Rừng</div>
-          <div class="th-sub">Thiên nhiên</div>
-        </div>
-        <div class="theme-chip" id="th-rose" onclick="applyTheme('rose')">
-          <div class="th-dot" style="background:linear-gradient(135deg,#281428,#120810)"></div>
-          <div class="th-name">Hồng Đêm</div>
-          <div class="th-sub">Quyến rũ</div>
         </div>
         <div class="theme-chip" id="th-white" onclick="applyTheme('white')">
-          <div class="th-dot" style="background:linear-gradient(135deg,#ffffff,#eef2ff);border:1.5px solid rgba(0,0,0,0.1)"></div>
+          <div class="th-dot" style="background:linear-gradient(135deg,#ffffff,#eef2ff);border:1.5px solid rgba(0,0,0,0.15)"></div>
           <div class="th-name">Trắng Sứ</div>
-          <div class="th-sub">Sáng ban ngày</div>
         </div>
         <div class="theme-chip" id="th-pink" onclick="applyTheme('pink')">
-          <div class="th-dot" style="background:linear-gradient(135deg,#fce8f2,#fef0f5);border:1.5px solid rgba(0,0,0,0.08)"></div>
+          <div class="th-dot" style="background:linear-gradient(135deg,#fce8f2,#fef0f5);border:1.5px solid rgba(0,0,0,0.1)"></div>
           <div class="th-name">Hồng Nhạt</div>
-          <div class="th-sub">Nhẹ nhàng</div>
         </div>
       </div>
     </div>
@@ -1050,6 +1000,12 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
         <label for="feat-count" style="font-size:13px;color:#e2e8f0;font-weight:600">🧮 Module Đếm Tiền</label>
       </div>
       <div style="font-size:11px;color:#6b7280;padding-left:24px">Tiện ích đếm tiền mặt nhanh theo mệnh giá.</div>
+      <div style="height:8px"></div>
+      <div class="check-row" style="padding:4px 0">
+        <input type="checkbox" id="feat-cost" onchange="toggleCost()"/>
+        <label for="feat-cost" style="font-size:13px;color:var(--tc);font-weight:600">🧮 Module Tính Cost</label>
+      </div>
+      <div style="font-size:11px;color:#6b7280;padding-left:24px">Tính giá thành sản phẩm cho cửa hàng F&amp;B. <span style="color:#f59e0b;font-weight:600">Tính phí</span></div>
     </div>
     <div id="store-access-card" class="card full" style="gap:6px">
       <div style="font-size:12px;font-weight:600;color:#e2e8f0;margin-bottom:2px">🔗 Quyền truy cập cửa hàng</div>
@@ -1555,6 +1511,8 @@ async function doLogin(u){
   setTimeout(()=>stag.classList.remove('show'),2000);
   // Load data (from localStorage which now has cloud data)
   loadAll();
+  // Dọn dữ liệu cost mồ côi (store đã bị xóa nhưng cost data còn sót)
+  cleanupOrphanCostData();
   // Auto-create default wallets
   const ownRaw=JSON.parse(localStorage.getItem(SK.walletData)||'[]');
   const hasOwnPersonal=ownRaw.some(w=>!w.storeId);
@@ -1760,6 +1718,15 @@ function applyFeats(){
   if(countBtn)features.countEnabled?countBtn.classList.remove('hid'):countBtn.classList.add('hid');
   const ccb=document.getElementById('feat-count');if(ccb)ccb.checked=!!features.countEnabled;
   if(features.countEnabled&&document.getElementById('cnt-rows')&&!document.getElementById('cnt-'+DENOMS[0]))initCountRows();
+  // Cost tab in store view
+  const costTab=document.getElementById('stab-cost');
+  if(costTab){
+    if(features.costEnabled===false){
+      costTab.classList.add('hid');
+      if(_shView==='cost')setShView('txn');
+    }else{costTab.classList.remove('hid');}
+  }
+  const fcb=document.getElementById('feat-cost');if(fcb)fcb.checked=!(features.costEnabled===false);
   updWScopeOpts();updRecOpts();updWSelects();renderPlatGrid();
   // Store access info in settings
   const desc=document.getElementById('store-access-desc');
@@ -2564,6 +2531,11 @@ function toggleCount(){
   save('features',features);applyFeats();
   toast(features.countEnabled?'✓ Bật Đếm Tiền':'✓ Ẩn Đếm Tiền');
 }
+function toggleCost(){
+  features.costEnabled=document.getElementById('feat-cost').checked;
+  save('features',features);applyFeats();
+  toast(features.costEnabled?'✓ Bật Tính Cost':'✓ Ẩn Tính Cost');
+}
 
 // ══════ TRANSFER HISTORY ══════
 function renderTransferHist(){
@@ -2651,11 +2623,40 @@ function renameStoreCurrent(){
 }
 function delStore(){
   if(storeData.length<=1)return toast('⚠️ Cần ít nhất 1 cửa hàng!','#f59e0b');
-  const s=storeData.find(x=>x.id===curStoreId);if(!confirm(`Xoá "${s?.name}"?`))return;
-  storeData.splice(storeData.findIndex(x=>x.id===curStoreId),1);
-  shData=shData.filter(r=>r.storeId!==curStoreId);
-  curStoreId=storeData[0]?.id||null;save('storeData',storeData.filter(s=>!s._ownerId));save('shData',shData);
+  const s=storeData.find(x=>x.id===curStoreId);if(!confirm(`Xoá "${s?.name}"?\nToàn bộ giao dịch, ví và dữ liệu cost sẽ bị xoá.`))return;
+  const sid=curStoreId;
+  // Remove store + its transactions
+  storeData.splice(storeData.findIndex(x=>x.id===sid),1);
+  shData=shData.filter(r=>r.storeId!==sid);
+  // Remove wallets belonging to this store
+  walletData=walletData.filter(w=>w.storeId!==sid);
+  // Remove cost module data (ingData, semiData, recipeData)
+  ['ingData_','semiData_','recipeData_'].forEach(prefix=>localStorage.removeItem(prefix+sid));
+  // Remove from perms
+  const p=getPerms();if(p[sid]){delete p[sid];setPerms(p);}
+  curStoreId=storeData[0]?.id||null;
+  save('storeData',storeData.filter(s=>!s._ownerId));
+  save('shData',shData);
+  save('walletData',walletData.filter(w=>!w._ownerId));
   updWScopeOpts();updRecOpts();updWSelects();renderShState();renderWallets();
+  toast('🗑 Đã xoá cửa hàng và toàn bộ dữ liệu liên quan');
+}
+
+// Dọn dữ liệu mồ côi (cost data của store đã bị xóa)
+function cleanupOrphanCostData(){
+  const validIds=new Set(storeData.map(s=>String(s.id)));
+  const prefixes=['ingData_','semiData_','recipeData_'];
+  let cleaned=0;
+  for(let i=localStorage.length-1;i>=0;i--){
+    const key=localStorage.key(i);
+    if(!key)continue;
+    const match=prefixes.find(p=>key.startsWith(p));
+    if(match){
+      const sid=key.slice(match.length);
+      if(!validIds.has(sid)){localStorage.removeItem(key);cleaned++;}
+    }
+  }
+  if(cleaned>0)console.log(`🧹 Cleaned ${cleaned} orphan cost data keys`);
 }
 function renderStoresSel(){
   const sel=document.getElementById('store-sel');if(!sel)return;
@@ -2694,6 +2695,27 @@ function openStoreTypeModal(){
 function saveStoreType(){
   const sel=document.querySelector('#stype-grid .type-chip.on')?.dataset.stype;if(!sel)return;
   const s=storeData.find(x=>x.id===curStoreId);
+  const wasFood=s?.storeType==='food';
+  const switchingAwayFromFood=wasFood&&sel!=='food';
+  // If switching away from food, check if there's cost data to clean up
+  if(switchingAwayFromFood){
+    const sid=curStoreId;
+    const hasIng=JSON.parse(localStorage.getItem('ingData_'+sid)||'[]').length>0;
+    const hasSemi=JSON.parse(localStorage.getItem('semiData_'+sid)||'[]').length>0;
+    const hasRec=JSON.parse(localStorage.getItem('recipeData_'+sid)||'[]').length>0;
+    if(hasIng||hasSemi||hasRec){
+      const total=[hasIng&&'nguyên liệu',hasSemi&&'bán thành phẩm',hasRec&&'thành phẩm'].filter(Boolean).join(', ');
+      const del=confirm(`⚠️ Cửa hàng này có dữ liệu Tính Cost (${total}).\n\nBạn có muốn XÓA để giải phóng bộ nhớ không?\n\n• OK → Xóa dữ liệu cost\n• Hủy → Giữ lại (không mất gì)`);
+      if(del){
+        localStorage.removeItem('ingData_'+sid);
+        localStorage.removeItem('semiData_'+sid);
+        localStorage.removeItem('recipeData_'+sid);
+        toast('🗑 Đã xóa dữ liệu Tính Cost','#f59e0b');
+      }else{
+        toast('✓ Đã giữ lại dữ liệu Tính Cost','#22c55e');
+      }
+    }
+  }
   if(s){s.storeType=sel;save('storeData',storeData.filter(s=>!s._ownerId));}
   closeModal('modal-store-type');updShTypeBadge();
   if(sel==='food'){setShView('cost');}else{setShView('txn');}
@@ -2714,6 +2736,7 @@ let _shView='txn';
 function setShView(v){
   const s=storeData.find(x=>x.id===curStoreId);
   const isFood=s?.storeType==='food';
+  if(v==='cost'&&features.costEnabled===false)return;
   if(v==='cost'&&!isFood){openStoreTypeModal();return;}
   _shView=v;
   document.getElementById('stab-txn').classList.toggle('on',v==='txn');
@@ -3712,8 +3735,9 @@ function renderRec(){
 }
 
 // ══════ THEMES ══════
-const THEMES=['dark','purple','green','rose','white','pink'];
+const THEMES=['dark','white','pink'];
 function applyTheme(t){
+  if(!THEMES.includes(t))t='dark';
   if(t==='dark')document.body.removeAttribute('data-theme');
   else document.body.setAttribute('data-theme',t);
   localStorage.setItem('dT_theme',t);
