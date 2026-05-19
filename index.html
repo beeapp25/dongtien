@@ -416,6 +416,20 @@ body[data-theme="white"] .xbtn,body[data-theme="pink"] .xbtn{background:rgba(0,0
 body[data-theme="white"] .uc,body[data-theme="pink"] .uc{background:rgba(0,0,0,0.06) !important}
 body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba(0,0,0,0.03) !important;border-color:rgba(0,0,0,0.12) !important;color:#64748b !important}
 body[data-theme="white"] .hdr,body[data-theme="pink"] .hdr{box-shadow:0 1px 8px rgba(0,0,0,0.1)}
+/* Fix JS-generated dark background cards in light themes */
+body[data-theme="white"] [style*="background:#080d18"],body[data-theme="pink"] [style*="background:#080d18"],
+body[data-theme="white"] [style*="background:#0d1325"],body[data-theme="pink"] [style*="background:#0d1325"],
+body[data-theme="white"] [style*="background:#0f1117"],body[data-theme="pink"] [style*="background:#0f1117"],
+body[data-theme="white"] [style*="background:#111827"],body[data-theme="pink"] [style*="background:#111827"],
+body[data-theme="white"] [style*="background:#131c2e"],body[data-theme="pink"] [style*="background:#131c2e"],
+body[data-theme="white"] [style*="background:#151e30"],body[data-theme="pink"] [style*="background:#151e30"],
+body[data-theme="white"] [style*="background:#1a2236"],body[data-theme="pink"] [style*="background:#1a2236"]{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.07) !important}
+/* Restore colored role badge backgrounds */
+body[data-theme="white"] [style*="background:rgba(255,255,255,0.0"],body[data-theme="pink"] [style*="background:rgba(255,255,255,0.0"]{background:rgba(0,0,0,0.06) !important}
+/* Fix border-top in dark inline styles */
+body[data-theme="white"] #store-access-desc *,body[data-theme="pink"] #store-access-desc *,
+body[data-theme="white"] #perm-owned-list *,body[data-theme="pink"] #perm-owned-list *,
+body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-shared-list *{border-color:rgba(0,0,0,0.08) !important}
 
 /* Theme switcher UI */
 .theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
