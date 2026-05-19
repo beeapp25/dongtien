@@ -33,6 +33,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 :root{
   --tc:#3b82f6;--tc-rgb:59,130,246;
@@ -227,10 +228,12 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;
 .ln-acts button:active{transform:scale(.93)}
 .btn-mp{background:linear-gradient(135deg,rgba(37,99,235,0.3),rgba(30,58,95,0.5));color:#60a5fa;box-shadow:0 3px 10px rgba(37,99,235,0.15)}
 .btn-mu{background:rgba(28,31,43,0.8);color:#6b7280}
+.btn-settle{background:linear-gradient(135deg,rgba(22,163,74,0.3),rgba(20,83,45,0.5));color:#4ade80;box-shadow:0 3px 10px rgba(34,197,94,0.12)}
 .btn-edit{background:linear-gradient(135deg,rgba(22,163,74,0.25),rgba(20,83,45,0.4));color:#4ade80;box-shadow:0 3px 10px rgba(34,197,94,0.12)}
 .btn-del{background:linear-gradient(135deg,rgba(220,38,38,0.2),rgba(30,10,10,0.5));color:#f87171;box-shadow:0 3px 10px rgba(239,68,68,0.1)}
 /* Invest */
 .icard{background:#111827;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;box-shadow:0 3px 12px rgba(0,0,0,0.3)}
+.icard-nm{font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:3px}
 .irow{display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px}
 .dim{color:#6b7280}
 .ibadge{font-size:9px;border-radius:20px;padding:2px 8px;display:inline-block;margin-top:3px}
@@ -406,13 +409,43 @@ body[data-theme="white"] .btn-edit,body[data-theme="pink"] .btn-edit{background:
 body[data-theme="white"] .btn-del,body[data-theme="pink"] .btn-del{background:rgba(220,38,38,0.08) !important;color:#dc2626 !important}
 /* Investment cards */
 body[data-theme="white"] .icard,body[data-theme="pink"] .icard{background:#fff !important;border-color:rgba(0,0,0,0.08) !important;box-shadow:0 2px 8px rgba(0,0,0,0.07) !important}
+body[data-theme="white"] .icard-nm,body[data-theme="pink"] .icard-nm{color:#1e293b !important}
 body[data-theme="white"] .icard [style*="color:#f1f5f9"],body[data-theme="pink"] .icard [style*="color:#f1f5f9"]{color:#1e293b !important}
 body[data-theme="white"] .ibadge.gold,body[data-theme="pink"] .ibadge.gold{background:rgba(217,119,6,0.12) !important;color:#b45309 !important}
 body[data-theme="white"] .ibadge.crypto,body[data-theme="pink"] .ibadge.crypto{background:rgba(22,163,74,0.1) !important;color:#16a34a !important}
 body[data-theme="white"] .ibadge.stock,body[data-theme="pink"] .ibadge.stock{background:rgba(124,58,237,0.1) !important;color:#7c3aed !important}
 body[data-theme="white"] .ibadge.savings,body[data-theme="pink"] .ibadge.savings{background:rgba(5,150,105,0.1) !important;color:#059669 !important}
 body[data-theme="white"] .ibadge.def,body[data-theme="pink"] .ibadge.def{background:rgba(37,99,235,0.1) !important;color:#2563eb !important}
-body[data-theme="white"] .iacts button,body[data-theme="pink"] .iacts button{filter:brightness(1.2) saturate(0.8)}
+body[data-theme="white"] .ibf,body[data-theme="pink"] .ibf{background:rgba(37,99,235,0.1) !important;color:#2563eb !important;box-shadow:none !important}
+body[data-theme="white"] .ibchart,body[data-theme="pink"] .ibchart{background:rgba(217,119,6,0.1) !important;color:#b45309 !important;box-shadow:none !important}
+body[data-theme="white"] .ibe,body[data-theme="pink"] .ibe{background:rgba(22,163,74,0.1) !important;color:#16a34a !important;box-shadow:none !important}
+body[data-theme="white"] .ibd,body[data-theme="pink"] .ibd{background:rgba(220,38,38,0.08) !important;color:#dc2626 !important;box-shadow:none !important}
+body[data-theme="white"] .per input,body[data-theme="pink"] .per input{background:#f1f5f9 !important;border-color:rgba(0,0,0,0.12) !important;color:#1e293b !important}
+/* Loan payment history rows */
+.ln-pay-row{background:#080d18;border-radius:9px;padding:7px 10px;margin-bottom:4px;font-size:10px}
+.ln-pay-dt{font-size:10px;color:#94a3b8}
+.ln-pay-int{display:block;font-size:10px;color:#6b7280;margin-top:2px}
+.ln-pay-note{font-size:10px;color:#6b7280;margin-top:2px;font-style:italic}
+body[data-theme="white"] .ln-pay-row,body[data-theme="pink"] .ln-pay-row{background:#f1f5f9 !important;border:1px solid rgba(0,0,0,0.07) !important}
+body[data-theme="white"] .ln-pay-dt,body[data-theme="pink"] .ln-pay-dt{color:#475569 !important}
+body[data-theme="white"] .ln-pay-int,body[data-theme="pink"] .ln-pay-int{color:#64748b !important}
+body[data-theme="white"] .ln-pay-note,body[data-theme="pink"] .ln-pay-note{color:#64748b !important}
+/* Loan grid items & badges on light themes */
+body[data-theme="white"] .lgi,body[data-theme="pink"] .lgi{background:#f1f5f9 !important;border:1px solid rgba(0,0,0,0.07) !important}
+body[data-theme="white"] .lgv,body[data-theme="pink"] .lgv{color:#b45309 !important}
+body[data-theme="white"] .lgv.green,body[data-theme="pink"] .lgv.green{color:#16a34a !important}
+body[data-theme="white"] .lgl,body[data-theme="pink"] .lgl{color:#94a3b8 !important}
+body[data-theme="white"] .ldc.late,body[data-theme="pink"] .ldc.late{background:rgba(220,38,38,0.1) !important;color:#dc2626 !important}
+body[data-theme="white"] .ldc.soon,body[data-theme="pink"] .ldc.soon{background:rgba(234,88,12,0.1) !important;color:#ea580c !important}
+body[data-theme="white"] .ldc.ok,body[data-theme="pink"] .ldc.ok{background:rgba(22,163,74,0.1) !important;color:#16a34a !important}
+body[data-theme="white"] .lbadge.cho,body[data-theme="pink"] .lbadge.cho{background:rgba(22,163,74,0.1) !important;color:#16a34a !important}
+body[data-theme="white"] .lbadge.di,body[data-theme="pink"] .lbadge.di{background:rgba(220,38,38,0.1) !important;color:#dc2626 !important}
+/* Loan action buttons on light themes */
+body[data-theme="white"] .btn-mp,body[data-theme="pink"] .btn-mp{background:rgba(37,99,235,0.1) !important;color:#2563eb !important;box-shadow:none !important}
+body[data-theme="white"] .btn-mu,body[data-theme="pink"] .btn-mu{background:rgba(0,0,0,0.06) !important;color:#64748b !important;box-shadow:none !important}
+body[data-theme="white"] .btn-edit,body[data-theme="pink"] .btn-edit{background:rgba(22,163,74,0.1) !important;color:#16a34a !important;box-shadow:none !important}
+body[data-theme="white"] .btn-del,body[data-theme="pink"] .btn-del{background:rgba(220,38,38,0.08) !important;color:#dc2626 !important;box-shadow:none !important}
+body[data-theme="white"] .btn-settle,body[data-theme="pink"] .btn-settle{background:rgba(22,163,74,0.1) !important;color:#16a34a !important;box-shadow:none !important}
 /* Wallet cards & summary chips */
 body[data-theme="white"] .wcard,body[data-theme="pink"] .wcard{background:#fff !important;border-color:rgba(0,0,0,0.08) !important;box-shadow:0 2px 10px rgba(0,0,0,0.07) !important}
 body[data-theme="white"] .wt,body[data-theme="pink"] .wt{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.07) !important}
@@ -696,7 +729,8 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
         </div>
         <!-- Ingredients view -->
         <div id="cv-ing">
-          <div class="bar"><span class="st">Nguyên liệu</span><button class="abtn" style="background:rgba(255,255,255,0.07);margin-right:4px" onclick="openIngCatsModal()">📁 Danh mục</button><button class="abtn" onclick="openIngModal()">＋ Thêm</button></div>
+          <div class="bar"><span class="st">Nguyên liệu</span><button class="abtn" style="background:rgba(255,255,255,0.07);margin-right:4px" onclick="openIngCatsModal()">📁 Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()">📊 Excel</button><button class="abtn" onclick="openIngModal()">＋ Thêm</button></div>
+          <input type="file" id="cost-excel-input" accept=".xlsx,.xls" style="display:none" onchange="handleCostExcelImport(this.files[0]);this.value=''/>
           <div id="ing-list" class="rl" style="gap:6px"></div>
         </div>
         <!-- Semi-finished view -->
@@ -1121,6 +1155,26 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <input type="text" id="new-cat-name" placeholder="VD: Nguyên liệu chính, Vật tư, Hương liệu..." style="flex:1;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;outline:none" onkeydown="if(event.key==='Enter')addIngCat()"/>
       <button class="abtn" onclick="addIngCat()">＋ Thêm</button>
     </div>
+  </div>
+</div>
+
+<!-- Cost Excel Import/Export Modal -->
+<div id="modal-cost-excel" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-cost-excel')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr"><span class="modal-ttl">📊 Excel — Nhập / Xuất dữ liệu cost</span><button class="modal-close" onclick="closeModal('modal-cost-excel')">×</button></div>
+    <!-- Download template -->
+    <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:12px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:#22c55e;margin-bottom:4px">📋 Tải file mẫu (.xlsx)</div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:8px">File mẫu có 2 sheet: <b>Nguyên liệu</b> và <b>Bán thành phẩm</b>. Điền dữ liệu vào rồi upload lên.</div>
+      <button class="abtn" style="background:#22c55e;color:#fff;font-weight:700;width:100%;padding:9px" onclick="downloadCostTemplate()">⬇️ Tải file mẫu</button>
+    </div>
+    <!-- Upload file -->
+    <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:10px;padding:12px">
+      <div style="font-size:12px;font-weight:700;color:#60a5fa;margin-bottom:4px">📥 Upload file Excel đã điền</div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:8px">Chọn file .xlsx để import nguyên liệu và bán thành phẩm. <span style="color:#f59e0b">Dữ liệu sẽ được thêm vào, không ghi đè.</span></div>
+      <button class="abtn" style="background:#60a5fa;color:#fff;font-weight:700;width:100%;padding:9px" onclick="document.getElementById('cost-excel-input').click()">📂 Chọn file để import</button>
+    </div>
+    <div id="excel-import-status" style="margin-top:8px;font-size:11px;color:#6b7280;text-align:center;min-height:16px"></div>
   </div>
 </div>
 
@@ -2841,6 +2895,149 @@ function setCostView(v){
 }
 function renderCostModule(){renderIngList();renderSemiList();renderRecipeList();}
 
+// ── COST EXCEL IMPORT / EXPORT ──
+function openCostExcelModal(){
+  document.getElementById('excel-import-status').textContent='';
+  document.getElementById('modal-cost-excel').classList.remove('hid');
+}
+function downloadCostTemplate(){
+  if(!window.XLSX){return toast('⚠️ SheetJS chưa tải xong, thử lại!','#f59e0b');}
+  const wb=window.XLSX.utils.book_new();
+  // Sheet 1: Nguyên liệu
+  const ingRows=[
+    ['Danh mục','Tên nguyên liệu *','Đơn vị đóng gói','Số lượng trong 1 ĐG *','Đơn vị tính *','Giá nhập (₫) *'],
+    ['Nguyên liệu chính','Trà ô long nhài','gói',500,'g',26000],
+    ['Nguyên liệu chính','Đường trắng','kg',1000,'g',18000],
+    ['Vật tư','Cốc nhựa size M','thùng',50,'chiếc',120000],
+    ['Vật tư','Ống hút','hộp',200,'chiếc',25000],
+    ['','Sữa đặc','lon',380,'ml',22000],
+  ];
+  const ws1=window.XLSX.utils.aoa_to_sheet(ingRows);
+  ws1['!cols']=[{wch:20},{wch:28},{wch:16},{wch:20},{wch:14},{wch:16}];
+  window.XLSX.utils.book_append_sheet(wb,ws1,'Nguyên liệu');
+  // Sheet 2: Bán thành phẩm
+  const semiRows=[
+    ['Tên bán thành phẩm *','SL làm ra *','Đơn vị *','NL 1 (tên)','SL dùng NL1','NL 2 (tên)','SL dùng NL2','NL 3 (tên)','SL dùng NL3','NL 4 (tên)','SL dùng NL4'],
+    ['Cốt trà ô long nhài','1','lít','Trà ô long nhài',15,'Đường trắng',200,'','','',''],
+    ['Nước đường chuẩn','1','lít','Đường trắng',500,'','','','','',''],
+    ['Trà sữa base','1','ly','Cốt trà ô long nhài',150,'Sữa đặc',30,'','','',''],
+  ];
+  const ws2=window.XLSX.utils.aoa_to_sheet(semiRows);
+  ws2['!cols']=[{wch:26},{wch:12},{wch:12},{wch:24},{wch:14},{wch:24},{wch:14},{wch:24},{wch:14},{wch:24},{wch:14}];
+  window.XLSX.utils.book_append_sheet(wb,ws2,'Bán thành phẩm');
+  // Sheet 3: Hướng dẫn
+  const hdRows=[
+    ['HƯỚNG DẪN ĐIỀN FILE MẪU'],
+    [''],
+    ['Sheet "Nguyên liệu":'],
+    ['• Cột có dấu * là bắt buộc'],
+    ['• Danh mục: để trống nếu không cần phân loại'],
+    ['• Đơn vị đóng gói: gói, hộp, kg, lít, thùng... (tùy chọn)'],
+    ['• Số lượng trong 1 ĐG: VD gói 500g thì điền 500'],
+    ['• Đơn vị tính: g, ml, chiếc, lít...'],
+    ['• Giá nhập: chỉ điền số, không cần ký tự ₫'],
+    [''],
+    ['Sheet "Bán thành phẩm":'],
+    ['• Tên nguyên liệu phải khớp CHÍNH XÁC với tên trong sheet Nguyên liệu'],
+    ['• Có thể thêm tối đa 4 cặp cột Tên NL + SL dùng'],
+    ['• Để trống các cột NL nếu không dùng'],
+    [''],
+    ['⚠️ LƯU Ý: Nhập Nguyên liệu trước, sau đó mới nhập Bán thành phẩm!'],
+  ];
+  const ws3=window.XLSX.utils.aoa_to_sheet(hdRows);
+  ws3['!cols']=[{wch:60}];
+  window.XLSX.utils.book_append_sheet(wb,ws3,'Hướng dẫn');
+  window.XLSX.writeFile(wb,'mau_tinh_cost_dongtien.xlsx');
+  toast('✓ Đã tải file mẫu!');
+}
+function handleCostExcelImport(file){
+  if(!file)return;
+  if(!window.XLSX){return toast('⚠️ SheetJS chưa tải xong, thử lại!','#f59e0b');}
+  const status=document.getElementById('excel-import-status');
+  status.textContent='⏳ Đang đọc file...';
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=new Uint8Array(e.target.result);
+      const wb=window.XLSX.read(data,{type:'array'});
+      let ingCount=0,semiCount=0,catCount=0;
+      // ── Import nguyên liệu ──
+      const ws1=wb.Sheets['Nguyên liệu'];
+      if(ws1){
+        const rows=window.XLSX.utils.sheet_to_json(ws1,{header:1,defval:''});
+        const ings=getIngData(curStoreId);
+        const cats=getIngCats(curStoreId);
+        rows.slice(1).forEach((row,ri)=>{
+          const [catName,name,pkgUnit,pkgQty,useUnit,pkgPrice]=row;
+          const cleanName=String(name||'').trim();
+          if(!cleanName||!pkgQty||!pkgPrice)return;
+          // Find/create category
+          let catId=null;
+          const cleanCat=String(catName||'').trim();
+          if(cleanCat){
+            let cat=cats.find(c=>c.name===cleanCat);
+            if(!cat){cat={id:Date.now()+catCount,name:cleanCat};cats.push(cat);catCount++;}
+            catId=cat.id;
+          }
+          // Skip duplicate names
+          if(ings.find(g=>g.name===cleanName))return;
+          ings.push({
+            id:Date.now()+ingCount+1000,
+            name:cleanName,
+            pkgUnit:String(pkgUnit||'').trim(),
+            pkgQty:parseFloat(String(pkgQty).replace(/[^0-9.]/g,''))||0,
+            useUnit:String(useUnit||'').trim(),
+            pkgPrice:parseFloat(String(pkgPrice).replace(/[^0-9.]/g,''))||0,
+            catId
+          });
+          ingCount++;
+        });
+        saveIngCats(curStoreId,cats);
+        saveIngData(curStoreId,ings);
+      }
+      // ── Import bán thành phẩm ──
+      const ws2=wb.Sheets['Bán thành phẩm'];
+      if(ws2){
+        const rows2=window.XLSX.utils.sheet_to_json(ws2,{header:1,defval:''});
+        const ings=getIngData(curStoreId);
+        const semis=getSemiData(curStoreId);
+        rows2.slice(1).forEach(row=>{
+          const [name,outQty,outUnit,...rest]=row;
+          const cleanName=String(name||'').trim();
+          if(!cleanName)return;
+          if(semis.find(s=>s.name===cleanName))return;
+          const items=[];
+          for(let i=0;i<rest.length;i+=2){
+            const ingName=String(rest[i]||'').trim();
+            const qty=rest[i+1];
+            if(!ingName||!qty)continue;
+            const ing=ings.find(g=>g.name===ingName);
+            if(ing)items.push({ingId:ing.id,qty:parseFloat(String(qty).replace(/[^0-9.]/g,''))||0});
+          }
+          semis.push({
+            id:Date.now()+semiCount+2000,
+            name:cleanName,
+            outputQty:parseFloat(String(outQty).replace(/[^0-9.]/g,''))||1,
+            outputUnit:String(outUnit||'').trim(),
+            items
+          });
+          semiCount++;
+        });
+        saveSemiData(curStoreId,semis);
+      }
+      renderCostModule();
+      closeModal('modal-cost-excel');
+      const msg=`✓ Import thành công: ${ingCount} nguyên liệu${semiCount?', '+semiCount+' bán thành phẩm':''}${catCount?' ('+catCount+' danh mục mới)':''}`;
+      toast(msg,'#22c55e');
+    }catch(err){
+      status.textContent='❌ Lỗi đọc file: '+err.message;
+      console.error('Excel import error:',err);
+    }
+  };
+  reader.onerror=()=>{status.textContent='❌ Không đọc được file!';};
+  reader.readAsArrayBuffer(file);
+}
+
 // ── INGREDIENT CATEGORIES ──
 function getIngCats(sid){return JSON.parse(localStorage.getItem('ingCats_'+sid)||'[]');}
 function saveIngCats(sid,d){localStorage.setItem('ingCats_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
@@ -3491,7 +3688,7 @@ function renderINV(){
   let ti=0,tc2=0;invData.forEach(item=>{const{iv,cv}=calcIT(item);ti+=iv;tc2+=cv;});
   const p=tc2-ti,pct=ti?((p/ti)*100).toFixed(1):0;
   document.getElementById('inv-total').textContent=fmt(ti);document.getElementById('inv-cur').textContent=fmt(tc2);
-  const pe=document.getElementById('inv-profit');pe.textContent=`${p>=0?'+':''}${fmt(p)} (${p>=0?'+':''}${pct}%)`;pe.className='val '+(p>=0?'pos':'neg');
+  const pe=document.getElementById('inv-profit');pe.textContent=`${p>0?'+':p<0?'':''}${fmt(p)} (${p>0?'+':p<0?'':''}${pct}%)`;pe.className='val '+(p>0?'pos':p<0?'neg':'');
   const EMO={gold:'🥇',stock:'📊',crypto:'🪙',savings:'🏦',realestate:'🏠',other:'📦'};
   const BCL={gold:'gold',stock:'stock',crypto:'crypto',savings:'savings',realestate:'def',other:'def'};
   const BLB={gold:'Vàng',stock:'Cổ phiếu',crypto:'Crypto',savings:'Tiết kiệm',realestate:'BĐS',other:'Khác'};
@@ -3505,14 +3702,14 @@ function renderINV(){
     else if(item.itype==='savings')det=`<div class="irow"><span class="dim">Lãi</span><span>${item.svrate}%/năm${item.svDue?' · Đáo hạn: '+item.svDue:''}</span></div>`;
     const isGold=item.itype==='gold',isCrypto=item.coinId;
     return `<div class="icard">
-      <div><div style="font-size:13px;font-weight:700;color:#f1f5f9;margin-bottom:3px">${EMO[item.itype]||'📦'} ${item.name}</div>
+      <div><div class="icard-nm">${EMO[item.itype]||'📦'} ${item.name}</div>
       <span class="ibadge ${BCL[item.itype]||'def'}">${BLB[item.itype]||item.itype}</span>
       ${item.preApp?'<span class="ibadge def" style="margin-left:3px">Trước app</span>':''}
       ${wn?`<span class="ibadge def" style="margin-left:3px">👛${wn.slice(0,10)}</span>`:''}</div>
       ${det}
       <div class="irow"><span class="dim">Tổng vốn</span><span>${fmt(iv)}</span></div>
       <div class="irow"><span class="dim">Giá trị HT</span><span>${fmt(cv)}</span></div>
-      <div class="irow"><span class="dim">Lãi/Lỗ</span><span style="font-weight:700;color:${g>=0?'#22c55e':'#ef4444'}">${g>=0?'+':''}${fmt(g)} (${g>=0?'+':''}${gp}%)</span></div>
+      <div class="irow"><span class="dim">Lãi/Lỗ</span><span style="font-weight:700;color:${g>0?'#22c55e':g<0?'#ef4444':'#6b7280'}">${g>0?'+':''}${fmt(g)} (${g>0?'+':''}${gp}%)</span></div>
       <div id="pe-${item.id}" class="per hid">
         <input type="text" id="pei-${item.id}" class="mi" inputmode="numeric" placeholder="Giá mới/đơn vị" data-raw="0" oninput="onMI(this)"/>
         <button onclick="savePE(${item.id})">✓</button>
@@ -3839,15 +4036,15 @@ function renderLN(){
         ${l.note?`<div style="font-size:10px;color:#6b7280">📝 ${l.note}</div>`:''}
         <div class="ln-acts">
           ${!l.paid?`<button class="btn-mp" onclick="openPayLoan(${l.id})">💰 Trả / Thu</button>`:''}
-          <button class="${l.paid?'btn-mu':'btn-mp'}" onclick="togLnPaid(${l.id})" style="${l.paid?'':'background:rgba(28,36,18,0.8);color:#4ade80'}">${l.paid?'↩ Mở lại':'✓ Tất toán'}</button>
+          <button class="${l.paid?'btn-mu':'btn-settle'}" onclick="togLnPaid(${l.id})">${l.paid?'↩ Mở lại':'✓ Tất toán'}</button>
           <button class="btn-edit" onclick="editLN(${l.id})">✏️ Sửa</button>
           <button class="btn-del" onclick="delLN(${l.id})">🗑 Xoá</button>
         </div>
-        ${(l.payments&&l.payments.length)?`<div style="margin-top:6px"><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px">📋 Lịch sử thanh toán</div>${l.payments.slice().reverse().map(p=>{const pw=walletData.find(x=>x.id===p.walletId);return`<div style="background:#080d18;border-radius:9px;padding:7px 10px;margin-bottom:4px;font-size:10px">
+        ${(l.payments&&l.payments.length)?`<div style="margin-top:6px"><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px">📋 Lịch sử thanh toán</div>${l.payments.slice().reverse().map(p=>{const pw=walletData.find(x=>x.id===p.walletId);return`<div class="ln-pay-row">
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <div><span style="color:#9ca3af">${p.date}${pw?' · 👛'+pw.name.slice(0,8):''}</span>
-                ${p.interest>0?`<span style='color:#f59e0b;margin-left:5px'>Gốc ${fmt(p.principal||p.amount)} · Lãi ${fmt(p.interest)}</span>`:''}
-                ${p.note?`<div style="color:#6b7280;font-size:9px;margin-top:1px">${p.note}</div>`:''}
+              <div><span class="ln-pay-dt">${p.date}${pw?' · 👛'+pw.name.slice(0,8):''}</span>
+                ${p.interest>0?`<span class="ln-pay-int">Gốc ${fmt(p.principal||p.amount)} · Lãi ${fmt(p.interest)}</span>`:''}
+                ${p.note?`<div class="ln-pay-note">${p.note}</div>`:''}
               </div>
               <div style="display:flex;align-items:center;gap:5px">
                 <span style="color:${l.dir==='di'?'#ef4444':'#22c55e'};font-weight:700">${l.dir==='di'?'-':'+'}${fmt(p.amount)}</span>
