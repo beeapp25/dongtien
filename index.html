@@ -179,10 +179,23 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;
 /* Store selector */
 .store-sel-wrap{display:flex;gap:6px;align-items:center}
 .store-sel{background:#111827;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:10px;padding:8px 12px;font-size:12px;font-family:inherit;flex:1;outline:none}
-/* Month nav */
-.month-nav{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#111827,#0f1825);border-radius:13px;padding:9px 15px;border:1px solid rgba(var(--tc-rgb),0.18);transition:border-color .4s}
-.mn-btn{background:none;border:none;color:var(--tc);font-size:22px;cursor:pointer;padding:0 6px;transition:color .4s}
+/* Month nav / Date filter */
+.month-nav,.date-filter{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--bg-card),var(--bg-form));border-radius:13px;padding:9px 12px;border:1px solid rgba(var(--tc-rgb),0.18);transition:border-color .4s,background .35s;gap:8px}
+.mn-btn{background:none;border:none;color:var(--tc);font-size:22px;cursor:pointer;padding:0 4px;transition:color .4s;line-height:1}
 .mn-lbl{font-size:13px;font-weight:700;color:#f1f5f9}
+/* Date filter extras */
+.df-mode{display:flex;background:rgba(0,0,0,0.2);border-radius:8px;padding:2px;gap:2px;flex-shrink:0}
+.dfm{padding:4px 9px;border-radius:6px;font-size:10px;font-weight:600;border:none;background:none;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.dfm.on{background:var(--tc);color:#fff}
+.df-nav{display:flex;align-items:center;gap:4px;flex:1;justify-content:center;min-width:0}
+.df-day-input{background:transparent;border:none;color:#f1f5f9;font-size:11px;font-family:inherit;outline:none;flex:1;min-width:0;text-align:center;cursor:pointer}
+/* Record wallet line */
+.rw{font-size:10px;color:var(--tc);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .4s}
+/* Collapsible section header */
+.coll-hdr{display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:4px 2px}
+.coll-hdr .st{pointer-events:none}
+.coll-arr{font-size:16px;color:#4b5563;transition:transform .25s;line-height:1;pointer-events:none}
+.coll-arr.open{transform:rotate(90deg)}
 .cmp-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .cmp-cell{background:#0d1325;border-radius:11px;padding:9px 10px;text-align:center}
 .cmp-lbl{font-size:9px;color:#6b7280;margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
@@ -346,8 +359,11 @@ body[data-theme="pink"]{
   --bg-form:#fff5f8;--bg-form2:#fce8f2;
   --bg-input:#f0d8e4;--bg-key:#e8ccd8;
 }
-/* Light theme: text + border overrides */
-body[data-theme="white"],body[data-theme="pink"]{color:#334155}
+/* Light theme: blanket text override (covers inline styles too) */
+body[data-theme="white"],body[data-theme="pink"]{color:#334155 !important}
+/* Exclude colored buttons/badges — keep white text on colored bg */
+body[data-theme="white"] .mod *:not(.abtn):not(.sbtn):not(.lg-btn):not(.mic-btn):not(.pca):not(.ua):not(.pin-dot):not(button[style*="background:#"]),
+body[data-theme="pink"] .mod *:not(.abtn):not(.sbtn):not(.lg-btn):not(.mic-btn):not(.pca):not(.ua):not(.pin-dot):not(button[style*="background:#"]){color:#334155 !important}
 body[data-theme="white"] .val,body[data-theme="pink"] .val,
 body[data-theme="white"] .pcn,body[data-theme="pink"] .pcn,
 body[data-theme="white"] .pin-lbl,body[data-theme="pink"] .pin-lbl,
@@ -359,40 +375,47 @@ body[data-theme="white"] .ri2-a,body[data-theme="pink"] .ri2-a,
 body[data-theme="white"] .rc,body[data-theme="pink"] .rc,
 body[data-theme="white"] .wcn,body[data-theme="pink"] .wcn,
 body[data-theme="white"] .wt-v,body[data-theme="pink"] .wt-v,
-body[data-theme="white"] .app-title,body[data-theme="pink"] .app-title{color:#0f172a}
+body[data-theme="white"] .app-title,body[data-theme="pink"] .app-title{color:#0f172a !important}
 body[data-theme="white"] .lbl,body[data-theme="pink"] .lbl,
 body[data-theme="white"] .st,body[data-theme="pink"] .st,
 body[data-theme="white"] .un,body[data-theme="pink"] .un,
 body[data-theme="white"] .fl,body[data-theme="pink"] .fl,
 body[data-theme="white"] .rn,body[data-theme="pink"] .rn,
+body[data-theme="white"] .rw,body[data-theme="pink"] .rw,
 body[data-theme="white"] .wct,body[data-theme="pink"] .wct,
 body[data-theme="white"] .dim,body[data-theme="pink"] .dim,
 body[data-theme="white"] .lhs,body[data-theme="pink"] .lhs,
 body[data-theme="white"] .lgl,body[data-theme="pink"] .lgl,
 body[data-theme="white"] .cmp-lbl,body[data-theme="pink"] .cmp-lbl,
-body[data-theme="white"] .wt-c,body[data-theme="pink"] .wt-c{color:#475569}
-body[data-theme="white"] .tb,body[data-theme="pink"] .tb{color:#64748b}
-body[data-theme="white"] .fb,body[data-theme="pink"] .fb{color:#64748b;border-color:rgba(0,0,0,0.12)}
-body[data-theme="white"] .pk,body[data-theme="pink"] .pk{color:#334155}
+body[data-theme="white"] .wt-c,body[data-theme="pink"] .wt-c{color:#475569 !important}
+body[data-theme="white"] .tb,body[data-theme="pink"] .tb{color:#64748b !important}
+body[data-theme="white"] .tb.active,body[data-theme="pink"] .tb.active{color:var(--tc) !important}
+body[data-theme="white"] .fb,body[data-theme="pink"] .fb{color:#64748b !important;border-color:rgba(0,0,0,0.12) !important}
+body[data-theme="white"] .fb.on,body[data-theme="pink"] .fb.on{color:var(--tc) !important}
+body[data-theme="white"] .pk,body[data-theme="pink"] .pk{color:#334155 !important}
 body[data-theme="white"] .fc input,body[data-theme="pink"] .fc input,
 body[data-theme="white"] .fc select,body[data-theme="pink"] .fc select,
-body[data-theme="white"] .cf input,body[data-theme="pink"] .cf input{color:#334155;border-color:rgba(0,0,0,0.1)}
+body[data-theme="white"] .cf input,body[data-theme="pink"] .cf input{color:#334155 !important;border-color:rgba(0,0,0,0.1) !important}
+body[data-theme="white"] .pos,body[data-theme="pink"] .pos{color:#16a34a !important}
+body[data-theme="white"] .neg,body[data-theme="pink"] .neg{color:#dc2626 !important}
 body[data-theme="white"] .card,body[data-theme="pink"] .card,
 body[data-theme="white"] .fc,body[data-theme="pink"] .fc,
 body[data-theme="white"] .cf,body[data-theme="pink"] .cf,
 body[data-theme="white"] .pc,body[data-theme="pink"] .pc,
 body[data-theme="white"] .pk,body[data-theme="pink"] .pk,
-body[data-theme="white"] .pin-dot,body[data-theme="pink"] .pin-dot{border-color:rgba(0,0,0,0.09)}
-body[data-theme="white"] .ri,body[data-theme="pink"] .ri{border-color:rgba(0,0,0,0.07)}
-body[data-theme="white"] .ri{background:linear-gradient(135deg,#f8faff,#f0f4ff)}
-body[data-theme="pink"] .ri{background:linear-gradient(135deg,#fff5f8,#fce8f0)}
-body[data-theme="white"] .month-nav,body[data-theme="pink"] .month-nav{background:linear-gradient(135deg,var(--bg-card),var(--bg-form))}
-body[data-theme="white"] .store-sel,body[data-theme="pink"] .store-sel{background:var(--bg-card);color:#334155;border-color:rgba(0,0,0,0.1)}
-body[data-theme="white"] .card,body[data-theme="pink"] .card{box-shadow:0 2px 8px rgba(0,0,0,0.07)}
-body[data-theme="white"] .fc,body[data-theme="pink"] .fc{box-shadow:0 4px 14px rgba(0,0,0,0.07)}
-body[data-theme="white"] .xbtn,body[data-theme="pink"] .xbtn{background:rgba(0,0,0,0.05);color:#475569}
-body[data-theme="white"] .uc,body[data-theme="pink"] .uc{background:rgba(0,0,0,0.06)}
-body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.12);color:#64748b}
+body[data-theme="white"] .pin-dot,body[data-theme="pink"] .pin-dot{border-color:rgba(0,0,0,0.09) !important}
+body[data-theme="white"] .ri,body[data-theme="pink"] .ri{border-color:rgba(0,0,0,0.07) !important}
+body[data-theme="white"] .ri{background:linear-gradient(135deg,#f8faff,#f0f4ff) !important}
+body[data-theme="pink"] .ri{background:linear-gradient(135deg,#fff5f8,#fce8f0) !important}
+body[data-theme="white"] .date-filter,body[data-theme="pink"] .date-filter,
+body[data-theme="white"] .month-nav,body[data-theme="pink"] .month-nav{background:linear-gradient(135deg,var(--bg-card),var(--bg-form)) !important}
+body[data-theme="white"] .store-sel,body[data-theme="pink"] .store-sel{background:var(--bg-card) !important;color:#334155 !important;border-color:rgba(0,0,0,0.1) !important}
+body[data-theme="white"] .card,body[data-theme="pink"] .card{box-shadow:0 2px 8px rgba(0,0,0,0.07) !important}
+body[data-theme="white"] .fc,body[data-theme="pink"] .fc{box-shadow:0 4px 14px rgba(0,0,0,0.07) !important}
+body[data-theme="white"] .xbtn,body[data-theme="pink"] .xbtn{background:rgba(0,0,0,0.05) !important;color:#475569 !important}
+body[data-theme="white"] .uc,body[data-theme="pink"] .uc{background:rgba(0,0,0,0.06) !important}
+body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba(0,0,0,0.03) !important;border-color:rgba(0,0,0,0.12) !important;color:#64748b !important}
+body[data-theme="white"] .hdr,body[data-theme="pink"] .hdr{box-shadow:0 1px 8px rgba(0,0,0,0.1)}
 
 /* Theme switcher UI */
 .theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -484,10 +507,21 @@ body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba
 
   <!-- TAB: THU CHI -->
   <div id="tab-tc" class="mod">
-    <div class="month-nav">
-      <button class="mn-btn" onclick="changeTcMonth(-1)">‹</button>
-      <span class="mn-lbl" id="tc-month-lbl">—</span>
-      <button class="mn-btn" onclick="changeTcMonth(1)">›</button>
+    <div class="date-filter">
+      <div class="df-mode">
+        <button class="dfm on" id="tc-dfm-m" onclick="tcSetMode('month')">🗓️ Tháng</button>
+        <button class="dfm" id="tc-dfm-d" onclick="tcSetMode('day')">📅 Ngày</button>
+      </div>
+      <div class="df-nav" id="tc-df-month">
+        <button class="mn-btn" onclick="changeTcMonth(-1)">‹</button>
+        <span class="mn-lbl rw" id="tc-month-lbl">—</span>
+        <button class="mn-btn" onclick="changeTcMonth(1)">›</button>
+      </div>
+      <div class="df-nav hid" id="tc-df-day">
+        <button class="mn-btn" onclick="changeTcDay(-1)">‹</button>
+        <input type="date" id="tc-day-inp" class="df-day-input" onchange="renderTC()"/>
+        <button class="mn-btn" onclick="changeTcDay(1)">›</button>
+      </div>
     </div>
     <div class="sr">
       <div class="card g"><span class="lbl">Thu tháng này</span><span class="val" id="tc-thu">0₫</span></div>
@@ -540,11 +574,22 @@ body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba
           <button class="abtn sm" onclick="openStoreWizard()">＋</button>
         </div>
       </div>
-      <!-- Month nav -->
-      <div class="month-nav">
-        <button class="mn-btn" onclick="changeShMonth(-1)">‹</button>
-        <span class="mn-lbl" id="sh-month-lbl">—</span>
-        <button class="mn-btn" onclick="changeShMonth(1)">›</button>
+      <!-- Date filter -->
+      <div class="date-filter">
+        <div class="df-mode">
+          <button class="dfm on" id="sh-dfm-m" onclick="shSetMode('month')">🗓️ Tháng</button>
+          <button class="dfm" id="sh-dfm-d" onclick="shSetMode('day')">📅 Ngày</button>
+        </div>
+        <div class="df-nav" id="sh-df-month">
+          <button class="mn-btn" onclick="changeShMonth(-1)">‹</button>
+          <span class="mn-lbl rw" id="sh-month-lbl">—</span>
+          <button class="mn-btn" onclick="changeShMonth(1)">›</button>
+        </div>
+        <div class="df-nav hid" id="sh-df-day">
+          <button class="mn-btn" onclick="changeShDay(-1)">‹</button>
+          <input type="date" id="sh-day-inp" class="df-day-input" onchange="renderSH()"/>
+          <button class="mn-btn" onclick="changeShDay(1)">›</button>
+        </div>
       </div>
       <!-- Compare row -->
       <div class="cmp-row" id="sh-cmp"></div>
@@ -790,8 +835,11 @@ body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba
       <div><span class="lbl">Xin chào</span><span class="val" id="set-name">—</span></div>
       <div class="ua" id="set-ava" style="width:38px;height:38px;font-size:14px"></div>
     </div>
-    <div class="st" style="padding:4px 2px">🎨 Giao diện</div>
-    <div class="card full" style="gap:10px">
+    <div class="coll-hdr" onclick="toggleSection('sect-theme')">
+      <div class="st" style="padding:4px 2px">🎨 Giao diện</div>
+      <span class="coll-arr open" id="arr-sect-theme">›</span>
+    </div>
+    <div id="sect-theme" class="card full" style="gap:10px">
       <div class="theme-grid">
         <div class="theme-chip" id="th-dark" onclick="applyTheme('dark')">
           <div class="th-dot" style="background:linear-gradient(135deg,#151e30,#080d18)"></div>
@@ -828,7 +876,11 @@ body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba
     <div class="st" style="padding:4px 2px">☁️ Kết nối Cloud (Firebase)</div>
     <div class="card full" style="gap:8px">
       <div id="fb-status" style="font-size:11px;padding:8px 10px;border-radius:9px;display:none"></div>
-      <div id="fb-cfg-wrap">
+      <div id="fb-default-notice" style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <div style="font-size:11px;color:#4ade80">✓ Đã cấu hình sẵn — không cần thêm gì</div>
+        <button onclick="toggleSection('fb-cfg-wrap')" style="background:none;border:1px solid rgba(255,255,255,0.12);color:#9ca3af;border-radius:7px;padding:4px 9px;font-size:10px;cursor:pointer;font-family:inherit">⚙️ Tùy chỉnh</button>
+      </div>
+      <div id="fb-cfg-wrap" class="hid">
         <div style="font-size:11px;color:#9ca3af;line-height:1.6;margin-bottom:6px">Dán thông tin từ <b style="color:#60a5fa">Firebase Console</b> → Project Settings → Your apps → Web app:</div>
         <input type="text" id="fb-api-key" placeholder="apiKey (AIzaSy...)" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:11px;font-family:inherit;width:100%;outline:none;margin-bottom:6px"/>
         <input type="text" id="fb-db-url" placeholder="databaseURL (https://ten-project-default-rtdb.firebaseio.com)" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:11px;font-family:inherit;width:100%;outline:none;margin-bottom:6px"/>
@@ -850,8 +902,8 @@ body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba
         <button onclick="testFirebase()" style="flex:1;padding:9px;background:none;border:1px solid rgba(255,255,255,0.1);color:#60a5fa;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">🔌 Kiểm tra</button>
       </div>
     </div>
-    <div class="st" style="padding:4px 2px">💾 Sao lưu & Khôi phục</div>
-    <div class="card full" style="gap:8px">
+    <div id="sect-backup-hdr" class="st" style="padding:4px 2px">💾 Sao lưu & Khôi phục</div>
+    <div id="sect-backup" class="card full" style="gap:8px">
       <div style="font-size:11px;color:#9ca3af;line-height:1.5">Khi nhận file HTML mới, hãy <b style="color:#f1f5f9">Xuất</b> dữ liệu trước, mở file mới rồi <b style="color:#f1f5f9">Nhập lại</b>.</div>
       <div style="display:flex;gap:7px">
         <button onclick="exportData()" style="flex:1;padding:9px;background:#16a34a;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">⬇️ Xuất (.json)</button>
@@ -887,8 +939,11 @@ body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba
       <div style="font-size:12px;font-weight:600;color:#e2e8f0;margin-bottom:2px">🔗 Quyền truy cập cửa hàng</div>
       <div id="store-access-desc" style="display:flex;flex-direction:column;gap:5px"></div>
     </div>
-    <div class="st" style="padding:4px 2px">🔑 Phân quyền cửa hàng</div>
-    <div class="card full" style="gap:7px">
+    <div class="coll-hdr" onclick="toggleSection('sect-perm')">
+      <div class="st" style="padding:4px 2px">🔑 Phân quyền cửa hàng</div>
+      <span class="coll-arr" id="arr-sect-perm">›</span>
+    </div>
+    <div id="sect-perm" class="card full hid" style="gap:7px">
       <div style="font-size:11px;color:#9ca3af">Chọn cửa hàng → chọn thành viên → cấp quyền xem và nhập liệu.</div>
       <div id="perm-owned-list" style="display:flex;flex-direction:column;gap:6px"></div>
       <div id="perm-shared-list" style="display:flex;flex-direction:column;gap:4px"></div>
@@ -1591,9 +1646,23 @@ function loadFbConfigUI(){
   if(cfg){
     const el=document.getElementById('fb-api-key');if(el)el.value=cfg.apiKey||'';
     const el2=document.getElementById('fb-db-url');if(el2)el2.value=cfg.databaseURL||'';
-    if(fbOnline)showFbStatus('✅ Firebase đã kết nối và sẵn sàng đồng bộ.',true);
-    else showFbStatus('⚠️ Đã lưu config nhưng chưa kết nối được — kiểm tra internet.',false);
+    if(fbOnline){
+      showFbStatus('✅ Firebase đã kết nối và sẵn sàng đồng bộ.',true);
+      // Hide manual backup section when cloud is active
+      const backupHdr=document.getElementById('sect-backup-hdr');
+      const backupSect=document.getElementById('sect-backup');
+      if(backupHdr)backupHdr.style.display='none';
+      if(backupSect)backupSect.style.display='none';
+    } else {
+      showFbStatus('⚠️ Đã lưu config nhưng chưa kết nối được — kiểm tra internet.',false);
+    }
   }
+}
+function toggleSection(id){
+  const el=document.getElementById(id);if(!el)return;
+  const hidden=el.classList.toggle('hid');
+  const arr=document.getElementById('arr-'+id);
+  if(arr)arr.classList.toggle('open',!hidden);
 }
 function toggleFbGuide(){
   const g=document.getElementById('fb-guide');if(g)g.style.display=g.style.display==='none'?'block':'none';
@@ -1958,12 +2027,29 @@ const catThu=['Lương','Thưởng','Kinh doanh','Đầu tư','Chuyển ví','Kh
 const catChi=['Ăn uống','Di chuyển','Mua sắm','Hóa đơn','Giải trí','Sức khỏe','Chuyển ví','Khác'];
 let tcFilter='all';
 let tcMonth=new Date().toISOString().slice(0,7);
+let tcFilterMode='month';
 function updCatTC(){const t=document.getElementById('tc-type').value;document.getElementById('tc-cat').innerHTML=(t==='thu'?catThu:catChi).map(c=>`<option>${c}</option>`).join('');}
 function ftc(f,btn){tcFilter=f;document.querySelectorAll('#tab-tc .ftabs .fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTC();}
 function changeTcMonth(d){
   const [y,m]=tcMonth.split('-').map(Number);
   const dt=new Date(y,m-1+d,1);
   tcMonth=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
+  renderTC();
+}
+function tcSetMode(mode){
+  tcFilterMode=mode;
+  document.getElementById('tc-dfm-m').classList.toggle('on',mode==='month');
+  document.getElementById('tc-dfm-d').classList.toggle('on',mode==='day');
+  document.getElementById('tc-df-month').classList.toggle('hid',mode!=='month');
+  document.getElementById('tc-df-day').classList.toggle('hid',mode!=='day');
+  if(mode==='day'&&!document.getElementById('tc-day-inp').value)document.getElementById('tc-day-inp').value=new Date().toISOString().slice(0,10);
+  renderTC();
+}
+function changeTcDay(d){
+  const inp=document.getElementById('tc-day-inp');
+  const cur=inp.value?new Date(inp.value):new Date();
+  cur.setDate(cur.getDate()+d);
+  inp.value=cur.toISOString().slice(0,10);
   renderTC();
 }
 function addTC(){
@@ -2025,18 +2111,28 @@ function renderTC(){
   const [ty,tm]=tcMonth.split('-').map(Number);
   const mLbl=new Date(ty,tm-1,1).toLocaleDateString('vi-VN',{month:'long',year:'numeric'});
   const mlEl=document.getElementById('tc-month-lbl');if(mlEl)mlEl.textContent=mLbl;
-  // Lọc theo tháng đang chọn
-  const monthTc=personalTc.filter(r=>(r.date||'').startsWith(tcMonth));
-  const thu=monthTc.filter(r=>r.type==='thu'&&(r.currency||'VND')==='VND').reduce((s,r)=>s+r.amount,0);
-  const chi=monthTc.filter(r=>r.type==='chi'&&(r.currency||'VND')==='VND').reduce((s,r)=>s+r.amount,0);
+  // Lọc theo chế độ tháng hoặc ngày
+  const tcDayVal=document.getElementById('tc-day-inp')?.value||new Date().toISOString().slice(0,10);
+  const filterKey=tcFilterMode==='day'?tcDayVal:tcMonth;
+  const monthTc=personalTc.filter(r=>(r.date||'').startsWith(filterKey));
+  // Summary cards always use month data
+  const monthForSum=tcFilterMode==='day'?personalTc.filter(r=>(r.date||'').startsWith(tcMonth)):monthTc;
+  const thu=monthForSum.filter(r=>r.type==='thu'&&(r.currency||'VND')==='VND').reduce((s,r)=>s+r.amount,0);
+  const chi=monthForSum.filter(r=>r.type==='chi'&&(r.currency||'VND')==='VND').reduce((s,r)=>s+r.amount,0);
+  const sumLbl=tcFilterMode==='day'?'tháng này':'tháng này';
   document.getElementById('tc-thu').textContent=fmt(thu);document.getElementById('tc-chi').textContent=fmt(chi);
   const du=thu-chi,de=document.getElementById('tc-du');de.textContent=fmt(du);de.className='val '+(du>=0?'pos':'neg');
   const filtered=tcFilter==='all'?[...monthTc]:monthTc.filter(r=>r.type===tcFilter);
   const list=document.getElementById('tc-list');
-  if(!filtered.length){list.innerHTML=`<div style="text-align:center;color:#4b5563;padding:18px;font-size:11px">Không có giao dịch trong ${mLbl}<br/><span style="color:#6b7280;font-size:10px">← Chuyển tháng để xem lịch sử →</span></div>`;return;}
+  const emptyLbl=tcFilterMode==='day'?`ngày ${tcDayVal.split('-').reverse().join('/')}`:mLbl;
+  if(!filtered.length){list.innerHTML=`<div style="text-align:center;color:#4b5563;padding:18px;font-size:11px">Không có giao dịch trong ${emptyLbl}<br/><span style="color:#6b7280;font-size:10px">← Chuyển ${tcFilterMode==='day'?'ngày':'tháng'} để xem lịch sử →</span></div>`;return;}
   list.innerHTML=filtered.slice().reverse().map(r=>{
     const w=r.walletId?walletData.find(x=>x.id===r.walletId):null;
-    return `<div class="ri ${r.type}"><div class="rli"><span class="rc">${r.category}${w?` · 👛${w.name.slice(0,10)}`:''}</span><span class="rn">${r.note||'—'} · ${fmtDT(r.dt||r.date)}</span></div>
+    return `<div class="ri ${r.type}"><div class="rli">
+      <span class="rc">${r.category}</span>
+      ${w?`<span class="rw">👛 ${w.name}</span>`:''}
+      <span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span>
+    </div>
     <div class="rr"><span class="ra">${r.type==='thu'?'+':'-'}${fmt(r.amount,r.currency||'VND')}</span><button class="xbtn" style="color:#60a5fa;margin-right:2px" onclick="editTC(${r.id})">✏️</button><button class="xbtn" onclick="delTC(${r.id})">×</button></div></div>`;}).join('');
   updWSelects();
 }
@@ -2322,10 +2418,27 @@ function renderStoresSel(){
   const sel=document.getElementById('store-sel');if(!sel)return;
   sel.innerHTML=storeData.map(s=>`<option value="${s.id}" ${s.id===curStoreId?'selected':''}>${s.name}</option>`).join('');
 }
+let shFilterMode='month';
 function changeShMonth(d){
   const [y,m]=shMonth.split('-').map(Number);
   const dt=new Date(y,m-1+d,1);
   shMonth=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
+  renderSH();
+}
+function shSetMode(mode){
+  shFilterMode=mode;
+  document.getElementById('sh-dfm-m').classList.toggle('on',mode==='month');
+  document.getElementById('sh-dfm-d').classList.toggle('on',mode==='day');
+  document.getElementById('sh-df-month').classList.toggle('hid',mode!=='month');
+  document.getElementById('sh-df-day').classList.toggle('hid',mode!=='day');
+  if(mode==='day'&&!document.getElementById('sh-day-inp').value)document.getElementById('sh-day-inp').value=new Date().toISOString().slice(0,10);
+  renderSH();
+}
+function changeShDay(d){
+  const inp=document.getElementById('sh-day-inp');
+  const cur=inp.value?new Date(inp.value):new Date();
+  cur.setDate(cur.getDate()+d);
+  inp.value=cur.toISOString().slice(0,10);
   renderSH();
 }
 function getPrevMonth(ym){const[y,m]=ym.split('-').map(Number);const dt=new Date(y,m-2,1);return`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;}
@@ -2388,22 +2501,31 @@ function renderShState(){
 function renderSH(){
   const s=storeData.find(x=>x.id===curStoreId);document.getElementById('sh-name').textContent=s?.name||'—';
   document.getElementById('sh-month-lbl').textContent=fmtMonth(shMonth);
+  const shDayVal=document.getElementById('sh-day-inp')?.value||new Date().toISOString().slice(0,10);
+  const shFilterKey=shFilterMode==='day'?shDayVal:shMonth;
   const prev=getPrevMonth(shMonth);
-  const rows=shData.filter(r=>r.storeId===curStoreId&&r.date?.startsWith(shMonth));
+  const rows=shData.filter(r=>r.storeId===curStoreId&&r.date?.startsWith(shFilterKey));
   const prevRows=shData.filter(r=>r.storeId===curStoreId&&r.date?.startsWith(prev));
   const sum=(arr,type)=>arr.filter(r=>r.type===type&&(r.currency||'VND')==='VND').reduce((a,r)=>a+r.amount,0);
   const rev=sum(rows,'revenue'),exp=sum(rows,'expense'),profit=rev-exp;
   const pRev=sum(prevRows,'revenue'),pExp=sum(prevRows,'expense'),pProfit=pRev-pExp;
   document.getElementById('sh-rev').textContent=fmt(rev);document.getElementById('sh-exp').textContent=fmt(exp);
   const pe=document.getElementById('sh-profit');pe.textContent=fmt(profit);pe.className='val '+(profit>=0?'pos':'neg');
-  // Compare row
-  function chgChip(cur,prev){if(!prev)return'';const d=cur-prev,p=(d/prev*100).toFixed(1);return`<div class="cmp-chg" style="color:${d>=0?'#22c55e':'#ef4444'}">${d>=0?'▲':'▼'}${Math.abs(p)}%</div>`;}
-  document.getElementById('sh-cmp').innerHTML=`
-    <div class="cmp-cell"><div class="cmp-lbl">DT tháng trước</div><div class="cmp-val">${fmt(pRev)}</div>${chgChip(rev,pRev)}</div>
-    <div class="cmp-cell"><div class="cmp-lbl">CF tháng trước</div><div class="cmp-val">${fmt(pExp)}</div>${chgChip(exp,pExp)}</div>
-    <div class="cmp-cell"><div class="cmp-lbl">LN tháng trước</div><div class="cmp-val ${pProfit>=0?'pos':'neg'}">${fmt(pProfit)}</div>${chgChip(profit,pProfit)}</div>`;
+  // Compare row — hide in day mode
+  const cmpEl=document.getElementById('sh-cmp');
+  if(shFilterMode==='month'){
+    function chgChip(cur,prev){if(!prev)return'';const d=cur-prev,p=(d/prev*100).toFixed(1);return`<div class="cmp-chg" style="color:${d>=0?'#22c55e':'#ef4444'}">${d>=0?'▲':'▼'}${Math.abs(p)}%</div>`;}
+    cmpEl.innerHTML=`
+      <div class="cmp-cell"><div class="cmp-lbl">DT tháng trước</div><div class="cmp-val">${fmt(pRev)}</div>${chgChip(rev,pRev)}</div>
+      <div class="cmp-cell"><div class="cmp-lbl">CF tháng trước</div><div class="cmp-val">${fmt(pExp)}</div>${chgChip(exp,pExp)}</div>
+      <div class="cmp-cell"><div class="cmp-lbl">LN tháng trước</div><div class="cmp-val ${pProfit>=0?'pos':'neg'}">${fmt(pProfit)}</div>${chgChip(profit,pProfit)}</div>`;
+    cmpEl.style.display='';
+  } else {
+    cmpEl.innerHTML='';cmpEl.style.display='none';
+  }
   const list=document.getElementById('sh-list');
-  if(!rows.length){list.innerHTML=`<div style="text-align:center;color:#4b5563;padding:14px;font-size:11px">Không có giao dịch trong ${fmtMonth(shMonth)}</div>`;return;}
+  const emptyShLbl=shFilterMode==='day'?`ngày ${shDayVal.split('-').reverse().join('/')}`:fmtMonth(shMonth);
+  if(!rows.length){list.innerHTML=`<div style="text-align:center;color:#4b5563;padding:14px;font-size:11px">Không có giao dịch trong ${emptyShLbl}</div>`;return;}
   // Role-based display: owner/manager can edit; employee only adds
   const myRole=getMyRole(curStoreId)||'owner';
   const canEditSH=(myRole==='owner'||myRole==='manager');
@@ -2415,16 +2537,20 @@ function renderSH(){
     const w=r.walletId?walletData.find(x=>x.id===r.walletId):null;
     if(r.type==='transfer-out'){
       return `<div class="ri" style="border-left-color:#f59e0b;opacity:.9">
-        <div class="rli"><span class="rc" style="color:#f59e0b">⇄ Chuyển tiền đi · ${w?.name?.slice(0,12)||'?'}</span><span class="rn">${r.note||'—'} · ${fmtDT(r.dt||r.date)}</span></div>
+        <div class="rli"><span class="rc" style="color:#f59e0b">⇄ Chuyển tiền đi</span>${w?`<span class="rw" style="color:#f59e0b">👛 ${w.name}</span>`:''}<span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span></div>
         <div class="rr"><span class="ra" style="color:#f59e0b">-${fmt(r.amount,r.currency||'VND')}</span>${canEditSH?`<button class="xbtn" onclick="delSH(${r.id})">×</button>`:''}</div></div>`;
     }
     if(r.type==='transfer-in'){
       return `<div class="ri" style="border-left-color:#60a5fa;opacity:.9">
-        <div class="rli"><span class="rc" style="color:#60a5fa">⇄ Tiền về cửa hàng · ${w?.name?.slice(0,12)||'?'}</span><span class="rn">${r.note||'—'} · ${fmtDT(r.dt||r.date)}</span></div>
+        <div class="rli"><span class="rc" style="color:#60a5fa">⇄ Tiền về cửa hàng</span>${w?`<span class="rw" style="color:#60a5fa">👛 ${w.name}</span>`:''}<span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span></div>
         <div class="rr"><span class="ra" style="color:#60a5fa">+${fmt(r.amount,r.currency||'VND')}</span>${canEditSH?`<button class="xbtn" onclick="delSH(${r.id})">×</button>`:''}</div></div>`;
     }
-    const auditBadge=(canSeePL&&r._editedBy)?`<span style="font-size:9px;color:#f59e0b;background:rgba(245,158,11,0.1);border-radius:10px;padding:1px 6px;margin-left:4px">✏️ ${r._editedBy}</span>`:'' ;
-    return `<div class="ri ${r.type}"><div class="rli"><span class="rc">${r.category}${w?` · 👛${w.name.slice(0,10)}`:''}${auditBadge}</span><span class="rn">${r.note||'—'} · ${fmtDT(r.dt||r.date)}</span></div>
+    const auditBadge=(canSeePL&&r._editedBy)?`<span style="font-size:9px;color:#f59e0b;background:rgba(245,158,11,0.1);border-radius:10px;padding:1px 6px;margin-left:4px">✏️ ${r._editedBy}</span>`:'';
+    return `<div class="ri ${r.type}"><div class="rli">
+      <span class="rc">${r.category}${auditBadge}</span>
+      ${w?`<span class="rw">👛 ${w.name}</span>`:''}
+      <span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span>
+    </div>
     <div class="rr"><span class="ra">${r.type==='revenue'?'+':'-'}${fmt(r.amount,r.currency||'VND')}</span>${canEditSH?`<button class="xbtn" style="color:#60a5fa;margin-right:2px" onclick="editSH(${r.id})">✏️</button><button class="xbtn" onclick="delSH(${r.id})">×</button>`:''}</div></div>`;}).join('');
   updWSelects();
 }
