@@ -1162,6 +1162,11 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <div class="fl" style="margin-top:6px">Thành phần <span style="color:#4b5563;font-weight:400;font-size:10px">(chọn nguyên liệu hoặc bán thành phẩm)</span></div>
     <div id="rc-items" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
     <button onclick="addRcItem()" style="width:100%;padding:8px;background:rgba(var(--tc-rgb),0.08);border:1.5px dashed rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">＋ Thêm thành phần</button>
+    <div class="fr" style="align-items:center;gap:8px;margin-top:10px;padding:9px 11px;background:rgba(var(--tc-rgb),0.06);border-radius:10px;border:1px solid rgba(var(--tc-rgb),0.1)">
+      <input type="checkbox" id="rc-buffer-on" onchange="updRcPreview()" style="width:15px;height:15px;cursor:pointer;flex-shrink:0"/>
+      <label for="rc-buffer-on" style="font-size:12px;color:var(--tc);font-weight:600;flex:1;cursor:pointer">🛡 Du di rủi ro (₫/phần)</label>
+      <input type="text" id="rc-buffer-amt" class="mi" inputmode="numeric" placeholder="1.000" data-raw="0" oninput="onMI(this);updRcPreview()" style="width:90px;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:6px 8px;font-size:12px;font-family:inherit;outline:none;text-align:right"/>
+    </div>
     <div id="rc-preview" class="rc-preview" style="margin-top:8px"></div>
     <button class="sbtn" onclick="saveRecipe()">💾 Lưu thành phẩm</button>
   </div>
@@ -1534,6 +1539,8 @@ async function doLogin(u){
   loadAll();
   // Dọn dữ liệu cost mồ côi (store đã bị xóa nhưng cost data còn sót)
   cleanupOrphanCostData();
+  // Sync cost data từ Firebase cho tất cả cửa hàng (owner + shared)
+  syncAllCostData().then(()=>{if(_shView==='cost')renderCostModule();});
   // Auto-create default wallets
   const ownRaw=JSON.parse(localStorage.getItem(SK.walletData)||'[]');
   const hasOwnPersonal=ownRaw.some(w=>!w.storeId);
@@ -1600,7 +1607,25 @@ function startRealTimeSync(uid){
   // Detach old listener if any
   if(fbListener){fbDb.ref(FB_PATH).off('child_changed',fbListener);fbListener=null;}
   fbListener=fbDb.ref(FB_PATH).on('child_changed',snap=>{
-    const compositeKey=snap.key; // e.g. "u1_tc"
+    const compositeKey=snap.key;
+    // Handle cost data for any accessible store
+    if(compositeKey.startsWith('dT_cost_')){
+      const sid=Number(compositeKey.replace('dT_cost_',''));
+      if(storeData.find(x=>x.id===sid)){
+        const raw=snap.val();
+        if(raw){
+          const data=typeof raw==='string'?JSON.parse(raw):raw;
+          if(data.ing)localStorage.setItem('ingData_'+sid,JSON.stringify(data.ing));
+          if(data.semi)localStorage.setItem('semiData_'+sid,JSON.stringify(data.semi));
+          if(data.recipe)localStorage.setItem('recipeData_'+sid,JSON.stringify(data.recipe));
+          if(data.cats)localStorage.setItem('ingCats_'+sid,JSON.stringify(data.cats));
+          if(_shView==='cost'&&curStoreId===sid){renderCostModule();}
+          toast('🔄 Cost data cập nhật từ thiết bị khác','#60a5fa');
+        }
+      }
+      return;
+    }
+    // Handle regular user data
     if(!compositeKey.startsWith(`u${uid}_`))return;
     const k=compositeKey.replace(`u${uid}_`,'');
     if(SK[k]){
@@ -2652,7 +2677,9 @@ function delStore(){
   // Remove wallets belonging to this store
   walletData=walletData.filter(w=>w.storeId!==sid);
   // Remove cost module data (ingData, semiData, recipeData)
-  ['ingData_','semiData_','recipeData_'].forEach(prefix=>localStorage.removeItem(prefix+sid));
+  ['ingData_','semiData_','recipeData_','ingCats_'].forEach(prefix=>localStorage.removeItem(prefix+sid));
+  // Remove cost data from Firebase
+  if(fbDb)dbSet('dT_cost_'+sid,null).catch(()=>{});
   // Remove from perms
   const p=getPerms();if(p[sid]){delete p[sid];setPerms(p);}
   curStoreId=storeData[0]?.id||null;
@@ -2666,7 +2693,7 @@ function delStore(){
 // Dọn dữ liệu mồ côi (cost data của store đã bị xóa)
 function cleanupOrphanCostData(){
   const validIds=new Set(storeData.map(s=>String(s.id)));
-  const prefixes=['ingData_','semiData_','recipeData_'];
+  const prefixes=['ingData_','semiData_','recipeData_','ingCats_'];
   let cleaned=0;
   for(let i=localStorage.length-1;i>=0;i--){
     const key=localStorage.key(i);
@@ -2686,11 +2713,44 @@ function renderStoresSel(){
 let shFilterMode='month';
 // ══════ MODULE: COST CALCULATOR (F&B) v2 ══════
 function getIngData(sid){return JSON.parse(localStorage.getItem('ingData_'+sid)||'[]');}
-function saveIngData(sid,d){localStorage.setItem('ingData_'+sid,JSON.stringify(d));}
+function saveIngData(sid,d){localStorage.setItem('ingData_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
 function getSemiData(sid){return JSON.parse(localStorage.getItem('semiData_'+sid)||'[]');}
-function saveSemiData(sid,d){localStorage.setItem('semiData_'+sid,JSON.stringify(d));}
+function saveSemiData(sid,d){localStorage.setItem('semiData_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
 function getRecipeData(sid){return JSON.parse(localStorage.getItem('recipeData_'+sid)||'[]');}
-function saveRecipeData(sid,d){localStorage.setItem('recipeData_'+sid,JSON.stringify(d));}
+function saveRecipeData(sid,d){localStorage.setItem('recipeData_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
+
+// ── COST CLOUD SYNC ──
+const _costSaveTimers={};
+function _debouncedSaveCost(sid){
+  clearTimeout(_costSaveTimers[sid]);
+  _costSaveTimers[sid]=setTimeout(()=>saveCostToCloud(sid),1500);
+}
+function saveCostToCloud(sid){
+  if(!fbDb||!sid)return;
+  const data={
+    ing:getIngData(sid),
+    semi:getSemiData(sid),
+    recipe:getRecipeData(sid),
+    cats:getIngCats(sid)
+  };
+  dbSet('dT_cost_'+sid,JSON.stringify(data)).catch(e=>console.warn('cost cloud save:',e.message));
+}
+async function syncCostFromCloud(sid){
+  if(!fbDb||!sid)return;
+  try{
+    const raw=await dbGet('dT_cost_'+sid);
+    if(!raw)return;
+    const data=typeof raw==='string'?JSON.parse(raw):raw;
+    if(data.ing)localStorage.setItem('ingData_'+sid,JSON.stringify(data.ing));
+    if(data.semi)localStorage.setItem('semiData_'+sid,JSON.stringify(data.semi));
+    if(data.recipe)localStorage.setItem('recipeData_'+sid,JSON.stringify(data.recipe));
+    if(data.cats)localStorage.setItem('ingCats_'+sid,JSON.stringify(data.cats));
+  }catch(e){console.warn('syncCostFromCloud:',e.message);}
+}
+async function syncAllCostData(){
+  if(!fbDb)return;
+  await Promise.all(storeData.map(s=>syncCostFromCloud(s.id)));
+}
 
 // ── Cost calculation helpers ──
 function ingUnitPrice(ing){if(!ing||!ing.pkgQty||!ing.pkgPrice)return 0;return ing.pkgPrice/ing.pkgQty;}
@@ -2731,6 +2791,7 @@ function saveStoreType(){
         localStorage.removeItem('ingData_'+sid);
         localStorage.removeItem('semiData_'+sid);
         localStorage.removeItem('recipeData_'+sid);
+        localStorage.removeItem('ingCats_'+sid);
         toast('🗑 Đã xóa dữ liệu Tính Cost','#f59e0b');
       }else{
         toast('✓ Đã giữ lại dữ liệu Tính Cost','#22c55e');
@@ -2764,7 +2825,11 @@ function setShView(v){
   document.getElementById('stab-cost').classList.toggle('on',v==='cost');
   document.getElementById('sh-txn-view').classList.toggle('hid',v!=='txn');
   document.getElementById('sh-cost-module').classList.toggle('hid',v!=='cost');
-  if(v==='cost')renderCostModule();
+  if(v==='cost'){
+    renderCostModule();
+    // Sync latest cost data from cloud in background
+    syncCostFromCloud(curStoreId).then(()=>renderCostModule());
+  }
 }
 let _costView='ing';
 function setCostView(v){
@@ -2778,7 +2843,7 @@ function renderCostModule(){renderIngList();renderSemiList();renderRecipeList();
 
 // ── INGREDIENT CATEGORIES ──
 function getIngCats(sid){return JSON.parse(localStorage.getItem('ingCats_'+sid)||'[]');}
-function saveIngCats(sid,d){localStorage.setItem('ingCats_'+sid,JSON.stringify(d));}
+function saveIngCats(sid,d){localStorage.setItem('ingCats_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
 let _collCats=new Set();
 function toggleCatCollapse(catId){
   if(_collCats.has(catId))_collCats.delete(catId);else _collCats.add(catId);
@@ -2911,22 +2976,42 @@ function delIng(id){
 }
 function renderIngList(){
   const ings=getIngData(curStoreId);
+  const cats=getIngCats(curStoreId);
   const list=document.getElementById('ing-list');if(!list)return;
   if(!ings.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có nguyên liệu nào.<br/>Nhấn <b>＋ Thêm</b> để bắt đầu!</div>';return;}
-  list.innerHTML=ings.map(g=>{
-    const up=ingUnitPrice(g);
-    return`<div class="ing-row">
-    <div style="flex:1;min-width:0">
-      <div class="ing-n">${g.name}</div>
-      ${g.pkgQty?`<div class="ing-u">1 ${g.pkgUnit||'gói'} = ${g.pkgQty}${g.useUnit||''} · ${fmt(g.pkgPrice)}</div>`:''}
-      ${up?`<div class="ing-price">${fmt(Math.round(up*1000)/1000)} / ${g.useUnit||'đơn vị'}</div>`:''}
-    </div>
-    <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
-      <button class="xbtn" style="color:#60a5fa" onclick="openIngModal(${g.id})">✏️</button>
-      <button class="xbtn" onclick="delIng(${g.id})">×</button>
-    </div>
-  </div>`;
-  }).join('');
+  if(!cats.length){
+    // No categories — flat list
+    list.innerHTML=ings.map(g=>_ingRowHtml(g)).join('');
+    return;
+  }
+  // Group by category
+  const grouped=new Map();
+  cats.forEach(c=>grouped.set(c.id,[]));
+  grouped.set(null,[]);
+  ings.forEach(g=>{const key=g.catId&&grouped.has(g.catId)?g.catId:null;grouped.get(key).push(g);});
+  let html='';
+  cats.forEach(c=>{
+    const grp=grouped.get(c.id)||[];
+    const collapsed=_collCats.has(c.id);
+    html+=`<div class="cat-hdr" onclick="toggleCatCollapse(${c.id})">
+      <span class="cat-hdr-arr">${collapsed?'▶':'▼'}</span>
+      <span class="cat-hdr-nm">${c.name}</span>
+      <span class="cat-hdr-cnt">${grp.length} mục</span>
+    </div>`;
+    if(!collapsed&&grp.length)html+=`<div class="cat-body">${grp.map(g=>_ingRowHtml(g)).join('')}</div>`;
+    else if(!collapsed&&!grp.length)html+=`<div style="font-size:11px;color:#4b5563;padding:6px 12px">Trống</div>`;
+  });
+  const uncat=grouped.get(null)||[];
+  if(uncat.length){
+    const collapsed=_collCats.has('uncat');
+    html+=`<div class="cat-hdr" onclick="toggleCatCollapse('uncat')">
+      <span class="cat-hdr-arr">${collapsed?'▶':'▼'}</span>
+      <span class="cat-hdr-nm">Chưa phân loại</span>
+      <span class="cat-hdr-cnt">${uncat.length} mục</span>
+    </div>`;
+    if(!collapsed)html+=`<div class="cat-body">${uncat.map(g=>_ingRowHtml(g)).join('')}</div>`;
+  }
+  list.innerHTML=html;
 }
 
 // ── SEMI-FINISHED (BÁN THÀNH PHẨM) ──
@@ -3042,6 +3127,8 @@ function openRecipeModal(editId=null){
   document.getElementById('rc-name').value='';
   const sv=document.getElementById('rc-servings');sv.value='1';sv.dataset.raw='1';
   const se=document.getElementById('rc-sell');se.value='';se.dataset.raw='0';
+  const bufOn=document.getElementById('rc-buffer-on');bufOn.checked=false;
+  const bufAmt=document.getElementById('rc-buffer-amt');bufAmt.value='';bufAmt.dataset.raw='0';
   if(editId){
     const r=getRecipeData(curStoreId).find(x=>x.id===editId);
     if(r){
@@ -3049,6 +3136,8 @@ function openRecipeModal(editId=null){
       sv.value=r.servings||1;sv.dataset.raw=r.servings||1;
       se.value=r.sellPrice?(r.sellPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.'):'' ;se.dataset.raw=r.sellPrice||0;
       _rcItems=r.items.map(x=>({...x}));
+      bufOn.checked=!!r.bufferEnabled;
+      if(r.bufferAmount){bufAmt.value=(r.bufferAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');bufAmt.dataset.raw=r.bufferAmount;}
     }
     document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='✏️ Sửa thành phẩm';
   }else{
@@ -3101,13 +3190,17 @@ function updRcPreview(){
   const ings=getIngData(curStoreId);const semis=getSemiData(curStoreId);
   const servings=Number(document.getElementById('rc-servings')?.dataset.raw)||1;
   const sell=Number(document.getElementById('rc-sell')?.dataset.raw)||0;
+  const bufOn=document.getElementById('rc-buffer-on')?.checked||false;
+  const bufAmt=Number(document.getElementById('rc-buffer-amt')?.dataset.raw)||0;
   const total=_rcItems.reduce((s,it)=>s+_rcItemCostVal(it,ings,semis),0);
   const perServ=Math.round(total/Math.max(servings,1));
-  const margin=sell>0?((sell-perServ)/sell*100).toFixed(1):null;
+  const perServFinal=bufOn&&bufAmt>0?perServ+bufAmt:perServ;
+  const margin=sell>0?((sell-perServFinal)/sell*100).toFixed(1):null;
   const mColor=Number(margin)>=50?'#22c55e':Number(margin)>=30?'#f59e0b':'#ef4444';
   document.getElementById('rc-preview').innerHTML=`
-    <div class="rc-stat"><div class="rc-stat-v">${fmt(Math.round(total))}</div><div class="rc-stat-l">Tổng cost</div></div>
-    <div class="rc-stat"><div class="rc-stat-v">${fmt(perServ)}</div><div class="rc-stat-l">Cost/phần</div></div>
+    <div class="rc-stat"><div class="rc-stat-v">${fmt(Math.round(total))}</div><div class="rc-stat-l">Tổng NVL</div></div>
+    <div class="rc-stat"><div class="rc-stat-v">${fmt(perServ)}</div><div class="rc-stat-l">NVL/phần</div></div>
+    ${bufOn&&bufAmt>0?`<div class="rc-stat"><div class="rc-stat-v" style="color:#f59e0b">+${fmt(bufAmt)}</div><div class="rc-stat-l">Du di</div></div><div class="rc-stat"><div class="rc-stat-v">${fmt(perServFinal)}</div><div class="rc-stat-l">Cost thực/phần</div></div>`:''}
     ${sell>0?`<div class="rc-stat"><div class="rc-stat-v" style="color:${mColor}">${margin}%</div><div class="rc-stat-l">Lợi nhuận</div></div>`:''}`;
 }
 function saveRecipe(){
@@ -3116,12 +3209,15 @@ function saveRecipe(){
   if(!_rcItems.length)return toast('⚠️ Thêm ít nhất 1 thành phần!','#f59e0b');
   const servings=Number(document.getElementById('rc-servings').dataset.raw)||1;
   const sellPrice=Number(document.getElementById('rc-sell').dataset.raw)||0;
+  const bufferEnabled=document.getElementById('rc-buffer-on').checked;
+  const bufferAmount=Number(document.getElementById('rc-buffer-amt').dataset.raw)||0;
   const validItems=_rcItems.filter(x=>x.refId&&x.qty>0);
   const recipes=getRecipeData(curStoreId);
+  const obj={name,servings,sellPrice,bufferEnabled,bufferAmount,items:validItems};
   if(_rcEditId){
     const idx=recipes.findIndex(x=>x.id===_rcEditId);
-    if(idx>=0)recipes[idx]={...recipes[idx],name,servings,sellPrice,items:validItems};
-  }else{recipes.push({id:Date.now(),name,servings,sellPrice,items:validItems});}
+    if(idx>=0)recipes[idx]={...recipes[idx],...obj};
+  }else{recipes.push({id:Date.now(),...obj});}
   saveRecipeData(curStoreId,recipes);
   closeModal('modal-recipe');renderRecipeList();toast('✓ Đã lưu thành phẩm');
 }
@@ -3139,8 +3235,10 @@ function renderRecipeList(){
     const total=calcRecipeTotalCost(r,ings,semis);
     const servings=r.servings||1;
     const perServ=Math.round(total/servings);
+    const bufferActive=r.bufferEnabled&&r.bufferAmount>0;
+    const perServFinal=bufferActive?perServ+r.bufferAmount:perServ;
     const sell=r.sellPrice||0;
-    const margin=sell>0?((sell-perServ)/sell*100).toFixed(1):null;
+    const margin=sell>0?((sell-perServFinal)/sell*100).toFixed(1):null;
     const mColor=Number(margin)>=50?'#22c55e':Number(margin)>=30?'#f59e0b':'#ef4444';
     return`<div class="recipe-card">
       <div class="recipe-head" onclick="document.getElementById('rcb-${r.id}').classList.toggle('hid')">
@@ -3149,7 +3247,9 @@ function renderRecipeList(){
           <div style="font-size:10px;color:#6b7280;margin-top:2px">${servings} phần${sell>0?` · Bán ${fmt(sell)}/phần`:''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
-          <div class="recipe-cost-badge">${fmt(perServ)}/phần</div>
+          <div class="recipe-cost-badge" style="${bufferActive?'border-color:rgba(245,158,11,0.5)':''}">
+            ${bufferActive?`<span style="font-size:9px;color:#6b7280;text-decoration:line-through;margin-right:2px">${fmt(perServ)}</span>`:''}${fmt(perServFinal)}/phần${bufferActive?` <span style="font-size:9px;color:#f59e0b">🛡</span>`:''}
+          </div>
           ${margin?`<div style="font-size:10px;font-weight:700;color:${mColor};flex-shrink:0">${margin}%</div>`:''}
           <button class="xbtn" style="color:#60a5fa" onclick="event.stopPropagation();openRecipeModal(${r.id})">✏️</button>
           <button class="xbtn" onclick="event.stopPropagation();delRecipe(${r.id})">×</button>
