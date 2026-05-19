@@ -497,6 +497,8 @@ body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-share
 .rc-stat{display:flex;flex-direction:column;align-items:center;gap:2px}
 .rc-stat-v{font-size:16px;font-weight:800;color:var(--tc)}
 .rc-stat-l{font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}
+.buf-preset{font-size:10px;padding:3px 9px;border-radius:6px;border:1px solid rgba(var(--tc-rgb),0.25);background:rgba(var(--tc-rgb),0.07);color:var(--tc);cursor:pointer;font-family:inherit;font-weight:600;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.buf-preset:active{background:rgba(var(--tc-rgb),0.18)}
 .stype-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .type-chip{padding:10px;border-radius:11px;font-size:11px;font-weight:600;border:2px solid rgba(255,255,255,0.07);cursor:pointer;display:flex;align-items:center;gap:8px;background:var(--bg-surf);transition:all .15s;-webkit-tap-highlight-color:transparent;color:#9ca3af}
 .type-chip.on{border-color:var(--tc);background:rgba(var(--tc-rgb),0.1);color:var(--tc)}
@@ -735,12 +737,12 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
         </div>
         <!-- Semi-finished view -->
         <div id="cv-semi" class="hid">
-          <div class="bar"><span class="st">Bán thành phẩm</span><button class="abtn" onclick="openSemiModal()">＋ Tạo</button></div>
+          <div class="bar"><span class="st">Bán thành phẩm</span><button class="abtn" style="background:rgba(255,255,255,0.07);margin-right:4px" onclick="openSemiCatsModal()">📁 Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()">📊 Excel</button><button class="abtn" onclick="openSemiModal()">＋ Tạo</button></div>
           <div id="semi-list" class="rl" style="gap:8px"></div>
         </div>
         <!-- Final product view -->
         <div id="cv-recipe" class="hid">
-          <div class="bar"><span class="st">Thành phẩm</span><button class="abtn" onclick="openRecipeModal()">＋ Tạo</button></div>
+          <div class="bar"><span class="st">Thành phẩm</span><button class="abtn" style="background:rgba(255,255,255,0.07);margin-right:4px" onclick="openRecipeCatsModal()">📁 Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()">📊 Excel</button><button class="abtn" onclick="openRecipeModal()">＋ Tạo</button></div>
           <div id="recipe-list" class="rl" style="gap:8px"></div>
         </div>
       </div>
@@ -1158,6 +1160,32 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
   </div>
 </div>
 
+<!-- Semi Categories Modal -->
+<div id="modal-semi-cats" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-semi-cats')">
+  <div class="modal-card" onclick="event.stopPropagation()" style="max-height:85vh;overflow-y:auto">
+    <div class="modal-hdr"><span class="modal-ttl">📁 Danh mục bán thành phẩm</span><button class="modal-close" onclick="closeModal('modal-semi-cats')">×</button></div>
+    <div id="semi-cats-list" style="display:flex;flex-direction:column;gap:6px;min-height:20px"></div>
+    <div class="fl" style="margin-top:10px">Thêm danh mục mới</div>
+    <div style="display:flex;gap:6px">
+      <input type="text" id="new-semi-cat-name" placeholder="VD: Cốt trà, Nước đường, Base sữa..." style="flex:1;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;outline:none" onkeydown="if(event.key==='Enter')addSemiCat()"/>
+      <button class="abtn" onclick="addSemiCat()">＋ Thêm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Recipe Categories Modal -->
+<div id="modal-recipe-cats" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-recipe-cats')">
+  <div class="modal-card" onclick="event.stopPropagation()" style="max-height:85vh;overflow-y:auto">
+    <div class="modal-hdr"><span class="modal-ttl">📁 Danh mục thành phẩm</span><button class="modal-close" onclick="closeModal('modal-recipe-cats')">×</button></div>
+    <div id="recipe-cats-list" style="display:flex;flex-direction:column;gap:6px;min-height:20px"></div>
+    <div class="fl" style="margin-top:10px">Thêm danh mục mới</div>
+    <div style="display:flex;gap:6px">
+      <input type="text" id="new-recipe-cat-name" placeholder="VD: Trà sữa, Nước ép, Cà phê, Topping..." style="flex:1;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;outline:none" onkeydown="if(event.key==='Enter')addRecipeCat()"/>
+      <button class="abtn" onclick="addRecipeCat()">＋ Thêm</button>
+    </div>
+  </div>
+</div>
+
 <!-- Cost Excel Import/Export Modal -->
 <div id="modal-cost-excel" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-cost-excel')">
   <div class="modal-card" onclick="event.stopPropagation()">
@@ -1165,13 +1193,13 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <!-- Download template -->
     <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:12px;margin-bottom:10px">
       <div style="font-size:12px;font-weight:700;color:#22c55e;margin-bottom:4px">📋 Tải file mẫu (.xlsx)</div>
-      <div style="font-size:11px;color:#6b7280;margin-bottom:8px">File mẫu có 2 sheet: <b>Nguyên liệu</b> và <b>Bán thành phẩm</b>. Điền dữ liệu vào rồi upload lên.</div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:8px">File mẫu có 3 sheet: <b>Nguyên liệu</b>, <b>Bán thành phẩm</b>, <b>Thành phẩm</b>. Điền dữ liệu vào rồi upload. Phần nguyên liệu/BTP dùng trong công thức sẽ chọn trực tiếp trong app.</div>
       <button class="abtn" style="background:#22c55e;color:#fff;font-weight:700;width:100%;padding:9px" onclick="downloadCostTemplate()">⬇️ Tải file mẫu</button>
     </div>
     <!-- Upload file -->
     <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:10px;padding:12px">
       <div style="font-size:12px;font-weight:700;color:#60a5fa;margin-bottom:4px">📥 Upload file Excel đã điền</div>
-      <div style="font-size:11px;color:#6b7280;margin-bottom:8px">Chọn file .xlsx để import nguyên liệu và bán thành phẩm. <span style="color:#f59e0b">Dữ liệu sẽ được thêm vào, không ghi đè.</span></div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:8px">Chọn file .xlsx để import nguyên liệu, bán thành phẩm và thành phẩm. <span style="color:#f59e0b">Dữ liệu được thêm vào, không ghi đè.</span></div>
       <button class="abtn" style="background:#60a5fa;color:#fff;font-weight:700;width:100%;padding:9px" onclick="document.getElementById('cost-excel-input').click()">📂 Chọn file để import</button>
     </div>
     <div id="excel-import-status" style="margin-top:8px;font-size:11px;color:#6b7280;text-align:center;min-height:16px"></div>
@@ -1185,6 +1213,8 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <input type="hidden" id="semi-edit-id"/>
     <div class="fl">Tên bán thành phẩm</div>
     <input type="text" id="semi-name" placeholder="VD: Cốt trà ô long nhài, Nước đường..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div class="fl" style="margin-top:6px">Danh mục <span style="color:#4b5563;font-weight:400;font-size:10px">(không bắt buộc)</span></div>
+    <select id="semi-cat" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"></select>
     <div class="fr" style="gap:6px;margin-top:6px">
       <div style="flex:1">
         <div class="fl">Lượng làm ra</div>
@@ -1209,6 +1239,8 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <div class="modal-hdr"><span class="modal-ttl">📋 Thành phẩm mới</span><button class="modal-close" onclick="closeModal('modal-recipe')">×</button></div>
     <div class="fl">Tên thành phẩm</div>
     <input type="text" id="rc-name" placeholder="VD: Trà ô long nhài sữa size M..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div class="fl" style="margin-top:6px">Danh mục <span style="color:#4b5563;font-weight:400;font-size:10px">(không bắt buộc)</span></div>
+    <select id="rc-cat" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"></select>
     <div class="fr" style="gap:6px;margin-top:6px">
       <div style="flex:1"><div class="fl">Số phần làm ra</div><input type="text" id="rc-servings" class="mi" inputmode="numeric" value="1" data-raw="1" oninput="onMI(this);updRcPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/></div>
       <div style="flex:1"><div class="fl">Giá bán / phần (₫)</div><input type="text" id="rc-sell" class="mi" inputmode="numeric" placeholder="0" data-raw="0" oninput="onMI(this);updRcPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/></div>
@@ -1216,10 +1248,20 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <div class="fl" style="margin-top:6px">Thành phần <span style="color:#4b5563;font-weight:400;font-size:10px">(chọn nguyên liệu hoặc bán thành phẩm)</span></div>
     <div id="rc-items" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
     <button onclick="addRcItem()" style="width:100%;padding:8px;background:rgba(var(--tc-rgb),0.08);border:1.5px dashed rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">＋ Thêm thành phần</button>
-    <div class="fr" style="align-items:center;gap:8px;margin-top:10px;padding:9px 11px;background:rgba(var(--tc-rgb),0.06);border-radius:10px;border:1px solid rgba(var(--tc-rgb),0.1)">
-      <input type="checkbox" id="rc-buffer-on" onchange="updRcPreview()" style="width:15px;height:15px;cursor:pointer;flex-shrink:0"/>
-      <label for="rc-buffer-on" style="font-size:12px;color:var(--tc);font-weight:600;flex:1;cursor:pointer">🛡 Du di rủi ro (₫/phần)</label>
-      <input type="text" id="rc-buffer-amt" class="mi" inputmode="numeric" placeholder="1.000" data-raw="0" oninput="onMI(this);updRcPreview()" style="width:90px;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:6px 8px;font-size:12px;font-family:inherit;outline:none;text-align:right"/>
+    <div style="margin-top:10px;background:rgba(var(--tc-rgb),0.06);border-radius:10px;border:1px solid rgba(var(--tc-rgb),0.1);overflow:hidden">
+      <div style="display:flex;align-items:center;gap:8px;padding:9px 11px">
+        <input type="checkbox" id="rc-buffer-on" onchange="updRcPreview()" style="width:15px;height:15px;cursor:pointer;flex-shrink:0"/>
+        <label for="rc-buffer-on" style="font-size:12px;color:var(--tc);font-weight:600;cursor:pointer;flex:1">🛡 Du di rủi ro</label>
+        <input type="text" id="rc-buffer-amt" class="mi" inputmode="numeric" placeholder="VD: 2.000" data-raw="0" oninput="onMI(this);updRcPreview()" style="width:90px;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:6px 8px;font-size:12px;font-family:inherit;outline:none;text-align:right"/>
+        <span style="font-size:10px;color:#6b7280;flex-shrink:0">₫/phần</span>
+      </div>
+      <div style="display:flex;gap:5px;padding:0 11px 9px;align-items:center">
+        <span style="font-size:10px;color:#6b7280;flex-shrink:0">Chọn nhanh:</span>
+        <button type="button" onclick="setBufPreset(500)" class="buf-preset">+500</button>
+        <button type="button" onclick="setBufPreset(1000)" class="buf-preset">+1.000</button>
+        <button type="button" onclick="setBufPreset(2000)" class="buf-preset">+2.000</button>
+        <button type="button" onclick="setBufPreset(5000)" class="buf-preset">+5.000</button>
+      </div>
     </div>
     <div id="rc-preview" class="rc-preview" style="margin-top:8px"></div>
     <button class="sbtn" onclick="saveRecipe()">💾 Lưu thành phẩm</button>
@@ -2731,7 +2773,7 @@ function delStore(){
   // Remove wallets belonging to this store
   walletData=walletData.filter(w=>w.storeId!==sid);
   // Remove cost module data (ingData, semiData, recipeData)
-  ['ingData_','semiData_','recipeData_','ingCats_'].forEach(prefix=>localStorage.removeItem(prefix+sid));
+  ['ingData_','semiData_','recipeData_','ingCats_','semiCats_','recipeCats_'].forEach(prefix=>localStorage.removeItem(prefix+sid));
   // Remove cost data from Firebase
   if(fbDb)dbSet('dT_cost_'+sid,null).catch(()=>{});
   // Remove from perms
@@ -2747,7 +2789,7 @@ function delStore(){
 // Dọn dữ liệu mồ côi (cost data của store đã bị xóa)
 function cleanupOrphanCostData(){
   const validIds=new Set(storeData.map(s=>String(s.id)));
-  const prefixes=['ingData_','semiData_','recipeData_','ingCats_'];
+  const prefixes=['ingData_','semiData_','recipeData_','ingCats_','semiCats_','recipeCats_'];
   let cleaned=0;
   for(let i=localStorage.length-1;i>=0;i--){
     const key=localStorage.key(i);
@@ -2785,7 +2827,9 @@ function saveCostToCloud(sid){
     ing:getIngData(sid),
     semi:getSemiData(sid),
     recipe:getRecipeData(sid),
-    cats:getIngCats(sid)
+    cats:getIngCats(sid),
+    semiCats:getSemiCats(sid),
+    recipeCats:getRecipeCats(sid)
   };
   dbSet('dT_cost_'+sid,JSON.stringify(data)).catch(e=>console.warn('cost cloud save:',e.message));
 }
@@ -2799,6 +2843,8 @@ async function syncCostFromCloud(sid){
     if(data.semi)localStorage.setItem('semiData_'+sid,JSON.stringify(data.semi));
     if(data.recipe)localStorage.setItem('recipeData_'+sid,JSON.stringify(data.recipe));
     if(data.cats)localStorage.setItem('ingCats_'+sid,JSON.stringify(data.cats));
+    if(data.semiCats)localStorage.setItem('semiCats_'+sid,JSON.stringify(data.semiCats));
+    if(data.recipeCats)localStorage.setItem('recipeCats_'+sid,JSON.stringify(data.recipeCats));
   }catch(e){console.warn('syncCostFromCloud:',e.message);}
 }
 async function syncAllCostData(){
@@ -2846,6 +2892,8 @@ function saveStoreType(){
         localStorage.removeItem('semiData_'+sid);
         localStorage.removeItem('recipeData_'+sid);
         localStorage.removeItem('ingCats_'+sid);
+        localStorage.removeItem('semiCats_'+sid);
+        localStorage.removeItem('recipeCats_'+sid);
         toast('🗑 Đã xóa dữ liệu Tính Cost','#f59e0b');
       }else{
         toast('✓ Đã giữ lại dữ liệu Tính Cost','#22c55e');
@@ -2915,17 +2963,31 @@ function downloadCostTemplate(){
   const ws1=window.XLSX.utils.aoa_to_sheet(ingRows);
   ws1['!cols']=[{wch:20},{wch:28},{wch:16},{wch:20},{wch:14},{wch:16}];
   window.XLSX.utils.book_append_sheet(wb,ws1,'Nguyên liệu');
-  // Sheet 2: Bán thành phẩm
+  // Sheet 2: Bán thành phẩm (NO ingredient columns — user picks in-app)
   const semiRows=[
-    ['Tên bán thành phẩm *','SL làm ra *','Đơn vị *','NL 1 (tên)','SL dùng NL1','NL 2 (tên)','SL dùng NL2','NL 3 (tên)','SL dùng NL3','NL 4 (tên)','SL dùng NL4'],
-    ['Cốt trà ô long nhài','1','lít','Trà ô long nhài',15,'Đường trắng',200,'','','',''],
-    ['Nước đường chuẩn','1','lít','Đường trắng',500,'','','','','',''],
-    ['Trà sữa base','1','ly','Cốt trà ô long nhài',150,'Sữa đặc',30,'','','',''],
+    ['Danh mục','Tên bán thành phẩm *','Lượng làm ra *','Đơn vị tính *'],
+    ['Cốt trà','Cốt trà ô long nhài',1,'lít'],
+    ['Cốt trà','Cốt trà đào',1,'lít'],
+    ['Nước đường','Nước đường chuẩn',1,'lít'],
+    ['Base sữa','Trà sữa base',1,'ly'],
+    ['','Đá xay base',1,'lít'],
   ];
   const ws2=window.XLSX.utils.aoa_to_sheet(semiRows);
-  ws2['!cols']=[{wch:26},{wch:12},{wch:12},{wch:24},{wch:14},{wch:24},{wch:14},{wch:24},{wch:14},{wch:24},{wch:14}];
+  ws2['!cols']=[{wch:18},{wch:32},{wch:16},{wch:14}];
   window.XLSX.utils.book_append_sheet(wb,ws2,'Bán thành phẩm');
-  // Sheet 3: Hướng dẫn
+  // Sheet 3: Thành phẩm (NO ingredient/semi columns — user picks in-app)
+  const recipeRows=[
+    ['Danh mục','Tên thành phẩm *','Số phần làm ra *','Giá bán / phần (₫)'],
+    ['Trà sữa','Trà sữa ô long size M',1,45000],
+    ['Trà sữa','Trà sữa ô long size L',1,55000],
+    ['Trà trái cây','Trà đào cam sả size M',1,40000],
+    ['Cà phê','Bạc xỉu đá size M',1,35000],
+    ['','Topping trân châu đen',1,5000],
+  ];
+  const ws3=window.XLSX.utils.aoa_to_sheet(recipeRows);
+  ws3['!cols']=[{wch:18},{wch:32},{wch:18},{wch:20}];
+  window.XLSX.utils.book_append_sheet(wb,ws3,'Thành phẩm');
+  // Sheet 4: Hướng dẫn
   const hdRows=[
     ['HƯỚNG DẪN ĐIỀN FILE MẪU'],
     [''],
@@ -2938,15 +3000,20 @@ function downloadCostTemplate(){
     ['• Giá nhập: chỉ điền số, không cần ký tự ₫'],
     [''],
     ['Sheet "Bán thành phẩm":'],
-    ['• Tên nguyên liệu phải khớp CHÍNH XÁC với tên trong sheet Nguyên liệu'],
-    ['• Có thể thêm tối đa 4 cặp cột Tên NL + SL dùng'],
-    ['• Để trống các cột NL nếu không dùng'],
+    ['• Chỉ cần điền Danh mục, Tên, Lượng làm ra và Đơn vị'],
+    ['• Nguyên liệu dùng để làm BTP → chọn trực tiếp trong app sau khi import'],
+    ['• Danh mục: để trống nếu không cần phân loại'],
     [''],
-    ['⚠️ LƯU Ý: Nhập Nguyên liệu trước, sau đó mới nhập Bán thành phẩm!'],
+    ['Sheet "Thành phẩm":'],
+    ['• Chỉ cần điền Danh mục, Tên, Số phần và Giá bán'],
+    ['• Nguyên liệu + BTP dùng → chọn trực tiếp trong app sau khi import'],
+    ['• Giá bán: để trống hoặc điền 0 nếu chưa có'],
+    [''],
+    ['⚠️ LƯU Ý: Nhập Nguyên liệu trước để có thể gắn vào công thức sau!'],
   ];
-  const ws3=window.XLSX.utils.aoa_to_sheet(hdRows);
-  ws3['!cols']=[{wch:60}];
-  window.XLSX.utils.book_append_sheet(wb,ws3,'Hướng dẫn');
+  const ws4=window.XLSX.utils.aoa_to_sheet(hdRows);
+  ws4['!cols']=[{wch:70}];
+  window.XLSX.utils.book_append_sheet(wb,ws4,'Hướng dẫn');
   window.XLSX.writeFile(wb,'mau_tinh_cost_dongtien.xlsx');
   toast('✓ Đã tải file mẫu!');
 }
@@ -2999,35 +3066,70 @@ function handleCostExcelImport(file){
       const ws2=wb.Sheets['Bán thành phẩm'];
       if(ws2){
         const rows2=window.XLSX.utils.sheet_to_json(ws2,{header:1,defval:''});
-        const ings=getIngData(curStoreId);
         const semis=getSemiData(curStoreId);
+        const sCats=getSemiCats(curStoreId);
         rows2.slice(1).forEach(row=>{
-          const [name,outQty,outUnit,...rest]=row;
+          const [catName,name,outQty,outUnit]=row;
           const cleanName=String(name||'').trim();
           if(!cleanName)return;
           if(semis.find(s=>s.name===cleanName))return;
-          const items=[];
-          for(let i=0;i<rest.length;i+=2){
-            const ingName=String(rest[i]||'').trim();
-            const qty=rest[i+1];
-            if(!ingName||!qty)continue;
-            const ing=ings.find(g=>g.name===ingName);
-            if(ing)items.push({ingId:ing.id,qty:parseFloat(String(qty).replace(/[^0-9.]/g,''))||0});
+          let sCatId=null;
+          const cleanSCat=String(catName||'').trim();
+          if(cleanSCat){
+            let sc=sCats.find(c=>c.name===cleanSCat);
+            if(!sc){sc={id:Date.now()+semiCount+5000,name:cleanSCat};sCats.push(sc);}
+            sCatId=sc.id;
           }
           semis.push({
             id:Date.now()+semiCount+2000,
             name:cleanName,
-            outputQty:parseFloat(String(outQty).replace(/[^0-9.]/g,''))||1,
+            outputQty:parseFloat(String(outQty||'').replace(/[^0-9.]/g,''))||1,
             outputUnit:String(outUnit||'').trim(),
-            items
+            catId:sCatId,
+            items:[]
           });
           semiCount++;
         });
+        saveSemiCats(curStoreId,sCats);
         saveSemiData(curStoreId,semis);
+      }
+      // ── Import thành phẩm ──
+      let recipeCount=0;
+      const ws3=wb.Sheets['Thành phẩm'];
+      if(ws3){
+        const rows3=window.XLSX.utils.sheet_to_json(ws3,{header:1,defval:''});
+        const recipes=getRecipeData(curStoreId);
+        const rCats=getRecipeCats(curStoreId);
+        rows3.slice(1).forEach(row=>{
+          const [catName,name,servings,sellPrice]=row;
+          const cleanName=String(name||'').trim();
+          if(!cleanName)return;
+          if(recipes.find(r=>r.name===cleanName))return;
+          let rCatId=null;
+          const cleanRCat=String(catName||'').trim();
+          if(cleanRCat){
+            let rc=rCats.find(c=>c.name===cleanRCat);
+            if(!rc){rc={id:Date.now()+recipeCount+8000,name:cleanRCat};rCats.push(rc);}
+            rCatId=rc.id;
+          }
+          recipes.push({
+            id:Date.now()+recipeCount+4000,
+            name:cleanName,
+            servings:parseFloat(String(servings||'').replace(/[^0-9.]/g,''))||1,
+            sellPrice:parseFloat(String(sellPrice||'').replace(/[^0-9.]/g,''))||0,
+            bufferEnabled:false,bufferAmount:0,
+            catId:rCatId,
+            items:[]
+          });
+          recipeCount++;
+        });
+        saveRecipeCats(curStoreId,rCats);
+        saveRecipeData(curStoreId,recipes);
       }
       renderCostModule();
       closeModal('modal-cost-excel');
-      const msg=`✓ Import thành công: ${ingCount} nguyên liệu${semiCount?', '+semiCount+' bán thành phẩm':''}${catCount?' ('+catCount+' danh mục mới)':''}`;
+      const parts=[ingCount+' nguyên liệu',semiCount?' '+semiCount+' bán thành phẩm':'',recipeCount?' '+recipeCount+' thành phẩm':''].filter(Boolean);
+      const msg=`✓ Import thành công: ${parts.join(',')}${catCount?' ('+catCount+' DM nguyên liệu)':''}`;
       toast(msg,'#22c55e');
     }catch(err){
       status.textContent='❌ Lỗi đọc file: '+err.message;
@@ -3041,6 +3143,12 @@ function handleCostExcelImport(file){
 // ── INGREDIENT CATEGORIES ──
 function getIngCats(sid){return JSON.parse(localStorage.getItem('ingCats_'+sid)||'[]');}
 function saveIngCats(sid,d){localStorage.setItem('ingCats_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
+// ── SEMI CATEGORIES ──
+function getSemiCats(sid){return JSON.parse(localStorage.getItem('semiCats_'+sid)||'[]');}
+function saveSemiCats(sid,d){localStorage.setItem('semiCats_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
+// ── RECIPE CATEGORIES ──
+function getRecipeCats(sid){return JSON.parse(localStorage.getItem('recipeCats_'+sid)||'[]');}
+function saveRecipeCats(sid,d){localStorage.setItem('recipeCats_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
 let _collCats=new Set();
 function toggleCatCollapse(catId){
   if(_collCats.has(catId))_collCats.delete(catId);else _collCats.add(catId);
@@ -3081,6 +3189,77 @@ function delIngCat(id){
   renderIngCatsList();renderIngList();
   toast('✓ Đã xoá danh mục');
 }
+
+// ── SEMI CATEGORIES CRUD ──
+let _collSemiCats=new Set();
+function toggleSemiCatCollapse(catId){if(_collSemiCats.has(catId))_collSemiCats.delete(catId);else _collSemiCats.add(catId);renderSemiList();}
+function openSemiCatsModal(){renderSemiCatsList();document.getElementById('modal-semi-cats').classList.remove('hid');}
+function renderSemiCatsList(){
+  const cats=getSemiCats(curStoreId);
+  const el=document.getElementById('semi-cats-list');if(!el)return;
+  if(!cats.length){el.innerHTML='<div style="color:#6b7280;font-size:11px;text-align:center;padding:10px">Chưa có danh mục nào.</div>';return;}
+  el.innerHTML=cats.map(c=>`<div style="display:flex;align-items:center;gap:6px">
+    <input type="text" value="${c.name.replace(/"/g,'&quot;')}" style="flex:1;${_ISS}" onblur="renameSemiCat(${c.id},this.value.trim())" onkeydown="if(event.key==='Enter')this.blur()"/>
+    <button class="xbtn" onclick="delSemiCat(${c.id})">×</button>
+  </div>`).join('');
+}
+function addSemiCat(){
+  const inp=document.getElementById('new-semi-cat-name');
+  const name=inp.value.trim();if(!name)return toast('⚠️ Nhập tên danh mục!','#f59e0b');
+  const cats=getSemiCats(curStoreId);
+  cats.push({id:Date.now(),name});
+  saveSemiCats(curStoreId,cats);
+  inp.value='';renderSemiCatsList();renderSemiList();
+  toast('✓ Đã thêm danh mục "'+name+'"');
+}
+function renameSemiCat(id,name){
+  if(!name)return;
+  const cats=getSemiCats(curStoreId);const c=cats.find(x=>x.id===id);
+  if(c&&c.name!==name){c.name=name;saveSemiCats(curStoreId,cats);renderSemiList();}
+}
+function delSemiCat(id){
+  if(!confirm('Xoá danh mục này?\nCác bán thành phẩm trong đó sẽ thành "Chưa phân loại".'))return;
+  saveSemiCats(curStoreId,getSemiCats(curStoreId).filter(x=>x.id!==id));
+  saveSemiData(curStoreId,getSemiData(curStoreId).map(s=>s.catId===id?{...s,catId:null}:s));
+  renderSemiCatsList();renderSemiList();
+  toast('✓ Đã xoá danh mục');
+}
+
+// ── RECIPE CATEGORIES CRUD ──
+let _collRecipeCats=new Set();
+function toggleRecipeCatCollapse(catId){if(_collRecipeCats.has(catId))_collRecipeCats.delete(catId);else _collRecipeCats.add(catId);renderRecipeList();}
+function openRecipeCatsModal(){renderRecipeCatsList();document.getElementById('modal-recipe-cats').classList.remove('hid');}
+function renderRecipeCatsList(){
+  const cats=getRecipeCats(curStoreId);
+  const el=document.getElementById('recipe-cats-list');if(!el)return;
+  if(!cats.length){el.innerHTML='<div style="color:#6b7280;font-size:11px;text-align:center;padding:10px">Chưa có danh mục nào.</div>';return;}
+  el.innerHTML=cats.map(c=>`<div style="display:flex;align-items:center;gap:6px">
+    <input type="text" value="${c.name.replace(/"/g,'&quot;')}" style="flex:1;${_ISS}" onblur="renameRecipeCat(${c.id},this.value.trim())" onkeydown="if(event.key==='Enter')this.blur()"/>
+    <button class="xbtn" onclick="delRecipeCat(${c.id})">×</button>
+  </div>`).join('');
+}
+function addRecipeCat(){
+  const inp=document.getElementById('new-recipe-cat-name');
+  const name=inp.value.trim();if(!name)return toast('⚠️ Nhập tên danh mục!','#f59e0b');
+  const cats=getRecipeCats(curStoreId);
+  cats.push({id:Date.now(),name});
+  saveRecipeCats(curStoreId,cats);
+  inp.value='';renderRecipeCatsList();renderRecipeList();
+  toast('✓ Đã thêm danh mục "'+name+'"');
+}
+function renameRecipeCat(id,name){
+  if(!name)return;
+  const cats=getRecipeCats(curStoreId);const c=cats.find(x=>x.id===id);
+  if(c&&c.name!==name){c.name=name;saveRecipeCats(curStoreId,cats);renderRecipeList();}
+}
+function delRecipeCat(id){
+  if(!confirm('Xoá danh mục này?\nCác thành phẩm trong đó sẽ thành "Chưa phân loại".'))return;
+  saveRecipeCats(curStoreId,getRecipeCats(curStoreId).filter(x=>x.id!==id));
+  saveRecipeData(curStoreId,getRecipeData(curStoreId).map(r=>r.catId===id?{...r,catId:null}:r));
+  renderRecipeCatsList();renderRecipeList();
+  toast('✓ Đã xoá danh mục');
+}
+
 function _ingRowHtml(g){
   const up=ingUnitPrice(g);
   return`<div class="ing-row">
@@ -3221,6 +3400,13 @@ function openSemiModal(editId=null){
   document.getElementById('semi-outqty').value='';
   document.getElementById('semi-outunit').value='';
   document.getElementById('semi-preview').innerHTML='';
+  // Populate category selector
+  const semiCatSel=document.getElementById('semi-cat');
+  if(semiCatSel){
+    const sc=getSemiCats(curStoreId);
+    semiCatSel.innerHTML='<option value="">— Không phân loại —</option>'+sc.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  }
+  let editedSemiCatId=null;
   if(editId){
     const s=getSemiData(curStoreId).find(x=>x.id===editId);
     if(s){
@@ -3229,11 +3415,13 @@ function openSemiModal(editId=null){
       document.getElementById('semi-outqty').value=s.outputQty||'';
       document.getElementById('semi-outunit').value=s.outputUnit||'';
       _semiItems=(s.items||[]).map(x=>({...x}));
+      editedSemiCatId=s.catId||null;
     }
     document.getElementById('semi-modal-ttl').textContent='✏️ Sửa bán thành phẩm';
   }else{
     document.getElementById('semi-modal-ttl').textContent='🧪 Bán thành phẩm mới';
   }
+  if(semiCatSel)semiCatSel.value=editedSemiCatId||'';
   renderSemiItems();updSemiPreview();
   document.getElementById('modal-semi').classList.remove('hid');
 }
@@ -3272,9 +3460,11 @@ function saveSemi(){
   const outputQty=parseFloat(document.getElementById('semi-outqty').value)||0;
   if(!outputQty)return toast('⚠️ Nhập lượng làm ra!','#f59e0b');
   const outputUnit=document.getElementById('semi-outunit').value.trim();
+  const catIdRaw=document.getElementById('semi-cat')?.value;
+  const catId=catIdRaw?Number(catIdRaw):null;
   const editId=document.getElementById('semi-edit-id').value;
   const semis=getSemiData(curStoreId);
-  const obj={name,outputQty,outputUnit,items:_semiItems.filter(x=>x.ingId&&x.qty>0)};
+  const obj={name,outputQty,outputUnit,catId,items:_semiItems.filter(x=>x.ingId&&x.qty>0)};
   if(editId){
     const idx=semis.findIndex(x=>x.id===Number(editId));
     if(idx>=0)semis[idx]={...semis[idx],...obj};
@@ -3288,33 +3478,60 @@ function delSemi(id){
   saveSemiData(curStoreId,getSemiData(curStoreId).filter(x=>x.id!==id));
   renderSemiList();renderRecipeList();toast('✓ Đã xoá');
 }
+function _semiCardHtml(sm,ings){
+  const total=calcSemiTotalCost(sm,ings);
+  const uc=calcSemiUnitCost(sm,ings);
+  return`<div class="recipe-card">
+    <div class="recipe-head" onclick="document.getElementById('scb-${sm.id}').classList.toggle('hid')">
+      <div style="flex:1;min-width:0">
+        <div class="recipe-nm">${sm.name}</div>
+        <div style="font-size:10px;color:#6b7280;margin-top:2px">Làm ra ${sm.outputQty}${sm.outputUnit||''}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+        <div class="recipe-cost-badge">${fmt(Math.round(uc*1000)/1000)}/${sm.outputUnit||'đv'}</div>
+        <button class="xbtn" style="color:#60a5fa" onclick="event.stopPropagation();openSemiModal(${sm.id})">✏️</button>
+        <button class="xbtn" onclick="event.stopPropagation();delSemi(${sm.id})">×</button>
+      </div>
+    </div>
+    <div id="scb-${sm.id}" class="recipe-body hid">
+      ${(sm.items||[]).map(it=>{const g=ings.find(x=>x.id===it.ingId);const cost=g?ingUnitPrice(g)*it.qty:0;return`<div class="recipe-ing-row"><span style="color:#e2e8f0">${g?g.name:'?'} <span style="color:#4b5563;font-size:9px">(${it.qty}${g?.useUnit||''})</span></span><span style="color:var(--tc);font-weight:600">${fmt(Math.round(cost))}</span></div>`;}).join('')}
+      <div style="padding-top:7px;display:flex;justify-content:space-between"><span style="font-size:10px;color:#6b7280">Tổng cost</span><span style="font-size:13px;font-weight:700;color:#f1f5f9">${fmt(Math.round(total))}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:10px;color:#6b7280">Cost / ${sm.outputUnit||'đv'}</span><span style="font-size:13px;font-weight:700;color:var(--tc)">${fmt(Math.round(uc*1000)/1000)}</span></div>
+    </div>
+  </div>`;
+}
 function renderSemiList(){
   const semis=getSemiData(curStoreId);
   const ings=getIngData(curStoreId);
+  const cats=getSemiCats(curStoreId);
   const list=document.getElementById('semi-list');if(!list)return;
   if(!semis.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có bán thành phẩm.<br/>Nhấn <b>＋ Tạo</b> để bắt đầu!</div>';return;}
-  list.innerHTML=semis.map(sm=>{
-    const total=calcSemiTotalCost(sm,ings);
-    const uc=calcSemiUnitCost(sm,ings);
-    return`<div class="recipe-card">
-      <div class="recipe-head" onclick="document.getElementById('scb-${sm.id}').classList.toggle('hid')">
-        <div style="flex:1;min-width:0">
-          <div class="recipe-nm">${sm.name}</div>
-          <div style="font-size:10px;color:#6b7280;margin-top:2px">Làm ra ${sm.outputQty}${sm.outputUnit||''}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
-          <div class="recipe-cost-badge">${fmt(Math.round(uc*1000)/1000)}/${sm.outputUnit||'đv'}</div>
-          <button class="xbtn" style="color:#60a5fa" onclick="event.stopPropagation();openSemiModal(${sm.id})">✏️</button>
-          <button class="xbtn" onclick="event.stopPropagation();delSemi(${sm.id})">×</button>
-        </div>
-      </div>
-      <div id="scb-${sm.id}" class="recipe-body hid">
-        ${(sm.items||[]).map(it=>{const g=ings.find(x=>x.id===it.ingId);const cost=g?ingUnitPrice(g)*it.qty:0;return`<div class="recipe-ing-row"><span style="color:#e2e8f0">${g?g.name:'?'} <span style="color:#4b5563;font-size:9px">(${it.qty}${g?.useUnit||''})</span></span><span style="color:var(--tc);font-weight:600">${fmt(Math.round(cost))}</span></div>`;}).join('')}
-        <div style="padding-top:7px;display:flex;justify-content:space-between"><span style="font-size:10px;color:#6b7280">Tổng cost</span><span style="font-size:13px;font-weight:700;color:#f1f5f9">${fmt(Math.round(total))}</span></div>
-        <div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:10px;color:#6b7280">Cost / ${sm.outputUnit||'đv'}</span><span style="font-size:13px;font-weight:700;color:var(--tc)">${fmt(Math.round(uc*1000)/1000)}</span></div>
-      </div>
+  if(!cats.length){list.innerHTML=semis.map(sm=>_semiCardHtml(sm,ings)).join('');return;}
+  const grouped=new Map();cats.forEach(c=>grouped.set(c.id,[]));grouped.set(null,[]);
+  semis.forEach(s=>{const key=s.catId&&grouped.has(s.catId)?s.catId:null;grouped.get(key).push(s);});
+  let html='';
+  cats.forEach(c=>{
+    const grp=grouped.get(c.id)||[];
+    const collapsed=_collSemiCats.has(c.id);
+    html+=`<div class="cat-hdr" onclick="toggleSemiCatCollapse(${c.id})">
+      <span class="cat-hdr-arr">${collapsed?'▶':'▼'}</span>
+      <span class="cat-hdr-nm">${c.name}</span>
+      <span class="cat-hdr-cnt">${grp.length} mục</span>
     </div>`;
-  }).join('');
+    if(!collapsed&&grp.length)html+=`<div class="cat-body">${grp.map(sm=>_semiCardHtml(sm,ings)).join('')}</div>`;
+    else if(!collapsed&&!grp.length)html+=`<div style="font-size:11px;color:#4b5563;padding:6px 12px">Trống</div>`;
+  });
+  const uncat=grouped.get(null)||[];
+  if(uncat.length){
+    const collapsed=_collSemiCats.has('uncat');
+    html+=`<div class="cat-hdr" onclick="toggleSemiCatCollapse('uncat')">
+      <span class="cat-hdr-arr">${collapsed?'▶':'▼'}</span>
+      <span class="cat-hdr-nm">Chưa phân loại</span>
+      <span class="cat-hdr-cnt">${uncat.length} mục</span>
+    </div>`;
+    if(!collapsed)html+=`<div class="cat-body">${uncat.map(sm=>_semiCardHtml(sm,ings)).join('')}</div>`;
+  }
+  list.innerHTML=html;
 }
 
 // ── FINAL RECIPES (THÀNH PHẨM) ──
@@ -3326,6 +3543,13 @@ function openRecipeModal(editId=null){
   const se=document.getElementById('rc-sell');se.value='';se.dataset.raw='0';
   const bufOn=document.getElementById('rc-buffer-on');bufOn.checked=false;
   const bufAmt=document.getElementById('rc-buffer-amt');bufAmt.value='';bufAmt.dataset.raw='0';
+  // Populate recipe category selector
+  const rcCatSel=document.getElementById('rc-cat');
+  if(rcCatSel){
+    const rc=getRecipeCats(curStoreId);
+    rcCatSel.innerHTML='<option value="">— Không phân loại —</option>'+rc.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  }
+  let editedRcCatId=null;
   if(editId){
     const r=getRecipeData(curStoreId).find(x=>x.id===editId);
     if(r){
@@ -3335,11 +3559,13 @@ function openRecipeModal(editId=null){
       _rcItems=r.items.map(x=>({...x}));
       bufOn.checked=!!r.bufferEnabled;
       if(r.bufferAmount){bufAmt.value=(r.bufferAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');bufAmt.dataset.raw=r.bufferAmount;}
+      editedRcCatId=r.catId||null;
     }
     document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='✏️ Sửa thành phẩm';
   }else{
     document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='📋 Thành phẩm mới';
   }
+  if(rcCatSel)rcCatSel.value=editedRcCatId||'';
   renderRcItems();updRcPreview();
   document.getElementById('modal-recipe').classList.remove('hid');
 }
@@ -3383,6 +3609,14 @@ function _rcChg(i,val){
 }
 function addRcItem(){_rcItems.push({type:'ing',refId:null,qty:0});renderRcItems();updRcPreview();}
 function removeRcItem(i){_rcItems.splice(i,1);renderRcItems();updRcPreview();}
+function setBufPreset(val){
+  const cb=document.getElementById('rc-buffer-on');
+  const inp=document.getElementById('rc-buffer-amt');
+  cb.checked=true;
+  inp.dataset.raw=String(val);
+  inp.value=val.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+  updRcPreview();
+}
 function updRcPreview(){
   const ings=getIngData(curStoreId);const semis=getSemiData(curStoreId);
   const servings=Number(document.getElementById('rc-servings')?.dataset.raw)||1;
@@ -3408,9 +3642,11 @@ function saveRecipe(){
   const sellPrice=Number(document.getElementById('rc-sell').dataset.raw)||0;
   const bufferEnabled=document.getElementById('rc-buffer-on').checked;
   const bufferAmount=Number(document.getElementById('rc-buffer-amt').dataset.raw)||0;
+  const catIdRaw=document.getElementById('rc-cat')?.value;
+  const catId=catIdRaw?Number(catIdRaw):null;
   const validItems=_rcItems.filter(x=>x.refId&&x.qty>0);
   const recipes=getRecipeData(curStoreId);
-  const obj={name,servings,sellPrice,bufferEnabled,bufferAmount,items:validItems};
+  const obj={name,servings,sellPrice,bufferEnabled,bufferAmount,catId,items:validItems};
   if(_rcEditId){
     const idx=recipes.findIndex(x=>x.id===_rcEditId);
     if(idx>=0)recipes[idx]={...recipes[idx],...obj};
@@ -3423,12 +3659,7 @@ function delRecipe(id){
   saveRecipeData(curStoreId,getRecipeData(curStoreId).filter(x=>x.id!==id));
   renderRecipeList();toast('✓ Đã xoá');
 }
-function renderRecipeList(){
-  const recipes=getRecipeData(curStoreId);
-  const ings=getIngData(curStoreId);const semis=getSemiData(curStoreId);
-  const list=document.getElementById('recipe-list');if(!list)return;
-  if(!recipes.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có thành phẩm.<br/>Nhấn <b>＋ Tạo</b> để bắt đầu!</div>';return;}
-  list.innerHTML=recipes.map(r=>{
+function _recipeCardHtml(r,ings,semis){
     const total=calcRecipeTotalCost(r,ings,semis);
     const servings=r.servings||1;
     const perServ=Math.round(total/servings);
@@ -3465,7 +3696,39 @@ function renderRecipeList(){
         ${sell>0?`<div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:10px;color:#6b7280">Lợi nhuận / phần</span><span style="font-size:13px;font-weight:700;color:${mColor}">${fmt(sell-perServ)} (${margin}%)</span></div>`:''}
       </div>
     </div>`;
-  }).join('');
+}
+function renderRecipeList(){
+  const recipes=getRecipeData(curStoreId);
+  const ings=getIngData(curStoreId);const semis=getSemiData(curStoreId);
+  const cats=getRecipeCats(curStoreId);
+  const list=document.getElementById('recipe-list');if(!list)return;
+  if(!recipes.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có thành phẩm.<br/>Nhấn <b>＋ Tạo</b> để bắt đầu!</div>';return;}
+  if(!cats.length){list.innerHTML=recipes.map(r=>_recipeCardHtml(r,ings,semis)).join('');return;}
+  const grouped=new Map();cats.forEach(c=>grouped.set(c.id,[]));grouped.set(null,[]);
+  recipes.forEach(r=>{const key=r.catId&&grouped.has(r.catId)?r.catId:null;grouped.get(key).push(r);});
+  let html='';
+  cats.forEach(c=>{
+    const grp=grouped.get(c.id)||[];
+    const collapsed=_collRecipeCats.has(c.id);
+    html+=`<div class="cat-hdr" onclick="toggleRecipeCatCollapse(${c.id})">
+      <span class="cat-hdr-arr">${collapsed?'▶':'▼'}</span>
+      <span class="cat-hdr-nm">${c.name}</span>
+      <span class="cat-hdr-cnt">${grp.length} mục</span>
+    </div>`;
+    if(!collapsed&&grp.length)html+=`<div class="cat-body">${grp.map(r=>_recipeCardHtml(r,ings,semis)).join('')}</div>`;
+    else if(!collapsed&&!grp.length)html+=`<div style="font-size:11px;color:#4b5563;padding:6px 12px">Trống</div>`;
+  });
+  const uncat=grouped.get(null)||[];
+  if(uncat.length){
+    const collapsed=_collRecipeCats.has('uncat');
+    html+=`<div class="cat-hdr" onclick="toggleRecipeCatCollapse('uncat')">
+      <span class="cat-hdr-arr">${collapsed?'▶':'▼'}</span>
+      <span class="cat-hdr-nm">Chưa phân loại</span>
+      <span class="cat-hdr-cnt">${uncat.length} mục</span>
+    </div>`;
+    if(!collapsed)html+=`<div class="cat-body">${uncat.map(r=>_recipeCardHtml(r,ings,semis)).join('')}</div>`;
+  }
+  list.innerHTML=html;
 }
 
 function changeShMonth(d){
