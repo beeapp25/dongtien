@@ -416,6 +416,13 @@ body[data-theme="white"] .xbtn,body[data-theme="pink"] .xbtn{background:rgba(0,0
 body[data-theme="white"] .uc,body[data-theme="pink"] .uc{background:rgba(0,0,0,0.06) !important}
 body[data-theme="white"] .add-pb,body[data-theme="pink"] .add-pb{background:rgba(0,0,0,0.03) !important;border-color:rgba(0,0,0,0.12) !important;color:#64748b !important}
 body[data-theme="white"] .hdr,body[data-theme="pink"] .hdr{box-shadow:0 1px 8px rgba(0,0,0,0.1)}
+/* Wallet cards & summary chips */
+body[data-theme="white"] .wcard,body[data-theme="pink"] .wcard{background:#fff !important;border-color:rgba(0,0,0,0.08) !important;box-shadow:0 2px 10px rgba(0,0,0,0.07) !important}
+body[data-theme="white"] .wt,body[data-theme="pink"] .wt{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.07) !important}
+body[data-theme="white"] .wcn,body[data-theme="pink"] .wcn{color:#1e293b !important}
+body[data-theme="white"] .wci,body[data-theme="pink"] .wci{color:#64748b !important}
+body[data-theme="white"] .wce,body[data-theme="pink"] .wce{background:rgba(37,99,235,0.08) !important;color:#2563eb !important}
+body[data-theme="white"] .wgrp-ttl,body[data-theme="pink"] .wgrp-ttl{color:#64748b !important}
 /* Fix JS-generated dark background cards in light themes */
 body[data-theme="white"] [style*="background:#080d18"],body[data-theme="pink"] [style*="background:#080d18"],
 body[data-theme="white"] [style*="background:#0d1325"],body[data-theme="pink"] [style*="background:#0d1325"],
@@ -431,6 +438,38 @@ body[data-theme="white"] #store-access-desc *,body[data-theme="pink"] #store-acc
 body[data-theme="white"] #perm-owned-list *,body[data-theme="pink"] #perm-owned-list *,
 body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-shared-list *{border-color:rgba(0,0,0,0.08) !important}
 
+/* ── Store type & Cost Module ── */
+.store-main-tabs{display:flex;background:rgba(0,0,0,0.2);border-radius:10px;padding:3px;gap:2px}
+.store-tab{flex:1;padding:7px 4px;border-radius:8px;font-size:11px;font-weight:600;border:none;background:none;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
+.store-tab.on{background:var(--tc);color:#fff;box-shadow:0 2px 8px rgba(var(--tc-rgb),0.35)}
+.cost-stabs{display:flex;background:rgba(0,0,0,0.15);border-radius:9px;padding:2px;gap:2px}
+.cost-stab{flex:1;padding:7px 4px;border-radius:7px;font-size:11px;font-weight:600;border:none;background:none;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
+.cost-stab.on{background:rgba(var(--tc-rgb),0.15);color:var(--tc)}
+.ing-row{display:flex;align-items:flex-start;justify-content:space-between;background:var(--bg-surf);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px 12px;gap:8px}
+.ing-n{font-size:12px;font-weight:600;color:#e2e8f0}
+.ing-u{font-size:10px;color:#6b7280;margin-top:3px}
+.recipe-card{background:linear-gradient(135deg,var(--bg-card),var(--bg-form2));border:1px solid rgba(var(--tc-rgb),0.15);border-radius:13px;overflow:hidden}
+.recipe-head{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;gap:8px}
+.recipe-nm{font-size:13px;font-weight:700;color:#f1f5f9}
+.recipe-cost-badge{font-size:11px;font-weight:700;color:var(--tc);background:rgba(var(--tc-rgb),0.1);padding:3px 10px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+.recipe-body{padding:4px 14px 12px;border-top:1px solid rgba(255,255,255,0.05)}
+.recipe-ing-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px}
+.recipe-ing-row:last-child{border-bottom:none}
+.rc-preview{background:rgba(var(--tc-rgb),0.07);border:1px solid rgba(var(--tc-rgb),0.2);border-radius:10px;padding:10px 12px;display:flex;gap:8px;justify-content:space-around;flex-wrap:wrap}
+.rc-stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.rc-stat-v{font-size:16px;font-weight:800;color:var(--tc)}
+.rc-stat-l{font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.5px}
+.stype-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.type-chip{padding:10px;border-radius:11px;font-size:11px;font-weight:600;border:2px solid rgba(255,255,255,0.07);cursor:pointer;display:flex;align-items:center;gap:8px;background:var(--bg-surf);transition:all .15s;-webkit-tap-highlight-color:transparent;color:#9ca3af}
+.type-chip.on{border-color:var(--tc);background:rgba(var(--tc-rgb),0.1);color:var(--tc)}
+.type-chip-ico{font-size:22px;flex-shrink:0}
+body[data-theme="white"] .store-tab,body[data-theme="pink"] .store-tab,
+body[data-theme="white"] .cost-stab,body[data-theme="pink"] .cost-stab{color:#64748b}
+body[data-theme="white"] .ing-row,body[data-theme="pink"] .ing-row{background:var(--bg-surf);border-color:rgba(0,0,0,0.07)}
+body[data-theme="white"] .ing-n,body[data-theme="pink"] .ing-n{color:#1e293b}
+body[data-theme="white"] .recipe-nm,body[data-theme="pink"] .recipe-nm{color:#1e293b}
+body[data-theme="white"] .recipe-ing-row,body[data-theme="pink"] .recipe-ing-row{border-color:rgba(0,0,0,0.06)}
+body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#475569;background:var(--bg-surf);border-color:rgba(0,0,0,0.1)}
 /* Theme switcher UI */
 .theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .theme-chip{border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border:2px solid transparent;transition:all .2s;-webkit-tap-highlight-color:transparent}
@@ -584,10 +623,18 @@ body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-share
           <select id="store-sel" class="store-sel" onchange="switchStoreFromSel()"></select>
         </div>
         <div style="display:flex;gap:5px">
+          <button class="abtn sm" onclick="openStoreTypeModal()" id="sh-type-btn" title="Loại cửa hàng">🏷️</button>
           <button class="abtn sm" onclick="renameStoreCurrent()">✏️</button>
           <button class="abtn sm" onclick="openStoreWizard()">＋</button>
         </div>
       </div>
+      <!-- Store main sub-tabs -->
+      <div class="store-main-tabs">
+        <button class="store-tab on" id="stab-txn" onclick="setShView('txn')">📊 Giao dịch</button>
+        <button class="store-tab" id="stab-cost" onclick="setShView('cost')">🧮 Tính Cost</button>
+      </div>
+      <!-- Transaction view -->
+      <div id="sh-txn-view">
       <!-- Date filter -->
       <div class="date-filter">
         <div class="df-mode">
@@ -634,6 +681,30 @@ body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-share
       </div>
       <div id="sh-list" class="rl"></div>
       <div class="rrow"><button class="rbtn" onclick="delStore()">🗑 Xoá cửa hàng này</button></div>
+      </div><!-- end sh-txn-view -->
+      <!-- Cost Module -->
+      <div id="sh-cost-module" class="hid">
+        <div class="cost-stabs">
+          <button class="cost-stab on" id="cstab-ing" onclick="setCostView('ing')">🥬 Nguyên liệu</button>
+          <button class="cost-stab" id="cstab-recipe" onclick="setCostView('recipe')">📋 Công thức món</button>
+        </div>
+        <!-- Ingredients view -->
+        <div id="cv-ing">
+          <div class="bar"><span class="st">Kho nguyên liệu</span><button class="abtn" onclick="tog('form-ing')">＋ Thêm</button></div>
+          <div id="form-ing" class="fc hid">
+            <input type="hidden" id="ing-edit-id"/>
+            <input type="text" id="ing-name" placeholder="Tên nguyên liệu (VD: Đường trắng, Sữa đặc...)"/>
+            <input type="text" id="ing-unit" placeholder="Đơn vị / ghi chú (VD: gói 1kg = 26.000₫)"/>
+            <button class="sbtn" id="ing-save-btn" onclick="saveIng()">💾 Lưu nguyên liệu</button>
+          </div>
+          <div id="ing-list" class="rl" style="gap:6px"></div>
+        </div>
+        <!-- Recipes view -->
+        <div id="cv-recipe" class="hid">
+          <div class="bar"><span class="st">Công thức món</span><button class="abtn" onclick="openRecipeModal()">＋ Tạo</button></div>
+          <div id="recipe-list" class="rl" style="gap:8px"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -984,12 +1055,52 @@ body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-share
   <div class="modal-card">
     <div class="modal-hdr"><span class="modal-ttl">🏪 Tạo cửa hàng mới</span><button class="modal-close" onclick="closeModal('modal-store')">×</button></div>
     <input type="text" id="sw-name" placeholder="Tên cửa hàng (VD: Laboong, Coffee ABC...)" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div class="fl">Loại cửa hàng</div>
+    <div class="stype-grid" id="sw-type-grid">
+      <div class="type-chip on" data-stype="food" onclick="pickSwType(this)"><span class="type-chip-ico">🍜</span><div><div class="type-chip-nm">Đồ ăn & Đồ uống</div><div style="font-size:9px;color:#6b7280">Café, Quán ăn, Trà sữa</div></div></div>
+      <div class="type-chip" data-stype="retail" onclick="pickSwType(this)"><span class="type-chip-ico">🛍️</span><div><div class="type-chip-nm">Bán lẻ</div><div style="font-size:9px;color:#6b7280">Tạp hoá, Thời trang</div></div></div>
+      <div class="type-chip" data-stype="service" onclick="pickSwType(this)"><span class="type-chip-ico">💼</span><div><div class="type-chip-nm">Dịch vụ</div><div style="font-size:9px;color:#6b7280">Salon, Spa, Sửa chữa</div></div></div>
+      <div class="type-chip" data-stype="other" onclick="pickSwType(this)"><span class="type-chip-ico">📦</span><div><div class="type-chip-nm">Khác</div><div style="font-size:9px;color:#6b7280">Loại khác</div></div></div>
+    </div>
     <div class="fl">Bán hàng qua sàn thương mại điện tử?</div>
     <div class="platform-grid" id="plat-grid"></div>
     <div class="check-row"><input type="checkbox" id="sw-debt" onchange="updSwPreview()"/><label for="sw-debt">Có công nợ → <span style="color:#60a5fa" onclick="event.stopPropagation();openDebtDetail()" id="sw-debt-detail" style="display:none">Chọn loại công nợ ▸</span></label></div>
     <div class="check-row"><input type="checkbox" id="sw-create-wallets" checked onchange="updSwPreview()"/><label for="sw-create-wallets">Tự động tạo ví cho cửa hàng này</label></div>
     <div style="background:#111827;border-radius:8px;padding:10px;font-size:11px;color:#6b7280" id="sw-preview">Sẽ tạo: Tiền mặt + Chuyển khoản</div>
     <button class="sbtn" onclick="createStoreFromWizard()">🏪 Tạo cửa hàng</button>
+  </div>
+</div>
+
+<!-- Store Type Modal -->
+<div id="modal-store-type" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-store-type')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr"><span class="modal-ttl">🏷️ Loại cửa hàng</span><button class="modal-close" onclick="closeModal('modal-store-type')">×</button></div>
+    <div style="font-size:11px;color:#9ca3af;margin-bottom:10px">Chọn loại phù hợp để mở tính năng chuyên biệt.<br/>⭐ Chọn <b style="color:#f59e0b">Đồ ăn & Đồ uống</b> để bật Module Tính Cost.</div>
+    <div class="stype-grid" id="stype-grid">
+      <div class="type-chip" data-stype="food" onclick="pickStoreTypeMod(this)"><span class="type-chip-ico">🍜</span><div><div class="type-chip-nm">Đồ ăn & Đồ uống</div><div style="font-size:9px;color:#6b7280">Tính cost công thức món</div></div></div>
+      <div class="type-chip" data-stype="retail" onclick="pickStoreTypeMod(this)"><span class="type-chip-ico">🛍️</span><div><div class="type-chip-nm">Bán lẻ</div><div style="font-size:9px;color:#6b7280">Tạp hoá, Thời trang</div></div></div>
+      <div class="type-chip" data-stype="service" onclick="pickStoreTypeMod(this)"><span class="type-chip-ico">💼</span><div><div class="type-chip-nm">Dịch vụ</div><div style="font-size:9px;color:#6b7280">Salon, Spa, Sửa chữa</div></div></div>
+      <div class="type-chip" data-stype="other" onclick="pickStoreTypeMod(this)"><span class="type-chip-ico">📦</span><div><div class="type-chip-nm">Khác</div><div style="font-size:9px;color:#6b7280">Loại khác</div></div></div>
+    </div>
+    <button class="sbtn" onclick="saveStoreType()">✓ Xác nhận</button>
+  </div>
+</div>
+
+<!-- Recipe Modal -->
+<div id="modal-recipe" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-recipe')">
+  <div class="modal-card" onclick="event.stopPropagation()" style="max-height:90vh;overflow-y:auto">
+    <div class="modal-hdr"><span class="modal-ttl">📋 Công thức mới</span><button class="modal-close" onclick="closeModal('modal-recipe')">×</button></div>
+    <div class="fl">Tên món</div>
+    <input type="text" id="rc-name" placeholder="VD: Nước đường 600ml, Cà phê sữa..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
+    <div class="fr">
+      <div style="flex:1"><div class="fl">Số phần làm ra</div><input type="text" id="rc-servings" class="mi" inputmode="numeric" value="1" data-raw="1" oninput="onMI(this);updRcPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/></div>
+      <div style="flex:1"><div class="fl">Giá bán / phần (₫)</div><input type="text" id="rc-sell" class="mi" inputmode="numeric" placeholder="0" data-raw="0" oninput="onMI(this);updRcPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/></div>
+    </div>
+    <div class="fl">Nguyên liệu & Chi phí</div>
+    <div id="rc-items" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
+    <button onclick="addRcItem()" style="width:100%;padding:8px;background:rgba(var(--tc-rgb),0.08);border:1.5px dashed rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">＋ Thêm nguyên liệu</button>
+    <div id="rc-preview" class="rc-preview" style="margin-top:8px"></div>
+    <button class="sbtn" onclick="saveRecipe()">💾 Lưu công thức</button>
   </div>
 </div>
 
@@ -2392,13 +2503,18 @@ function openStoreWizard(){
   document.getElementById('sw-debt').checked=false;
   document.getElementById('sw-create-wallets').checked=true;
   document.querySelectorAll('#plat-grid .plat-chip').forEach(el=>el.classList.remove('on'));
+  // Reset type selection to food by default
+  document.querySelectorAll('#sw-type-grid .type-chip').forEach(e=>e.classList.remove('on'));
+  const foodChip=document.querySelector('#sw-type-grid .type-chip[data-stype="food"]');
+  if(foodChip)foodChip.classList.add('on');
   updSwPreview();
   document.getElementById('modal-store').classList.remove('hid');
 }
 function createStoreFromWizard(){
   const name=document.getElementById('sw-name').value.trim();if(!name)return toast('⚠️ Nhập tên cửa hàng!','#f59e0b');
   const sid=Date.now();
-  const store={id:sid,name,platforms:[...document.querySelectorAll('#plat-grid .plat-chip.on')].map(el=>el.dataset.val),hasDebt:document.getElementById('sw-debt').checked};
+  const storeType=getSwType();
+  const store={id:sid,name,storeType,platforms:[...document.querySelectorAll('#plat-grid .plat-chip.on')].map(el=>el.dataset.val),hasDebt:document.getElementById('sw-debt').checked};
   storeData.push(store);save('storeData',storeData);curStoreId=sid;
   regStore(store); // Register in global perms for sharing
   if(document.getElementById('sw-create-wallets').checked){
@@ -2415,7 +2531,7 @@ function createStoreFromWizard(){
   pendingDebtTypes={customer:false,supplier:true,employee:false,other:false};
   closeModal('modal-store');updWScopeOpts();updRecOpts();updWSelects();renderShState();renderWallets();
 }
-function switchStoreFromSel(){curStoreId=Number(document.getElementById('store-sel').value)||storeData[0]?.id;updShWallet();renderSH();}
+function switchStoreFromSel(){curStoreId=Number(document.getElementById('store-sel').value)||storeData[0]?.id;updShWallet();updShTypeBadge();setShView('txn');renderSH();}
 function renameStoreCurrent(){
   const s=storeData.find(x=>x.id===curStoreId);const n=prompt('Đổi tên:',s?.name);
   if(!n?.trim())return;s.name=n.trim();save('storeData',storeData);renderStoresSel();renderSH();updRecOpts();toast('✓ Đã đổi tên');
@@ -2433,6 +2549,220 @@ function renderStoresSel(){
   sel.innerHTML=storeData.map(s=>`<option value="${s.id}" ${s.id===curStoreId?'selected':''}>${s.name}</option>`).join('');
 }
 let shFilterMode='month';
+// ══════ MODULE: COST CALCULATOR (F&B) ══════
+function getIngData(sid){return JSON.parse(localStorage.getItem('ingData_'+sid)||'[]');}
+function saveIngData(sid,d){localStorage.setItem('ingData_'+sid,JSON.stringify(d));}
+function getRecipeData(sid){return JSON.parse(localStorage.getItem('recipeData_'+sid)||'[]');}
+function saveRecipeData(sid,d){localStorage.setItem('recipeData_'+sid,JSON.stringify(d));}
+
+// Store type
+function pickSwType(el){document.querySelectorAll('#sw-type-grid .type-chip').forEach(e=>e.classList.remove('on'));el.classList.add('on');}
+function getSwType(){return document.querySelector('#sw-type-grid .type-chip.on')?.dataset.stype||'food';}
+function pickStoreTypeMod(el){document.querySelectorAll('#stype-grid .type-chip').forEach(e=>e.classList.remove('on'));el.classList.add('on');}
+function openStoreTypeModal(){
+  const s=storeData.find(x=>x.id===curStoreId);
+  const cur=s?.storeType||'other';
+  document.querySelectorAll('#stype-grid .type-chip').forEach(e=>e.classList.toggle('on',e.dataset.stype===cur));
+  document.getElementById('modal-store-type').classList.remove('hid');
+}
+function saveStoreType(){
+  const sel=document.querySelector('#stype-grid .type-chip.on')?.dataset.stype;if(!sel)return;
+  const s=storeData.find(x=>x.id===curStoreId);
+  if(s){s.storeType=sel;save('storeData',storeData);}
+  closeModal('modal-store-type');
+  updShTypeBadge();
+  if(sel==='food'){setShView('cost');}else{setShView('txn');}
+  toast('✓ Đã cập nhật loại cửa hàng');
+}
+function updShTypeBadge(){
+  const s=storeData.find(x=>x.id===curStoreId);
+  const TYPE_LABELS={food:'🍜',retail:'🛍️',service:'💼',other:'📦'};
+  const btn=document.getElementById('sh-type-btn');
+  if(btn)btn.textContent=TYPE_LABELS[s?.storeType||'other']||'🏷️';
+  // Show/hide cost tab
+  const isFood=s?.storeType==='food';
+  const tabsEl=document.querySelector('.store-main-tabs');
+  if(tabsEl)tabsEl.style.display=isFood?'':'none';
+}
+
+// View switching
+let _shView='txn';
+function setShView(v){
+  const s=storeData.find(x=>x.id===curStoreId);
+  const isFood=s?.storeType==='food';
+  if(v==='cost'&&!isFood){openStoreTypeModal();return;}
+  _shView=v;
+  document.getElementById('stab-txn').classList.toggle('on',v==='txn');
+  document.getElementById('stab-cost').classList.toggle('on',v==='cost');
+  document.getElementById('sh-txn-view').classList.toggle('hid',v!=='txn');
+  document.getElementById('sh-cost-module').classList.toggle('hid',v!=='cost');
+  if(v==='cost')renderCostModule();
+}
+let _costView='ing';
+function setCostView(v){
+  _costView=v;
+  document.getElementById('cstab-ing').classList.toggle('on',v==='ing');
+  document.getElementById('cstab-recipe').classList.toggle('on',v==='recipe');
+  document.getElementById('cv-ing').classList.toggle('hid',v!=='ing');
+  document.getElementById('cv-recipe').classList.toggle('hid',v!=='recipe');
+}
+function renderCostModule(){renderIngList();renderRecipeList();}
+
+// ── INGREDIENTS ──
+function renderIngList(){
+  const ings=getIngData(curStoreId);
+  const list=document.getElementById('ing-list');if(!list)return;
+  if(!ings.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có nguyên liệu.<br/>Nhấn <b>＋ Thêm</b> để bắt đầu!</div>';return;}
+  list.innerHTML=ings.map(g=>`<div class="ing-row">
+    <div><div class="ing-n">${g.name}</div>${g.unit?`<div class="ing-u">${g.unit}</div>`:''}</div>
+    <div style="display:flex;gap:4px;flex-shrink:0;align-items:center">
+      <button class="xbtn" style="color:#60a5fa" onclick="editIng(${g.id})">✏️</button>
+      <button class="xbtn" onclick="delIng(${g.id})">×</button>
+    </div>
+  </div>`).join('');
+}
+function saveIng(){
+  const name=document.getElementById('ing-name').value.trim();
+  if(!name)return toast('⚠️ Nhập tên nguyên liệu!','#f59e0b');
+  const unit=document.getElementById('ing-unit').value.trim();
+  const editId=document.getElementById('ing-edit-id').value;
+  const ings=getIngData(curStoreId);
+  if(editId){
+    const idx=ings.findIndex(x=>x.id===Number(editId));
+    if(idx>=0)ings[idx]={...ings[idx],name,unit};
+    document.getElementById('ing-edit-id').value='';
+    document.getElementById('ing-save-btn').textContent='💾 Lưu nguyên liệu';
+  }else{ings.push({id:Date.now(),name,unit});}
+  saveIngData(curStoreId,ings);
+  document.getElementById('ing-name').value='';document.getElementById('ing-unit').value='';
+  document.getElementById('form-ing').classList.add('hid');
+  renderIngList();toast('✓ Đã lưu nguyên liệu');
+}
+function editIng(id){
+  const g=getIngData(curStoreId).find(x=>x.id===id);if(!g)return;
+  document.getElementById('ing-name').value=g.name;
+  document.getElementById('ing-unit').value=g.unit||'';
+  document.getElementById('ing-edit-id').value=id;
+  document.getElementById('ing-save-btn').textContent='✏️ Cập nhật';
+  document.getElementById('form-ing').classList.remove('hid');
+}
+function delIng(id){
+  if(!confirm('Xoá nguyên liệu này?'))return;
+  saveIngData(curStoreId,getIngData(curStoreId).filter(x=>x.id!==id));
+  renderIngList();toast('✓ Đã xoá');
+}
+
+// ── RECIPES ──
+let _rcItems=[],_rcEditId=null;
+function renderRecipeList(){
+  const recipes=getRecipeData(curStoreId);
+  const list=document.getElementById('recipe-list');if(!list)return;
+  if(!recipes.length){list.innerHTML='<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có công thức.<br/>Nhấn <b>＋ Tạo</b> để bắt đầu!</div>';return;}
+  const ings=getIngData(curStoreId);
+  list.innerHTML=recipes.map(r=>{
+    const total=r.items.reduce((s,x)=>s+(x.cost||0),0);
+    const servings=r.servings||1;
+    const perServ=Math.round(total/servings);
+    const sell=r.sellPrice||0;
+    const margin=sell>0?((sell-perServ)/sell*100).toFixed(1):null;
+    const mColor=Number(margin)>=50?'#22c55e':Number(margin)>=30?'#f59e0b':'#ef4444';
+    return `<div class="recipe-card">
+      <div class="recipe-head" onclick="document.getElementById('rcb-${r.id}').classList.toggle('hid')">
+        <div style="flex:1;min-width:0">
+          <div class="recipe-nm">${r.name}</div>
+          <div style="font-size:10px;color:#6b7280;margin-top:2px">${servings} phần${sell>0?` · Bán ${fmt(sell)}/phần`:''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+          <div class="recipe-cost-badge">${fmt(perServ)}/phần</div>
+          ${margin?`<div style="font-size:10px;font-weight:700;color:${mColor};flex-shrink:0">${margin}%</div>`:''}
+          <button class="xbtn" style="color:#60a5fa" onclick="event.stopPropagation();openRecipeModal(${r.id})">✏️</button>
+          <button class="xbtn" onclick="event.stopPropagation();delRecipe(${r.id})">×</button>
+        </div>
+      </div>
+      <div id="rcb-${r.id}" class="recipe-body hid">
+        ${r.items.map(it=>{const g=ings.find(x=>x.id===it.ingId);return`<div class="recipe-ing-row"><span style="color:#e2e8f0">${g?g.name:it.ingName||'?'}${g?.unit?` <span style="color:#4b5563;font-size:9px">(${g.unit})</span>`:''}</span><span style="color:var(--tc);font-weight:600">${fmt(it.cost)}</span></div>`;}).join('')}
+        <div style="padding-top:7px;display:flex;justify-content:space-between">
+          <span style="font-size:10px;color:#6b7280">Tổng cost</span>
+          <span style="font-size:13px;font-weight:700;color:#f1f5f9">${fmt(total)}</span>
+        </div>
+        ${servings>1?`<div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:10px;color:#6b7280">Cost / phần</span><span style="font-size:13px;font-weight:700;color:var(--tc)">${fmt(perServ)}</span></div>`:''}
+        ${sell>0?`<div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:10px;color:#6b7280">Lợi nhuận / phần</span><span style="font-size:13px;font-weight:700;color:${mColor}">${fmt(sell-perServ)} (${margin}%)</span></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function openRecipeModal(editId=null){
+  _rcEditId=editId||null;_rcItems=[];
+  if(editId){
+    const r=getRecipeData(curStoreId).find(x=>x.id===editId);
+    if(r){
+      document.getElementById('rc-name').value=r.name;
+      const sv=document.getElementById('rc-servings');sv.value=r.servings||1;sv.dataset.raw=r.servings||1;
+      const se=document.getElementById('rc-sell');se.value=r.sellPrice?r.sellPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.'):'' ;se.dataset.raw=r.sellPrice||0;
+      _rcItems=r.items.map(x=>({...x}));
+    }
+    document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='✏️ Sửa công thức';
+  }else{
+    document.getElementById('rc-name').value='';
+    const sv=document.getElementById('rc-servings');sv.value='1';sv.dataset.raw='1';
+    const se=document.getElementById('rc-sell');se.value='';se.dataset.raw='0';
+    document.getElementById('modal-recipe').querySelector('.modal-ttl').textContent='📋 Công thức mới';
+  }
+  renderRcItems();updRcPreview();
+  document.getElementById('modal-recipe').classList.remove('hid');
+}
+function renderRcItems(){
+  const ings=getIngData(curStoreId);
+  const ingOpts=`<option value="">— Chọn nguyên liệu —</option>`+ings.map(g=>`<option value="${g.id}">${g.name}${g.unit?' ('+g.unit+')':''}</option>`).join('');
+  const IS='background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:7px 8px;font-size:11px;font-family:inherit;outline:none';
+  document.getElementById('rc-items').innerHTML=_rcItems.map((item,i)=>`
+    <div style="display:flex;align-items:center;gap:5px">
+      <select style="flex:1;${IS}" onchange="_rcItems[${i}].ingId=Number(this.value)||null;_rcItems[${i}].ingName=this.options[this.selectedIndex]?.text||'';updRcPreview()">
+        ${ingOpts.replace(`value="${item.ingId}"`,`value="${item.ingId}" selected`)}
+      </select>
+      <input type="text" class="mi" inputmode="numeric" placeholder="₫ cost" data-raw="${item.cost||0}"
+        value="${item.cost?(item.cost).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')  :''}"
+        oninput="onMI(this);_rcItems[${i}].cost=Number(this.dataset.raw);updRcPreview()"
+        style="width:95px;${IS};text-align:right"/>
+      <button onclick="removeRcItem(${i})" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:18px;padding:0 3px;flex-shrink:0">×</button>
+    </div>`).join('');
+}
+function addRcItem(){_rcItems.push({ingId:null,ingName:'',cost:0});renderRcItems();updRcPreview();}
+function removeRcItem(i){_rcItems.splice(i,1);renderRcItems();updRcPreview();}
+function updRcPreview(){
+  const servings=Number(document.getElementById('rc-servings')?.dataset.raw)||1;
+  const sell=Number(document.getElementById('rc-sell')?.dataset.raw)||0;
+  const total=_rcItems.reduce((s,r)=>s+(r.cost||0),0);
+  const perServ=Math.round(total/Math.max(servings,1));
+  const margin=sell>0?((sell-perServ)/sell*100).toFixed(1):null;
+  const mColor=Number(margin)>=50?'#22c55e':Number(margin)>=30?'#f59e0b':'#ef4444';
+  document.getElementById('rc-preview').innerHTML=`
+    <div class="rc-stat"><div class="rc-stat-v">${fmt(total)}</div><div class="rc-stat-l">Tổng cost</div></div>
+    <div class="rc-stat"><div class="rc-stat-v">${fmt(perServ)}</div><div class="rc-stat-l">Cost/phần</div></div>
+    ${sell>0?`<div class="rc-stat"><div class="rc-stat-v" style="color:${mColor}">${margin}%</div><div class="rc-stat-l">Lợi nhuận</div></div>`:''}`;
+}
+function saveRecipe(){
+  const name=document.getElementById('rc-name').value.trim();
+  if(!name)return toast('⚠️ Nhập tên món!','#f59e0b');
+  if(!_rcItems.length)return toast('⚠️ Thêm ít nhất 1 nguyên liệu!','#f59e0b');
+  const servings=Number(document.getElementById('rc-servings').dataset.raw)||1;
+  const sellPrice=Number(document.getElementById('rc-sell').dataset.raw)||0;
+  const recipes=getRecipeData(curStoreId);
+  if(_rcEditId){
+    const idx=recipes.findIndex(x=>x.id===_rcEditId);
+    if(idx>=0)recipes[idx]={...recipes[idx],name,servings,sellPrice,items:[..._rcItems]};
+  }else{
+    recipes.push({id:Date.now(),name,servings,sellPrice,items:[..._rcItems]});
+  }
+  saveRecipeData(curStoreId,recipes);
+  closeModal('modal-recipe');renderRecipeList();toast('✓ Đã lưu công thức');
+}
+function delRecipe(id){
+  if(!confirm('Xoá công thức này?'))return;
+  saveRecipeData(curStoreId,getRecipeData(curStoreId).filter(x=>x.id!==id));
+  renderRecipeList();toast('✓ Đã xoá');
+}
+
 function changeShMonth(d){
   const [y,m]=shMonth.split('-').map(Number);
   const dt=new Date(y,m-1+d,1);
@@ -2510,7 +2840,7 @@ function saveEditSH(){
 }
 function renderShState(){
   if(!storeData.length){document.getElementById('sh-empty').classList.remove('hid');document.getElementById('sh-content').classList.add('hid');}
-  else{document.getElementById('sh-empty').classList.add('hid');document.getElementById('sh-content').classList.remove('hid');renderStoresSel();renderSH();}
+  else{document.getElementById('sh-empty').classList.add('hid');document.getElementById('sh-content').classList.remove('hid');renderStoresSel();updShTypeBadge();setShView('txn');renderSH();}
 }
 function renderSH(){
   const s=storeData.find(x=>x.id===curStoreId);document.getElementById('sh-name').textContent=s?.name||'—';
