@@ -1970,7 +1970,7 @@ function showTab(id,btn){
   if(id==='settings'){loadSJC();renderPermSection();loadFbConfigUI();loadTheme();}
   if(id==='count'&&!document.getElementById('cnt-'+DENOMS[0]))initCountRows();
 }
-function toast(msg,color='#22c55e'){const t=document.getElementById('toast');t.textContent=msg;t.style.background=color;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2300);}
+function toast(msg,color='#22c55e',dur=2300){const t=document.getElementById('toast');t.textContent=msg;t.style.background=color;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);}
 function closeModal(id){document.getElementById(id).classList.add('hid');}
 function closeModalIfOv(e,id){if(e.target.id===id)closeModal(id);}
 document.querySelectorAll('input[type=date]').forEach(el=>el.value=td());
@@ -3033,21 +3033,26 @@ function handleCostExcelImport(file){
       const wb=window.XLSX.read(data,{type:'array'});
       const shNames=wb.SheetNames;
       // Helper: tìm sheet theo tên (chứa keyword, case-insensitive) hoặc fallback theo index
+      function norm(s){return s.toLowerCase().normalize('NFC');}
       function findSheet(keyword,idx){
-        const kl=keyword.toLowerCase();
-        // 1) Exact match (case-insensitive)
-        const exact=shNames.find(n=>n.toLowerCase()===kl);
+        const kl=norm(keyword);
+        // 1) Exact match (case-insensitive + unicode normalized)
+        const exact=shNames.find(n=>norm(n)===kl);
         if(exact)return wb.Sheets[exact];
         // 2) Starts-with
-        const sw=shNames.find(n=>n.toLowerCase().startsWith(kl));
+        const sw=shNames.find(n=>norm(n).startsWith(kl));
         if(sw)return wb.Sheets[sw];
-        // 3) Contains (fallback)
-        const byName=shNames.find(n=>n.toLowerCase().includes(kl));
-        if(byName)return wb.Sheets[byName];
+        // 3) Contains — pick SHORTEST match to avoid 'Bán thành phẩm' beating 'Thành phẩm'
+        const hits=shNames.filter(n=>norm(n).includes(kl));
+        if(hits.length){
+          hits.sort((a,b)=>a.length-b.length);
+          return wb.Sheets[hits[0]];
+        }
         // 4) Index fallback
         if(shNames[idx])return wb.Sheets[shNames[idx]];
         return null;
       }
+      console.log('[Import] Sheet names:',shNames);
       let ingCount=0,semiCount=0,catCount=0;
       // ── Import nguyên liệu ──
       const ws1=findSheet('nguyên liệu',0)||findSheet('nguyen lieu',0)||findSheet('ingredient',0);
@@ -3149,15 +3154,17 @@ function handleCostExcelImport(file){
       }
       renderCostModule();
       closeModal('modal-cost-excel');
+      // Show sheet names found in file for debugging
+      toast(`📋 Sheets trong file: ${shNames.join(' | ')||'(trống)'}`, '#6366f1', 6000);
       const total=ingCount+semiCount+recipeCount;
       if(total===0){
         const foundSheets=shNames.join(', ')||'(không có sheet nào)';
         status.textContent='⚠️ Không đọc được dữ liệu!';
-        toast(`⚠️ Không import được gì. Sheet tìm thấy: ${foundSheets}`,'#f59e0b');
+        setTimeout(()=>toast(`⚠️ Không import được gì. Sheet tìm thấy: ${foundSheets}`,'#f59e0b'),500);
       } else {
         const parts=[ingCount?ingCount+' nguyên liệu':'',semiCount?semiCount+' bán thành phẩm':'',recipeCount?recipeCount+' thành phẩm':''].filter(Boolean);
-        const msg=`✓ Import thành công: ${parts.join(', ')}${catCount?' ('+catCount+' DM nguyên liệu)':''}`;
-        toast(msg,'#22c55e');
+        const msg=`✓ Import: ${parts.join(', ')}`;
+        setTimeout(()=>toast(msg,'#22c55e'),500);
       }
     }catch(err){
       status.textContent='❌ Lỗi đọc file: '+err.message;
