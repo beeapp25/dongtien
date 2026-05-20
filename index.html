@@ -461,7 +461,10 @@ body[data-theme="white"] [style*="background:#111827"],body[data-theme="pink"] [
 body[data-theme="white"] [style*="background:#131c2e"],body[data-theme="pink"] [style*="background:#131c2e"],
 body[data-theme="white"] [style*="background:#151e30"],body[data-theme="pink"] [style*="background:#151e30"],
 body[data-theme="white"] [style*="background:#1a1205"],body[data-theme="pink"] [style*="background:#1a1205"],
-body[data-theme="white"] [style*="background:#1a2236"],body[data-theme="pink"] [style*="background:#1a2236"]{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.07) !important}
+body[data-theme="white"] [style*="background:#1a2236"],body[data-theme="pink"] [style*="background:#1a2236"],
+body[data-theme="white"] [style*="background:#1a1d27"],body[data-theme="pink"] [style*="background:#1a1d27"]{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.07) !important}
+/* Fix count module buttons (#374151) in light themes */
+body[data-theme="white"] [style*="background:#374151"],body[data-theme="pink"] [style*="background:#374151"]{background:rgba(0,0,0,0.08) !important;color:#334155 !important}
 /* Restore colored role badge backgrounds */
 body[data-theme="white"] [style*="background:rgba(255,255,255,0.0"],body[data-theme="pink"] [style*="background:rgba(255,255,255,0.0"]{background:rgba(0,0,0,0.06) !important}
 /* Fix border-top in dark inline styles */
@@ -3027,9 +3030,17 @@ function handleCostExcelImport(file){
     try{
       const data=new Uint8Array(e.target.result);
       const wb=window.XLSX.read(data,{type:'array'});
+      const shNames=wb.SheetNames;
+      // Helper: tìm sheet theo tên (chứa keyword, case-insensitive) hoặc fallback theo index
+      function findSheet(keyword,idx){
+        const byName=shNames.find(n=>n.toLowerCase().includes(keyword.toLowerCase()));
+        if(byName)return wb.Sheets[byName];
+        if(shNames[idx])return wb.Sheets[shNames[idx]];
+        return null;
+      }
       let ingCount=0,semiCount=0,catCount=0;
       // ── Import nguyên liệu ──
-      const ws1=wb.Sheets['Nguyên liệu'];
+      const ws1=findSheet('nguyên liệu',0)||findSheet('nguyen lieu',0)||findSheet('ingredient',0);
       if(ws1){
         const rows=window.XLSX.utils.sheet_to_json(ws1,{header:1,defval:''});
         const ings=getIngData(curStoreId);
@@ -3063,7 +3074,7 @@ function handleCostExcelImport(file){
         saveIngData(curStoreId,ings);
       }
       // ── Import bán thành phẩm ──
-      const ws2=wb.Sheets['Bán thành phẩm'];
+      const ws2=findSheet('bán thành phẩm',1)||findSheet('ban thanh pham',1)||findSheet('semi',1);
       if(ws2){
         const rows2=window.XLSX.utils.sheet_to_json(ws2,{header:1,defval:''});
         const semis=getSemiData(curStoreId);
@@ -3095,7 +3106,7 @@ function handleCostExcelImport(file){
       }
       // ── Import thành phẩm ──
       let recipeCount=0;
-      const ws3=wb.Sheets['Thành phẩm'];
+      const ws3=findSheet('thành phẩm',2)||findSheet('thanh pham',2)||findSheet('recipe',2);
       if(ws3){
         const rows3=window.XLSX.utils.sheet_to_json(ws3,{header:1,defval:''});
         const recipes=getRecipeData(curStoreId);
@@ -3128,9 +3139,16 @@ function handleCostExcelImport(file){
       }
       renderCostModule();
       closeModal('modal-cost-excel');
-      const parts=[ingCount+' nguyên liệu',semiCount?' '+semiCount+' bán thành phẩm':'',recipeCount?' '+recipeCount+' thành phẩm':''].filter(Boolean);
-      const msg=`✓ Import thành công: ${parts.join(',')}${catCount?' ('+catCount+' DM nguyên liệu)':''}`;
-      toast(msg,'#22c55e');
+      const total=ingCount+semiCount+recipeCount;
+      if(total===0){
+        const foundSheets=shNames.join(', ')||'(không có sheet nào)';
+        status.textContent='⚠️ Không đọc được dữ liệu!';
+        toast(`⚠️ Không import được gì. Sheet tìm thấy: ${foundSheets}`,'#f59e0b');
+      } else {
+        const parts=[ingCount?ingCount+' nguyên liệu':'',semiCount?semiCount+' bán thành phẩm':'',recipeCount?recipeCount+' thành phẩm':''].filter(Boolean);
+        const msg=`✓ Import thành công: ${parts.join(', ')}${catCount?' ('+catCount+' DM nguyên liệu)':''}`;
+        toast(msg,'#22c55e');
+      }
     }catch(err){
       status.textContent='❌ Lỗi đọc file: '+err.message;
       console.error('Excel import error:',err);
