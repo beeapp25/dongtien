@@ -3034,8 +3034,17 @@ function handleCostExcelImport(file){
       const shNames=wb.SheetNames;
       // Helper: tìm sheet theo tên (chứa keyword, case-insensitive) hoặc fallback theo index
       function findSheet(keyword,idx){
-        const byName=shNames.find(n=>n.toLowerCase().includes(keyword.toLowerCase()));
+        const kl=keyword.toLowerCase();
+        // 1) Exact match (case-insensitive)
+        const exact=shNames.find(n=>n.toLowerCase()===kl);
+        if(exact)return wb.Sheets[exact];
+        // 2) Starts-with
+        const sw=shNames.find(n=>n.toLowerCase().startsWith(kl));
+        if(sw)return wb.Sheets[sw];
+        // 3) Contains (fallback)
+        const byName=shNames.find(n=>n.toLowerCase().includes(kl));
         if(byName)return wb.Sheets[byName];
+        // 4) Index fallback
         if(shNames[idx])return wb.Sheets[shNames[idx]];
         return null;
       }
