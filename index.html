@@ -285,7 +285,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;
 .sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.05)}
 /* Modal overlay */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:100;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px)}
-.modal-card{background:#111827;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:20px;max-height:90vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px;border-top:1px solid rgba(255,255,255,0.09)}
+.modal-card{background:#111827;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:20px;padding-bottom:24px;max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px;border-top:1px solid rgba(255,255,255,0.09)}
 .modal-hdr{display:flex;justify-content:space-between;align-items:center}
 .modal-ttl{font-size:15px;font-weight:700;color:#f1f5f9}
 .modal-close{background:rgba(255,255,255,0.08);border:none;color:#9ca3af;font-size:18px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .15s}
@@ -1251,7 +1251,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <div class="fl" style="margin-top:6px">Thành phần <span style="color:#4b5563;font-weight:400;font-size:10px">(chọn nguyên liệu hoặc bán thành phẩm)</span></div>
     <div id="rc-items" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
     <button onclick="addRcItem()" style="width:100%;padding:8px;background:rgba(var(--tc-rgb),0.08);border:1.5px dashed rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">＋ Thêm thành phần</button>
-    <div style="margin-top:10px;background:rgba(var(--tc-rgb),0.06);border-radius:10px;border:1px solid rgba(var(--tc-rgb),0.1);overflow:hidden">
+    <div style="margin-top:10px;background:rgba(var(--tc-rgb),0.06);border-radius:10px;border:1px solid rgba(var(--tc-rgb),0.1);position:relative">
       <div style="display:flex;align-items:center;gap:8px;padding:9px 11px">
         <input type="checkbox" id="rc-buffer-on" onchange="updRcPreview()" style="width:15px;height:15px;cursor:pointer;flex-shrink:0"/>
         <label for="rc-buffer-on" style="font-size:12px;color:var(--tc);font-weight:600;cursor:pointer;flex:1">🛡 Du di rủi ro</label>
@@ -1268,6 +1268,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     </div>
     <div id="rc-preview" class="rc-preview" style="margin-top:8px"></div>
     <button class="sbtn" onclick="saveRecipe()">💾 Lưu thành phẩm</button>
+    <div style="height:4px;flex-shrink:0"></div>
   </div>
 </div>
 
