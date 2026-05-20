@@ -190,6 +190,11 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;
 .dfm.on{background:var(--tc);color:#fff}
 .df-nav{display:flex;align-items:center;gap:4px;flex:1;justify-content:center;min-width:0}
 .df-day-input{background:transparent;border:none;color:#f1f5f9;font-size:11px;font-family:inherit;outline:none;flex:1;min-width:0;text-align:center;cursor:pointer}
+.df-day-input::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.7;cursor:pointer}
+body[data-theme="white"] .df-day-input,
+body[data-theme="pink"] .df-day-input{color:#101828}
+body[data-theme="white"] .df-day-input::-webkit-calendar-picker-indicator,
+body[data-theme="pink"] .df-day-input::-webkit-calendar-picker-indicator{filter:invert(0);opacity:.5}
 /* Record wallet line */
 .rw{font-size:10px;color:var(--tc);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .4s}
 /* Collapsible section header */
@@ -290,6 +295,25 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;
 .modal-ttl{font-size:15px;font-weight:700;color:#f1f5f9}
 .modal-close{background:rgba(255,255,255,0.08);border:none;color:#9ca3af;font-size:18px;cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .modal-close:active{background:rgba(255,255,255,0.14)}
+/* ── Modal light-theme overrides ── */
+body[data-theme="white"] .modal-card,
+body[data-theme="pink"] .modal-card{background:#fff !important;border-top-color:rgba(0,0,0,.08) !important}
+body[data-theme="white"] .modal-ttl,
+body[data-theme="pink"] .modal-ttl{color:#101828 !important}
+body[data-theme="white"] .modal-close,
+body[data-theme="pink"] .modal-close{background:rgba(0,0,0,.06) !important;color:#374151 !important}
+body[data-theme="white"] .modal-card .fl,
+body[data-theme="pink"] .modal-card .fl{color:#374151 !important}
+body[data-theme="white"] .modal-card input,
+body[data-theme="white"] .modal-card select,
+body[data-theme="white"] .modal-card textarea,
+body[data-theme="pink"] .modal-card input,
+body[data-theme="pink"] .modal-card select,
+body[data-theme="pink"] .modal-card textarea{background:#f8fafc !important;border-color:#d1d5db !important;color:#101828 !important}
+body[data-theme="white"] .modal-card .check-row label,
+body[data-theme="pink"] .modal-card .check-row label{color:#374151 !important}
+body[data-theme="white"] .modal-card .rbtn,
+body[data-theme="pink"] .modal-card .rbtn{background:rgba(0,0,0,.04) !important;border-color:rgba(0,0,0,.12) !important;color:#374151 !important}
 /* toast */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;padding:9px 20px;border-radius:25px;font-size:12px;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 16px rgba(34,197,94,0.4)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -477,8 +501,18 @@ body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-share
 .store-tab{flex:1;padding:7px 4px;border-radius:8px;font-size:11px;font-weight:600;border:none;background:none;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
 .store-tab.on{background:var(--tc);color:#fff;box-shadow:0 2px 8px rgba(var(--tc-rgb),0.35)}
 .cost-stabs{display:flex;background:rgba(0,0,0,0.15);border-radius:9px;padding:2px;gap:2px}
-.cost-stab{flex:1;padding:7px 4px;border-radius:7px;font-size:11px;font-weight:600;border:none;background:none;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent}
+.cost-stab{flex:1;padding:7px 4px;border-radius:7px;font-size:11px;font-weight:600;border:none;background:none;color:#6b7280;cursor:pointer;font-family:inherit;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;justify-content:center;gap:5px}
 .cost-stab.on{background:rgba(var(--tc-rgb),0.15);color:var(--tc)}
+body[data-theme="white"] .cost-stabs,
+body[data-theme="pink"] .cost-stabs{background:rgba(0,0,0,0.06) !important}
+body[data-theme="white"] .cost-stab,
+body[data-theme="pink"] .cost-stab{color:#6b7280 !important}
+body[data-theme="white"] .cost-stab.on,
+body[data-theme="pink"] .cost-stab.on{background:rgba(var(--tc-rgb),0.12) !important;color:var(--tc) !important}
+/* ghost button dùng trong bar thay thế inline style */
+.abtn-ghost{background:rgba(255,255,255,0.07);color:#9ca3af}
+body[data-theme="white"] .abtn-ghost,
+body[data-theme="pink"] .abtn-ghost{background:rgba(0,0,0,0.07) !important;color:#374151 !important}
 .ing-row{display:flex;align-items:flex-start;justify-content:space-between;background:var(--bg-surf);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px 12px;gap:8px}
 .ing-n{font-size:12px;font-weight:600;color:#e2e8f0}
 .ing-u{font-size:10px;color:#6b7280;margin-top:3px}
@@ -488,6 +522,12 @@ body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-share
 .cat-hdr-nm{font-size:11px;font-weight:700;color:var(--tc);flex:1}
 .cat-hdr-cnt{font-size:10px;color:#6b7280}
 .cat-hdr-arr{font-size:10px;color:#6b7280;width:12px;text-align:center}
+body[data-theme="white"] .cat-hdr-nm,
+body[data-theme="pink"] .cat-hdr-nm{color:#101828 !important}
+body[data-theme="white"] .cat-hdr-cnt,
+body[data-theme="pink"] .cat-hdr-cnt,
+body[data-theme="white"] .cat-hdr-arr,
+body[data-theme="pink"] .cat-hdr-arr{color:#4b5563 !important}
 .cat-body{display:flex;flex-direction:column;gap:5px;padding-bottom:6px}
 .recipe-card{background:linear-gradient(135deg,var(--bg-card),var(--bg-form2));border:1px solid rgba(var(--tc-rgb),0.15);border-radius:13px;overflow:hidden}
 .recipe-head{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;gap:8px}
@@ -505,7 +545,12 @@ body[data-theme="white"] #perm-shared-list *,body[data-theme="pink"] #perm-share
 .stype-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .type-chip{padding:10px;border-radius:11px;font-size:11px;font-weight:600;border:2px solid rgba(255,255,255,0.07);cursor:pointer;display:flex;align-items:center;gap:8px;background:var(--bg-surf);transition:all .15s;-webkit-tap-highlight-color:transparent;color:#9ca3af}
 .type-chip.on{border-color:var(--tc);background:rgba(var(--tc-rgb),0.1);color:var(--tc)}
-.type-chip-ico{font-size:22px;flex-shrink:0}
+.type-chip-ico{
+  width:44px;height:44px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.type-chip-ico svg{width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 body[data-theme="white"] .store-tab,body[data-theme="pink"] .store-tab,
 body[data-theme="white"] .cost-stab,body[data-theme="pink"] .cost-stab{color:#64748b}
 body[data-theme="white"] .ing-row,body[data-theme="pink"] .ing-row{background:var(--bg-surf);border-color:rgba(0,0,0,0.07)}
@@ -515,6 +560,566 @@ body[data-theme="white"] .recipe-ing-row,body[data-theme="pink"] .recipe-ing-row
 body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#475569;background:var(--bg-surf);border-color:rgba(0,0,0,0.1)}
 /* Theme switcher UI */
 .theme-bar{display:flex;border-radius:14px;overflow:hidden;border:1.5px solid rgba(128,128,128,0.2)}
+
+/* ══════════════════════════════════════════════
+   BANKING PRO UPGRADE — Giao diện ngân hàng
+══════════════════════════════════════════════ */
+
+/* ── Header premium ── */
+.hdr{
+  background:linear-gradient(175deg,#071428 0%,#0c1c38 55%,#111827 100%) !important;
+  padding:0 !important;
+  border-bottom:none !important;
+  box-shadow:0 2px 20px rgba(0,0,0,0.5) !important;
+}
+.hdr-top{
+  padding:14px 16px 12px !important;
+  background:linear-gradient(135deg,rgba(37,99,235,0.07) 0%,transparent 60%) !important;
+}
+.app-title{font-size:15px !important;letter-spacing:.4px !important}
+.bank-greeting{
+  font-size:11px;color:rgba(255,255,255,0.42);
+  font-weight:500;display:block;margin-bottom:3px;
+  letter-spacing:.2px;
+}
+.tab-bar{
+  padding:3px 6px 0 !important;
+  background:rgba(0,0,0,0.18) !important;
+  border-top:1px solid rgba(255,255,255,0.04) !important;
+  gap:2px !important;
+}
+.tb{
+  padding:7px 2px 10px !important;
+  font-size:9px !important;
+  letter-spacing:.15px !important;
+  border-radius:8px 8px 0 0 !important;
+  min-width:50px !important;
+}
+.tb .ico{display:flex;align-items:center;justify-content:center;width:22px;height:22px}
+.tb .ico svg{transition:transform .2s}
+.tb.active .ico svg{transform:scale(1.12)}
+.tb.active{
+  background:rgba(var(--tc-rgb),.07) !important;
+}
+
+/* ── Banking Hero Balance Card ── */
+.bank-hero-card{
+  background:linear-gradient(135deg,#1a3a6e 0%,#0f2040 40%,#1e1050 100%);
+  border-radius:26px;
+  padding:22px 20px 18px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 20px 52px rgba(0,0,0,0.65),0 0 0 1px rgba(255,255,255,0.08);
+  border:1px solid rgba(59,130,246,0.2);
+}
+.bank-hero-card::before{
+  content:'';position:absolute;
+  top:-80px;right:-60px;
+  width:220px;height:220px;
+  background:radial-gradient(circle,rgba(59,130,246,0.18) 0%,transparent 70%);
+  pointer-events:none;border-radius:50%;
+}
+.bank-hero-card::after{
+  content:'';position:absolute;
+  bottom:-60px;left:0;
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(139,92,246,0.14) 0%,transparent 70%);
+  pointer-events:none;border-radius:50%;
+}
+.bhc-top{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;margin-bottom:16px;
+  position:relative;z-index:1;
+}
+.bhc-label{
+  font-size:11px;color:rgba(255,255,255,0.45);
+  font-weight:500;text-transform:uppercase;
+  letter-spacing:.7px;margin-bottom:7px;
+}
+.bhc-amount{
+  font-size:30px;font-weight:800;
+  color:#fff;letter-spacing:-1.5px;line-height:1;
+  transition:color .4s;
+}
+.bhc-amount.pos{color:#4ade80;text-shadow:0 0 28px rgba(74,222,128,0.4)}
+.bhc-amount.neg{color:#f87171;text-shadow:0 0 28px rgba(248,113,113,0.4)}
+.bhc-badge{
+  background:rgba(255,255,255,0.09);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:10px;padding:5px 12px;
+  font-size:11px;font-weight:600;
+  color:rgba(255,255,255,0.62);
+  white-space:nowrap;backdrop-filter:blur(10px);
+  position:relative;z-index:1;
+}
+.bhc-stats{
+  display:flex;align-items:center;gap:0;
+  padding:13px 15px;
+  background:rgba(0,0,0,0.25);
+  border-radius:18px;
+  position:relative;z-index:1;
+  border:1px solid rgba(255,255,255,0.07);
+}
+.bhc-stat{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.bhc-stat-icon{
+  width:36px;height:36px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:800;flex-shrink:0;
+}
+.bhc-stat-lbl{
+  font-size:10px;color:rgba(255,255,255,0.38);
+  font-weight:500;margin-bottom:3px;
+}
+.bhc-stat-val{
+  font-size:13px;font-weight:700;color:#f1f5f9;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  max-width:110px;
+}
+.bhc-divider{
+  width:1px;height:38px;
+  background:rgba(255,255,255,0.09);
+  flex-shrink:0;margin:0 14px;
+}
+
+/* ── Quick Actions ── */
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.qa-btn{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:13px 4px 10px;
+  background:linear-gradient(155deg,var(--bg-surf),var(--bg-card));
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px;cursor:pointer;font-family:inherit;
+  transition:transform .15s,box-shadow .15s;
+  box-shadow:0 4px 18px rgba(0,0,0,0.35);
+  -webkit-tap-highlight-color:transparent;
+}
+.qa-btn:active{transform:scale(.9);box-shadow:0 1px 6px rgba(0,0,0,0.5)}
+.qa-ico{
+  width:46px;height:46px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,0.3);
+  overflow:hidden;flex-shrink:0;
+}
+.qa-lbl{
+  font-size:10px;font-weight:600;
+  color:#9ca3af;text-align:center;white-space:nowrap;
+}
+
+/* ── Enhanced transaction rows ── */
+.ri{
+  border-radius:18px !important;
+  padding:13px 15px !important;
+  border-left:none !important;
+  border:1px solid rgba(255,255,255,0.06) !important;
+  background:linear-gradient(135deg,#111827,#0c1320) !important;
+}
+.ri.thu,.ri.revenue{
+  box-shadow:0 2px 12px rgba(0,0,0,0.3),-3px 0 0 0 #22c55e inset !important;
+}
+.ri.chi,.ri.expense{
+  box-shadow:0 2px 12px rgba(0,0,0,0.3),-3px 0 0 0 #ef4444 inset !important;
+}
+
+/* ── Stat cards upgrade ── */
+.card{border-radius:20px !important;padding:16px 17px !important}
+.card.g{
+  background:linear-gradient(145deg,rgba(20,83,45,.18) 0%,var(--bg-card) 100%) !important;
+  border-color:rgba(34,197,94,.14) !important;
+}
+.card.r{
+  background:linear-gradient(145deg,rgba(69,10,10,.22) 0%,var(--bg-card) 100%) !important;
+  border-color:rgba(239,68,68,.14) !important;
+}
+.card.b{
+  background:linear-gradient(145deg,rgba(30,58,95,.22) 0%,var(--bg-card) 100%) !important;
+  border-color:rgba(59,130,246,.14) !important;
+}
+
+/* ── Date filter upgrade ── */
+.date-filter{
+  border-radius:18px !important;
+  border:1px solid rgba(var(--tc-rgb),.15) !important;
+  box-shadow:0 4px 16px rgba(0,0,0,.2) !important;
+}
+
+/* ── Section label bank-style ── */
+.bank-section-hdr{
+  display:flex;justify-content:space-between;
+  align-items:center;padding:2px 2px 4px;
+}
+.bank-section-title{font-size:13px;font-weight:700;color:#f1f5f9;letter-spacing:-.2px}
+.bank-section-link{font-size:11px;color:var(--tc);font-weight:600;cursor:pointer}
+
+/* ════════════════════════════════════════════
+   HOME DASHBOARD — Màn hình tổng quan
+════════════════════════════════════════════ */
+
+/* Header redesign */
+.hdr{
+  padding:0 !important;
+  border-bottom:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  position:sticky;top:0;z-index:50;
+}
+.hdr-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 14px !important;
+  background:rgba(8,13,24,0.85) !important;
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  margin-bottom:0 !important;
+}
+
+/* Back (home icon) button — ẩn mặc định, hiện khi detail */
+.rd-back-btn{
+  width:38px;height:38px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:13px;
+  display:none;align-items:center;justify-content:center;
+  cursor:pointer;color:#93c5fd;
+  transition:all .18s;flex-shrink:0;
+}
+.rd-back-btn:active{transform:scale(.9)}
+.rd-back-btn svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+body.rd-detail .rd-back-btn{display:flex}
+
+/* Settings button */
+.rd-settings-btn{
+  width:38px;height:38px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:#94a3b8;
+  transition:all .18s;flex-shrink:0;
+}
+.rd-settings-btn:active{transform:scale(.9)}
+.rd-settings-btn svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* Title center block */
+.hdr-center{
+  flex:1;text-align:center;
+}
+.hdr-center .app-title{
+  font-size:17px !important;
+  font-weight:800 !important;
+  color:#f1f5f9 !important;
+  letter-spacing:-.3px !important;
+}
+.hdr-right{display:flex;align-items:center;gap:7px;justify-content:flex-end}
+
+/* Tab bar hidden — JS vẫn dùng được, UI ẩn */
+.tab-bar{display:none !important}
+
+/* ── Home container ── */
+.rd-home{
+  padding:14px 14px 100px;
+  display:flex;flex-direction:column;gap:13px;
+}
+.rd-home.hid{display:none !important}
+
+/* ── Hero balance card ── */
+.rd-hero{
+  position:relative;overflow:hidden;
+  border-radius:28px;padding:22px 20px 20px;
+  color:#fff;
+  background:linear-gradient(135deg,rgba(9,15,31,.98),rgba(29,78,216,.90)),
+    radial-gradient(circle at 80% 10%,rgba(45,212,191,.4),transparent 50%);
+  box-shadow:0 22px 54px rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,0.09);
+}
+.rd-hero.has-bg{
+  background-size:cover !important;
+  background-position:center !important;
+}
+.rd-hero.has-bg::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(160deg,rgba(5,10,25,.82),rgba(10,20,50,.70));
+  z-index:0;border-radius:inherit;
+}
+.rd-hero.has-bg .rd-kicker,
+.rd-hero.has-bg .rd-balance,
+.rd-hero.has-bg .rd-hero-sub,
+.rd-hero.has-bg .rd-hero-grid,
+.rd-hero.has-bg .rd-metric{position:relative;z-index:1;}
+.rd-hero-cam{
+  position:absolute;top:12px;right:12px;z-index:2;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;backdrop-filter:blur(4px);
+  transition:background .2s;-webkit-tap-highlight-color:transparent;
+}
+.rd-hero-cam:active{background:rgba(255,255,255,.28)}
+.rd-hero-cam svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rd-hero::after{
+  content:"";position:absolute;
+  inset:auto -50px -90px auto;
+  width:200px;height:200px;border-radius:50%;
+  border:32px solid rgba(255,255,255,.06);
+}
+.rd-kicker{
+  font-size:11px;color:rgba(255,255,255,.6);
+  font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+}
+.rd-balance{
+  font-size:34px;font-weight:800;
+  letter-spacing:-.5px;margin:8px 0 3px;
+  position:relative;z-index:1;overflow-wrap:anywhere;
+  transition:color .3s;
+}
+.rd-balance.pos{color:#4ade80;text-shadow:0 0 30px rgba(74,222,128,.3)}
+.rd-balance.neg{color:#f87171}
+.rd-hero-sub{
+  font-size:12px;color:rgba(255,255,255,.55);
+  position:relative;z-index:1;
+}
+.rd-hero-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-top:16px;position:relative;z-index:1;
+}
+.rd-metric{
+  border-radius:16px;padding:12px 13px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.14);
+}
+.rd-metric span{
+  display:block;font-size:10px;
+  color:rgba(255,255,255,.56);font-weight:600;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.rd-metric strong{
+  display:block;margin-top:5px;
+  font-size:15px;font-weight:800;overflow-wrap:anywhere;
+}
+
+/* ── Quick actions row ── */
+.rd-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rd-action{
+  min-height:68px;border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.05);
+  border-radius:18px;
+  display:flex;flex-direction:row;
+  align-items:center;justify-content:flex-start;
+  padding:0 14px;gap:11px;
+  color:#cbd5e1;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .15s,box-shadow .15s;
+  text-align:left;
+}
+.rd-action:active{transform:scale(.94)}
+.rd-act-ico{
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:12px;
+}
+.rd-act-lbl{display:flex;flex-direction:column;gap:2px}
+.rd-act-lbl span{font-size:11px;font-weight:400;opacity:.55}
+
+/* ── Workspace section ── */
+.rd-section{
+  background:rgba(17,24,39,.9);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:16px;
+  box-shadow:0 8px 28px rgba(0,0,0,.35);
+}
+.rd-head{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  margin-bottom:13px;
+}
+.rd-title{
+  font-size:14px;font-weight:800;
+  color:#f1f5f9;margin:0;letter-spacing:-.2px;
+}
+.rd-link{
+  border:0;background:transparent;
+  color:#60a5fa;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:inherit;padding:4px;
+}
+
+/* ── Workspace tiles ── */
+.rd-mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.rd-mod{
+  min-height:108px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  border-radius:20px;padding:14px;
+  text-align:left;color:#f1f5f9;
+  cursor:pointer;font-family:inherit;
+  transition:transform .15s,border-color .2s,background .2s;
+  -webkit-tap-highlight-color:transparent;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.rd-mod:active{transform:scale(.93)}
+.rd-mod:hover{
+  border-color:rgba(59,130,246,.3);
+  background:rgba(59,130,246,.06);
+}
+.rd-mod-top{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;margin-bottom:10px;
+}
+.rd-mod-icon{
+  width:44px;height:44px;border-radius:15px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(59,130,246,.12);color:#60a5fa;
+  flex-shrink:0;
+}
+.rd-mod-icon svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.rd-mod-go{color:#4b5563;font-size:16px;font-weight:800;line-height:1}
+.rd-mod-name{font-size:13px;font-weight:800;margin-bottom:3px;color:#f1f5f9}
+.rd-mod-val{font-size:11px;color:#6b7280;line-height:1.4;overflow-wrap:anywhere}
+
+/* ── Recent feed ── */
+.rd-feed{display:flex;flex-direction:column}
+.rd-row{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 0;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.rd-row:first-child{border-top:0;padding-top:0}
+.rd-row:last-child{padding-bottom:0}
+.rd-avatar{
+  width:40px;height:40px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:16px;
+}
+.rd-row-main{flex:1;min-width:0}
+.rd-row-name{
+  font-size:13px;font-weight:700;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#f1f5f9;
+}
+.rd-row-meta{font-size:11px;color:#6b7280;margin-top:2px}
+.rd-row-amt{font-size:14px;font-weight:800;white-space:nowrap}
+.rd-empty{font-size:12px;color:#6b7280;padding:8px 0}
+
+/* ── Detail mode: tab content có title heading ── */
+body.rd-detail .mod{
+  margin:0;
+  padding:14px !important;
+}
+body.rd-detail .mod::before{
+  content:attr(data-rd-title);
+  display:block;
+  font-size:15px;font-weight:800;color:#f1f5f9;
+  margin:0 2px 14px;letter-spacing:-.2px;
+}
+body.rd-detail .mod[data-rd-title=""]::before{display:none}
+
+/* Light theme: tiêu đề section trong detail mode → chữ tối */
+body[data-theme="white"].rd-detail .mod::before,
+body[data-theme="pink"].rd-detail  .mod::before{color:#101828 !important}
+
+/* Light theme home screen */
+body[data-theme="white"] .rd-section,
+body[data-theme="pink"] .rd-section{
+  background:#fff !important;
+  border-color:rgba(0,0,0,.08) !important;
+}
+body[data-theme="white"] .rd-mod,
+body[data-theme="pink"] .rd-mod{
+  background:#f8fafc !important;
+  border-color:rgba(0,0,0,.08) !important;
+  color:#101828 !important;
+}
+body[data-theme="white"] .rd-mod:hover,
+body[data-theme="pink"] .rd-mod:hover{background:#eff6ff !important;border-color:#bfdbfe !important;}
+body[data-theme="white"] .rd-mod-name,
+body[data-theme="pink"] .rd-mod-name{color:#101828 !important}
+body[data-theme="white"] .rd-mod-val,
+body[data-theme="pink"] .rd-mod-val{color:#667085 !important}
+body[data-theme="white"] .rd-title,
+body[data-theme="pink"] .rd-title{color:#101828 !important}
+body[data-theme="white"] .rd-row-name,
+body[data-theme="pink"] .rd-row-name{color:#101828 !important}
+body[data-theme="white"] .rd-row-meta,
+body[data-theme="pink"] .rd-row-meta{color:#6b7280 !important}
+body[data-theme="white"] .rd-empty,
+body[data-theme="pink"] .rd-empty{color:#6b7280 !important}
+body[data-theme="white"] .rd-action,
+body[data-theme="pink"] .rd-action{background:#fff !important;border-color:rgba(0,0,0,.09) !important;color:#344054 !important;box-shadow:0 4px 14px rgba(0,0,0,.08) !important}
+body[data-theme="white"] .hdr-top,
+body[data-theme="pink"] .hdr-top{background:rgba(255,255,255,.9) !important;border-bottom-color:rgba(0,0,0,.08) !important}
+body[data-theme="white"] .rd-back-btn,body[data-theme="white"] .rd-settings-btn,
+body[data-theme="pink"] .rd-back-btn,body[data-theme="pink"] .rd-settings-btn{
+  background:#fff !important;border-color:rgba(0,0,0,.1) !important;color:#344054 !important;
+}
+
+/* ── Header LUÔN dark navy, bất kể theme ── */
+body[data-theme="white"] .hdr-top,
+body[data-theme="pink"]  .hdr-top{
+  background:rgba(8,13,24,.94) !important;
+  border-bottom-color:rgba(255,255,255,.06) !important;
+}
+.hdr .app-title,
+body[data-theme="white"] .hdr .app-title,
+body[data-theme="pink"]  .hdr .app-title{color:#f1f5f9 !important}
+.hdr .bank-greeting,
+body[data-theme="white"] .hdr .bank-greeting,
+body[data-theme="pink"]  .hdr .bank-greeting{color:rgba(255,255,255,.42) !important}
+/* back & settings buttons: luôn sáng trên nền tối */
+body[data-theme="white"] .rd-back-btn,
+body[data-theme="white"] .rd-settings-btn,
+body[data-theme="pink"]  .rd-back-btn,
+body[data-theme="pink"]  .rd-settings-btn{
+  background:rgba(255,255,255,.1) !important;
+  border-color:rgba(255,255,255,.14) !important;
+  color:#93c5fd !important;
+}
+/* Tab bar cũng tối → chữ sáng */
+body[data-theme="white"] .tab-bar .tb,
+body[data-theme="pink"] .tab-bar .tb{color:rgba(200,215,245,.5) !important}
+body[data-theme="white"] .tab-bar .tb.active,
+body[data-theme="pink"] .tab-bar .tb.active{color:#fff !important}
+/* username trong header */
+body[data-theme="white"] .hdr .un,
+body[data-theme="pink"] .hdr .un{color:rgba(255,255,255,.65) !important}
+
+/* ── Light theme overrides ── */
+body[data-theme="white"] .bank-hero-card,
+body[data-theme="pink"] .bank-hero-card{
+  background:linear-gradient(135deg,#1e40af 0%,#1e3a8a 50%,#312e81 100%) !important;
+}
+/* Hero card text selalu putih (bg gelap) */
+body[data-theme="white"] .bhc-label,
+body[data-theme="pink"] .bhc-label{color:rgba(255,255,255,.55) !important}
+body[data-theme="white"] .bhc-amount,
+body[data-theme="pink"] .bhc-amount{color:#fff !important}
+body[data-theme="white"] .bhc-amount.pos,
+body[data-theme="pink"] .bhc-amount.pos{color:#4ade80 !important}
+body[data-theme="white"] .bhc-amount.neg,
+body[data-theme="pink"] .bhc-amount.neg{color:#fca5a5 !important}
+body[data-theme="white"] .bhc-badge,
+body[data-theme="pink"] .bhc-badge{color:rgba(255,255,255,.7) !important;border-color:rgba(255,255,255,.18) !important}
+body[data-theme="white"] .bhc-stats,
+body[data-theme="pink"] .bhc-stats{background:rgba(0,0,0,.25) !important;border-color:rgba(255,255,255,.1) !important}
+body[data-theme="white"] .bhc-stat-lbl,
+body[data-theme="pink"] .bhc-stat-lbl{color:rgba(255,255,255,.45) !important}
+body[data-theme="white"] .bhc-stat-val,
+body[data-theme="pink"] .bhc-stat-val{color:#f1f5f9 !important}
+body[data-theme="white"] .bhc-divider,
+body[data-theme="pink"] .bhc-divider{background:rgba(255,255,255,.15) !important}
+
+body[data-theme="white"] .qa-btn,
+body[data-theme="pink"] .qa-btn{
+  background:#fff !important;
+  border-color:rgba(0,0,0,.08) !important;
+  box-shadow:0 2px 14px rgba(0,0,0,.1) !important;
+}
+body[data-theme="white"] .qa-lbl,
+body[data-theme="pink"] .qa-lbl{color:#475569 !important}
+body[data-theme="white"] .ri,
+body[data-theme="pink"] .ri{
+  background:linear-gradient(135deg,#f8faff,#f0f4ff) !important;
+}
+body[data-theme="pink"] .ri{
+  background:linear-gradient(135deg,#fff5f8,#fce8f0) !important;
+}
 .theme-chip{flex:1;padding:10px 6px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;border:none;border-right:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);transition:background .2s;-webkit-tap-highlight-color:transparent}
 .theme-chip:last-child{border-right:none}
 .theme-chip:active{filter:brightness(1.15)}
@@ -583,30 +1188,310 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
 <div id="app" class="hid">
   <div class="hdr">
     <div class="hdr-top">
-      <div class="app-title">💼 Dòng Tiền</div>
-      <div class="hdr-r">
+      <!-- Back → Home button (visible only in rd-detail mode) -->
+      <button class="rd-back-btn" id="rd-back-btn" onclick="showHome()" title="Trang chủ">
+        <svg viewBox="0 0 24 24"><path d="M3 12L12 4l9 8"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-5h4v5h4a1 1 0 0 0 1-1v-9"/></svg>
+      </button>
+      <!-- Centered title -->
+      <div class="hdr-center">
+        <div class="app-title">Dòng Tiền</div>
+      </div>
+      <!-- Right cluster -->
+      <div class="hdr-right">
+        <button class="rd-settings-btn" id="rd-settings-btn" onclick="goTab('settings')" title="Cài đặt">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
         <span id="stag" class="stag">✓ Đã lưu</span>
         <div class="uc" onclick="logout()"><div class="ua" id="h-ava"></div><span class="un" id="h-name"></span></div>
       </div>
     </div>
     <div class="tab-bar">
-      <button class="tb active" data-color="#3b82f6" data-rgb="59,130,246" onclick="showTab('tc',this)"><span class="ico">💸</span>Cá Nhân</button>
-      <button class="tb" id="tab-sh-btn" data-color="#22c55e" data-rgb="34,197,94" onclick="showTab('sh',this)"><span class="ico">🏪</span>Cửa Hàng</button>
-      <button class="tb" data-color="#a78bfa" data-rgb="167,139,250" onclick="showTab('inv',this)"><span class="ico">📈</span>Đầu Tư</button>
-      <button class="tb" data-color="#f59e0b" data-rgb="245,158,11" onclick="showTab('ln',this)"><span class="ico">🤝</span>Nợ & Vay</button>
-      <button class="tb" data-color="#ec4899" data-rgb="236,72,153" onclick="showTab('rec',this)"><span class="ico">📅</span>Kế Hoạch</button>
-      <button class="tb" data-color="#14b8a6" data-rgb="20,184,166" onclick="showTab('wallet',this)"><span class="ico">👛</span>Ví Tiền</button>
-      <button class="tb" id="tab-count-btn" data-color="#fb923c" data-rgb="251,146,60" onclick="showTab('count',this)"><span class="ico">🧮</span>Đếm Tiền</button>
-      <button class="tb" data-color="#94a3b8" data-rgb="148,163,184" onclick="showTab('settings',this)"><span class="ico">⚙️</span>Cài đặt</button>
+      <!-- Cá Nhân: User -->
+      <button class="tb active" data-color="#3b82f6" data-rgb="59,130,246" onclick="showTab('tc',this)">
+        <span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg></span>Cá Nhân
+      </button>
+      <!-- Cửa Hàng: Store -->
+      <button class="tb" id="tab-sh-btn" data-color="#22c55e" data-rgb="34,197,94" onclick="showTab('sh',this)">
+        <span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><path d="M12 10v4"/><path d="M9 13h6"/></svg></span>Cửa Hàng
+      </button>
+      <!-- Đầu Tư: Trending up -->
+      <button class="tb" data-color="#a78bfa" data-rgb="167,139,250" onclick="showTab('inv',this)">
+        <span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>Đầu Tư
+      </button>
+      <!-- Nợ & Vay: Banknote -->
+      <button class="tb" data-color="#f59e0b" data-rgb="245,158,11" onclick="showTab('ln',this)">
+        <span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="2"/><circle cx="12" cy="12.5" r="2"/><path d="M6 12.5h.01M18 12.5h.01"/><path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg></span>Nợ &amp; Vay
+      </button>
+      <!-- Kế Hoạch: Calendar -->
+      <button class="tb" data-color="#ec4899" data-rgb="236,72,153" onclick="showTab('rec',this)">
+        <span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="15" r="1" fill="currentColor" stroke="none"/></svg></span>Kế Hoạch
+      </button>
+      <!-- Ví Tiền: Wallet -->
+      <button class="tb" data-color="#14b8a6" data-rgb="20,184,166" onclick="showTab('wallet',this)">
+        <span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 2H8L4 7h16l-4-5z"/><circle cx="16.5" cy="13" r="1.2" fill="currentColor" stroke="none"/></svg></span>Ví Tiền
+      </button>
+      <!-- Đếm Tiền: Calculator -->
+      <button class="tb" id="tab-count-btn" data-color="#fb923c" data-rgb="251,146,60" onclick="showTab('count',this)">
+        <span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><rect x="7" y="5" width="10" height="3" rx="1"/><circle cx="8" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1" fill="currentColor" stroke="none"/></svg></span>Đếm Tiền
+      </button>
+      <!-- Cài đặt: Settings -->
+      <button class="tb" data-color="#94a3b8" data-rgb="148,163,184" onclick="showTab('settings',this)">
+        <span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>Cài đặt
+      </button>
     </div>
   </div>
 
+  <!-- ══ HOME DASHBOARD ══ -->
+  <div id="rd-home" class="rd-home">
+
+    <!-- Hero balance card -->
+    <div class="rd-hero" id="rd-hero">
+      <input type="file" id="rd-hero-file" accept="image/*" style="display:none" onchange="rdHeroBgLoad(this)"/>
+      <button class="rd-hero-cam" onclick="rdHeroBgPick(event)" title="Đổi ảnh nền">
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </button>
+      <div class="rd-kicker">Cân đối tháng này</div>
+      <div class="rd-balance" id="rd-balance">—</div>
+      <div class="rd-hero-sub" id="rd-month-lbl">Đang tải…</div>
+      <div class="rd-hero-grid">
+        <div class="rd-metric">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <div style="width:28px;height:28px;border-radius:9px;background:rgba(34,197,94,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </div>
+            <span style="font-size:10px;color:rgba(255,255,255,.56);font-weight:600;text-transform:uppercase;letter-spacing:.3px">Thu nhập</span>
+          </div>
+          <strong id="rd-income" style="color:#4ade80;font-size:15px;font-weight:800;overflow-wrap:anywhere">—</strong>
+        </div>
+        <div class="rd-metric">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <div style="width:28px;height:28px;border-radius:9px;background:rgba(239,68,68,0.28);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </div>
+            <span style="font-size:10px;color:rgba(255,255,255,.56);font-weight:600;text-transform:uppercase;letter-spacing:.3px">Chi tiêu</span>
+          </div>
+          <strong id="rd-expense" style="color:#f87171;font-size:15px;font-weight:800;overflow-wrap:anywhere">—</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick action row -->
+    <div class="rd-actions">
+      <!-- Thu tiền -->
+      <button class="rd-action" onclick="goTab('tc');setTimeout(function(){var s=document.getElementById('tc-type');if(s)s.value='thu';if(typeof updCatTC==='function')updCatTC();var f=document.getElementById('form-tc');if(f){f.classList.remove('hid');setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},80);}},150)">
+        <div class="rd-act-ico" style="background:rgba(34,197,94,.18)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4ade80" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </div>
+        <div class="rd-act-lbl">Thu tiền<span>Ghi nhận thu</span></div>
+      </button>
+      <!-- Chi tiêu -->
+      <button class="rd-action" onclick="goTab('tc');setTimeout(function(){var s=document.getElementById('tc-type');if(s)s.value='chi';if(typeof updCatTC==='function')updCatTC();var f=document.getElementById('form-tc');if(f){f.classList.remove('hid');setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},80);}},150)">
+        <div class="rd-act-ico" style="background:rgba(239,68,68,.18)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f87171" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </div>
+        <div class="rd-act-lbl">Chi tiêu<span>Ghi nhận chi</span></div>
+      </button>
+      <!-- Ví tiền -->
+      <button class="rd-action" onclick="goTab('wallet')">
+        <div class="rd-act-ico" style="background:rgba(59,130,246,.18)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        </div>
+        <div class="rd-act-lbl">Ví tiền<span>Quản lý ví</span></div>
+      </button>
+      <!-- Đầu tư -->
+      <button class="rd-action" onclick="goTab('inv')">
+        <div class="rd-act-ico" style="background:rgba(168,85,247,.18)">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#c084fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+        </div>
+        <div class="rd-act-lbl">Đầu tư<span>Theo dõi danh mục</span></div>
+      </button>
+    </div>
+
+    <!-- Workspace tiles -->
+    <div class="rd-section">
+      <div class="rd-head">
+        <h3 class="rd-title">Không gian làm việc</h3>
+      </div>
+      <div class="rd-mod-grid">
+
+        <!-- Cá Nhân -->
+        <button class="rd-mod" onclick="goTab('tc')">
+          <div class="rd-mod-top">
+            <div class="rd-mod-icon" style="background:rgba(59,130,246,.14);color:#60a5fa">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>
+            </div>
+            <span class="rd-mod-go">›</span>
+          </div>
+          <div>
+            <div class="rd-mod-name">Cá Nhân</div>
+            <div class="rd-mod-val" id="rd-tile-tc">Thu chi cá nhân</div>
+          </div>
+        </button>
+
+        <!-- Cửa Hàng -->
+        <button class="rd-mod" id="rd-tile-sh" onclick="goTab('sh')">
+          <div class="rd-mod-top">
+            <div class="rd-mod-icon" style="background:rgba(34,197,94,.14);color:#4ade80">
+              <svg viewBox="0 0 24 24"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><path d="M12 10v4"/><path d="M9 13h6"/></svg>
+            </div>
+            <span class="rd-mod-go">›</span>
+          </div>
+          <div>
+            <div class="rd-mod-name">Cửa Hàng</div>
+            <div class="rd-mod-val">Doanh thu &amp; vật tư</div>
+          </div>
+        </button>
+
+        <!-- Đầu Tư -->
+        <button class="rd-mod" onclick="goTab('inv')">
+          <div class="rd-mod-top">
+            <div class="rd-mod-icon" style="background:rgba(167,139,250,.14);color:#a78bfa">
+              <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            </div>
+            <span class="rd-mod-go">›</span>
+          </div>
+          <div>
+            <div class="rd-mod-name">Đầu Tư</div>
+            <div class="rd-mod-val">Chứng khoán &amp; crypto</div>
+          </div>
+        </button>
+
+        <!-- Nợ & Vay -->
+        <button class="rd-mod" onclick="goTab('ln')">
+          <div class="rd-mod-top">
+            <div class="rd-mod-icon" style="background:rgba(245,158,11,.14);color:#fbbf24">
+              <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="2"/><circle cx="12" cy="12.5" r="2"/><path d="M6 12.5h.01M18 12.5h.01"/><path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
+            </div>
+            <span class="rd-mod-go">›</span>
+          </div>
+          <div>
+            <div class="rd-mod-name">Nợ &amp; Vay</div>
+            <div class="rd-mod-val">Quản lý công nợ</div>
+          </div>
+        </button>
+
+        <!-- Kế Hoạch -->
+        <button class="rd-mod" onclick="goTab('rec')">
+          <div class="rd-mod-top">
+            <div class="rd-mod-icon" style="background:rgba(236,72,153,.14);color:#f472b6">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="15" r="1" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <span class="rd-mod-go">›</span>
+          </div>
+          <div>
+            <div class="rd-mod-name">Kế Hoạch</div>
+            <div class="rd-mod-val">Ngân sách định kỳ</div>
+          </div>
+        </button>
+
+        <!-- Đếm Tiền -->
+        <button class="rd-mod" id="rd-tile-count" onclick="goTab('count')">
+          <div class="rd-mod-top">
+            <div class="rd-mod-icon" style="background:rgba(251,146,60,.14);color:#fb923c">
+              <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><rect x="7" y="5" width="10" height="3" rx="1"/><circle cx="8" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <span class="rd-mod-go">›</span>
+          </div>
+          <div>
+            <div class="rd-mod-name">Đếm Tiền</div>
+            <div class="rd-mod-val">Tính mệnh giá tiền</div>
+          </div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Recent activity feed -->
+    <div class="rd-section">
+      <div class="rd-head">
+        <h3 class="rd-title">Giao dịch gần đây</h3>
+        <button class="rd-link" onclick="goTab('tc')">Xem tất cả</button>
+      </div>
+      <div class="rd-feed" id="rd-feed">
+        <div class="rd-empty">Chưa có giao dịch nào…</div>
+      </div>
+    </div>
+
+  </div><!-- /#rd-home -->
+
   <!-- TAB: THU CHI -->
-  <div id="tab-tc" class="mod">
+  <div id="tab-tc" class="mod hid" data-rd-title="Cá Nhân — Thu Chi">
+
+    <!-- ── Banking Hero Balance Card ── -->
+    <div class="bank-hero-card">
+      <div class="bhc-top">
+        <div>
+          <div class="bhc-label">Cân đối tháng này</div>
+          <div class="bhc-amount" id="hero-balance">—</div>
+        </div>
+        <div class="bhc-badge" id="hero-month-badge">—</div>
+      </div>
+      <div class="bhc-stats">
+        <div class="bhc-stat">
+          <div class="bhc-stat-icon" style="background:rgba(34,197,94,0.28);color:#fff"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></div>
+          <div style="min-width:0">
+            <div class="bhc-stat-lbl">Thu nhập</div>
+            <div class="bhc-stat-val" id="hero-thu">—</div>
+          </div>
+        </div>
+        <div class="bhc-divider"></div>
+        <div class="bhc-stat">
+          <div class="bhc-stat-icon" style="background:rgba(239,68,68,0.28);color:#fff"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+          <div style="min-width:0">
+            <div class="bhc-stat-lbl">Chi tiêu</div>
+            <div class="bhc-stat-val" id="hero-chi">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Quick Actions ── -->
+    <div class="quick-actions">
+      <!-- Thu tiền: mở form, set type=thu, scroll vào -->
+      <button class="qa-btn" onclick="(function(){var s=document.getElementById('tc-type');if(s)s.value='thu';if(typeof updCatTC==='function')updCatTC();var f=document.getElementById('form-tc');if(f){f.classList.remove('hid');setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},80);}})()">
+        <div class="qa-ico" style="background:linear-gradient(135deg,#16a34a,#15803d)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </div>
+        <span class="qa-lbl">Thu tiền</span>
+      </button>
+      <!-- Chi tiêu: mở form, set type=chi, scroll vào -->
+      <button class="qa-btn" onclick="(function(){var s=document.getElementById('tc-type');if(s)s.value='chi';if(typeof updCatTC==='function')updCatTC();var f=document.getElementById('form-tc');if(f){f.classList.remove('hid');setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},80);}})()">
+        <div class="qa-ico" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+          </svg>
+        </div>
+        <span class="qa-lbl">Chi tiêu</span>
+      </button>
+      <!-- Ví tiền: chuyển sang tab ví -->
+      <button class="qa-btn" onclick="goTab('wallet')">
+        <div class="qa-ico" style="background:linear-gradient(135deg,#0891b2,#0e7490)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 7H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            <path d="M16 3H8L4 7h16l-4-4z"/>
+            <circle cx="16.5" cy="13" r="1.2" fill="#fff" stroke="none"/>
+          </svg>
+        </div>
+        <span class="qa-lbl">Ví tiền</span>
+      </button>
+      <!-- Đầu tư: chuyển sang tab đầu tư -->
+      <button class="qa-btn" onclick="goTab('inv')">
+        <div class="qa-ico" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+            <polyline points="16 7 22 7 22 13"/>
+          </svg>
+        </div>
+        <span class="qa-lbl">Đầu tư</span>
+      </button>
+    </div>
+
     <div class="date-filter">
       <div class="df-mode">
-        <button class="dfm on" id="tc-dfm-m" onclick="tcSetMode('month')">🗓️ Tháng</button>
-        <button class="dfm" id="tc-dfm-d" onclick="tcSetMode('day')">📅 Ngày</button>
+        <button class="dfm on" id="tc-dfm-m" onclick="tcSetMode('month')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>Tháng</button>
+        <button class="dfm" id="tc-dfm-d" onclick="tcSetMode('day')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/></svg>Ngày</button>
       </div>
       <div class="df-nav" id="tc-df-month">
         <button class="mn-btn" onclick="changeTcMonth(-1)">‹</button>
@@ -634,8 +1519,13 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     </div>
     <div id="form-tc" class="fc hid">
       <div class="fr">
-        <select id="tc-type" onchange="updCatTC()"><option value="thu">💚 Thu</option><option value="chi" selected>❤️ Chi</option></select>
+        <select id="tc-type" onchange="updCatTC()"><option value="thu">↑ Thu nhập</option><option value="chi" selected>↓ Chi tiêu</option></select>
         <select id="tc-cat"></select>
+      </div>
+      <div style="text-align:right;margin-top:-6px;margin-bottom:2px">
+        <button onclick="openCatManager()" style="background:none;border:none;color:#60a5fa;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;padding:2px 0;opacity:.8">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Quản lý danh mục
+        </button>
       </div>
       <div class="mr">
         <input type="text" id="tc-amt" class="mi" inputmode="numeric" placeholder="Số tiền" data-raw="0" oninput="onMI(this)"/>
@@ -645,15 +1535,15 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <input type="date" id="tc-date"/>
       <div class="fl">Ví <span style="color:#ef4444">*</span></div>
       <select id="tc-wallet" style="border-color:#2563eb"></select>
-      <button class="mic-btn" id="mic-tc" onclick="startVoice('tc')">🎤 Nhập bằng giọng nói</button>
-      <button class="sbtn" onclick="addTC()">💾 Lưu</button>
+      <button class="mic-btn" id="mic-tc" onclick="startVoice('tc')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>Nhập giọng nói</button>
+      <button class="sbtn" onclick="addTC()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu</button>
     </div>
     <div id="tc-list" class="rl"></div>
-    <div class="rrow"><button class="rbtn" onclick="resetMod('tcData',renderAll)">🗑 Xoá tất cả</button></div>
+    <div class="rrow"><button class="rbtn" onclick="resetMod('tcData',renderAll)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Xoá tất cả</button></div>
   </div>
 
   <!-- TAB: CỬA HÀNG -->
-  <div id="tab-sh" class="mod">
+  <div id="tab-sh" class="mod hid" data-rd-title="Cửa Hàng">
     <div id="sh-empty" class="hid" style="text-align:center;padding:28px 16px">
       <div style="font-size:36px;margin-bottom:10px">🏪</div>
       <div style="font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:6px">Chưa có cửa hàng nào</div>
@@ -666,23 +1556,23 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
           <select id="store-sel" class="store-sel" onchange="switchStoreFromSel()"></select>
         </div>
         <div style="display:flex;gap:5px">
-          <button class="abtn sm" onclick="openStoreTypeModal()" id="sh-type-btn" title="Loại cửa hàng">🏷️</button>
-          <button class="abtn sm" onclick="renameStoreCurrent()">✏️</button>
-          <button class="abtn sm" onclick="openStoreWizard()">＋</button>
+          <button class="abtn sm" onclick="openStoreTypeModal()" id="sh-type-btn" title="Loại cửa hàng"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></button>
+          <button class="abtn sm" onclick="renameStoreCurrent()" title="Đổi tên"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="abtn sm" onclick="openStoreWizard()" title="Thêm cửa hàng"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
         </div>
       </div>
       <!-- Store main sub-tabs -->
       <div class="store-main-tabs">
-        <button class="store-tab on" id="stab-txn" onclick="setShView('txn')">📊 Giao dịch</button>
-        <button class="store-tab" id="stab-cost" onclick="setShView('cost')">🧮 Tính Cost</button>
+        <button class="store-tab on" id="stab-txn" onclick="setShView('txn')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Giao dịch</button>
+        <button class="store-tab" id="stab-cost" onclick="setShView('cost')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><rect x="4" y="2" width="16" height="20" rx="2"/><rect x="7" y="5" width="10" height="3" rx="1"/><circle cx="8" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/></svg>Tính Cost</button>
       </div>
       <!-- Transaction view -->
       <div id="sh-txn-view">
       <!-- Date filter -->
       <div class="date-filter">
         <div class="df-mode">
-          <button class="dfm on" id="sh-dfm-m" onclick="shSetMode('month')">🗓️ Tháng</button>
-          <button class="dfm" id="sh-dfm-d" onclick="shSetMode('day')">📅 Ngày</button>
+          <button class="dfm on" id="sh-dfm-m" onclick="shSetMode('month')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>Tháng</button>
+          <button class="dfm" id="sh-dfm-d" onclick="shSetMode('day')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/></svg>Ngày</button>
         </div>
         <div class="df-nav" id="sh-df-month">
           <button class="mn-btn" onclick="changeShMonth(-1)">‹</button>
@@ -708,7 +1598,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       </div>
       <div id="form-sh" class="fc hid">
         <div class="fr">
-          <select id="sh-type" onchange="updCatSH()"><option value="revenue">💚 Doanh thu</option><option value="expense">❤️ Chi phí</option></select>
+          <select id="sh-type" onchange="updCatSH()"><option value="revenue">↑ Doanh thu</option><option value="expense">↓ Chi phí</option></select>
           <select id="sh-cat"></select>
         </div>
         <div class="mr">
@@ -719,33 +1609,33 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
         <input type="text" id="sh-note" placeholder="Ghi chú (tuỳ chọn)"/>
         <div class="fl">Ví <span style="color:#ef4444">*</span></div>
         <select id="sh-wallet" style="border-color:#2563eb"></select>
-        <button class="mic-btn" id="mic-sh" onclick="startVoice('sh')">🎤 Nhập bằng giọng nói</button>
-        <button class="sbtn" onclick="addSH()">💾 Lưu</button>
+        <button class="mic-btn" id="mic-sh" onclick="startVoice('sh')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>Nhập giọng nói</button>
+        <button class="sbtn" onclick="addSH()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu</button>
       </div>
       <div id="sh-list" class="rl"></div>
-      <div class="rrow"><button class="rbtn" onclick="delStore()">🗑 Xoá cửa hàng này</button></div>
+      <div class="rrow"><button class="rbtn" onclick="delStore()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Xoá cửa hàng này</button></div>
       </div><!-- end sh-txn-view -->
       <!-- Cost Module -->
       <div id="sh-cost-module" class="hid">
         <div class="cost-stabs">
-          <button class="cost-stab on" id="cstab-ing" onclick="setCostView('ing')">🥬 Nguyên liệu</button>
-          <button class="cost-stab" id="cstab-semi" onclick="setCostView('semi')">🧪 Bán thành phẩm</button>
-          <button class="cost-stab" id="cstab-recipe" onclick="setCostView('recipe')">📋 Thành phẩm</button>
+          <button class="cost-stab on" id="cstab-ing" onclick="setCostView('ing')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a9 9 0 0 1 0 18"/><path d="M12 2a9 9 0 0 0 0 18"/><path d="M12 2v18"/><path d="M2 12h20"/></svg>Nguyên liệu</button>
+          <button class="cost-stab" id="cstab-semi" onclick="setCostView('semi')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l1 7H8L9 3z"/><path d="M8 10c0 5 2 8 4 8s4-3 4-8"/><line x1="6" y1="21" x2="18" y2="21"/></svg>Bán thành phẩm</button>
+          <button class="cost-stab" id="cstab-recipe" onclick="setCostView('recipe')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="13" y2="15"/></svg>Thành phẩm</button>
         </div>
         <!-- Ingredients view -->
         <div id="cv-ing">
-          <div class="bar"><span class="st">Nguyên liệu</span><button class="abtn" style="background:rgba(255,255,255,0.07);margin-right:4px" onclick="openIngCatsModal()">📁 Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()">📊 Excel</button><button class="abtn" onclick="openIngModal()">＋ Thêm</button></div>
+          <div class="bar"><span class="st">Nguyên liệu</span><button class="abtn abtn-ghost" style="margin-right:4px" onclick="openIngCatsModal()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.1em"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.1em"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Excel</button><button class="abtn" onclick="openIngModal()">＋ Thêm</button></div>
           <input type="file" id="cost-excel-input" accept=".xlsx,.xls" style="display:none" onchange="handleCostExcelImport(this.files[0]);this.value=''" />
           <div id="ing-list" class="rl" style="gap:6px"></div>
         </div>
         <!-- Semi-finished view -->
         <div id="cv-semi" class="hid">
-          <div class="bar"><span class="st">Bán thành phẩm</span><button class="abtn" style="background:rgba(255,255,255,0.07);margin-right:4px" onclick="openSemiCatsModal()">📁 Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()">📊 Excel</button><button class="abtn" onclick="openSemiModal()">＋ Tạo</button></div>
+          <div class="bar"><span class="st">Bán thành phẩm</span><button class="abtn abtn-ghost" style="margin-right:4px" onclick="openSemiCatsModal()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.1em"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.1em"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Excel</button><button class="abtn" onclick="openSemiModal()">＋ Tạo</button></div>
           <div id="semi-list" class="rl" style="gap:8px"></div>
         </div>
         <!-- Final product view -->
         <div id="cv-recipe" class="hid">
-          <div class="bar"><span class="st">Thành phẩm</span><button class="abtn" style="background:rgba(255,255,255,0.07);margin-right:4px" onclick="openRecipeCatsModal()">📁 Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()">📊 Excel</button><button class="abtn" onclick="openRecipeModal()">＋ Tạo</button></div>
+          <div class="bar"><span class="st">Thành phẩm</span><button class="abtn abtn-ghost" style="margin-right:4px" onclick="openRecipeCatsModal()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.1em"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Danh mục</button><button class="abtn" style="background:rgba(34,197,94,0.15);color:#22c55e;margin-right:4px" onclick="openCostExcelModal()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.1em"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Excel</button><button class="abtn" onclick="openRecipeModal()">＋ Tạo</button></div>
           <div id="recipe-list" class="rl" style="gap:8px"></div>
         </div>
       </div>
@@ -753,7 +1643,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
   </div>
 
   <!-- TAB: ĐẦU TƯ -->
-  <div id="tab-inv" class="mod">
+  <div id="tab-inv" class="mod hid" data-rd-title="Đầu Tư">
     <div class="sr">
       <div class="card b"><span class="lbl">Tổng vốn</span><span class="val" id="inv-total">0₫</span></div>
       <div class="card g"><span class="lbl">Giá trị HT</span><span class="val" id="inv-cur">0₫</span></div>
@@ -812,14 +1702,14 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <div class="fl">Mua từ ví nào? (để trống nếu trước khi dùng app)</div>
       <select id="inv-wallet"><option value="">— Trước khi dùng app / Không chọn —</option></select>
       <div class="check-row"><input type="checkbox" id="inv-preapp"/><label for="inv-preapp">Mua trước khi dùng app (không trừ ví)</label></div>
-      <button class="sbtn" onclick="addINV()">💾 Lưu tài sản</button>
+      <button class="sbtn" onclick="addINV()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu tài sản</button>
     </div>
     <div id="inv-list" style="display:flex;flex-direction:column;gap:7px"></div>
-    <div class="rrow"><button class="rbtn" onclick="resetMod('invData',renderINV)">🗑 Xoá tất cả</button></div>
+    <div class="rrow"><button class="rbtn" onclick="resetMod('invData',renderINV)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Xoá tất cả</button></div>
   </div>
 
   <!-- TAB: NỢ & VAY -->
-  <div id="tab-ln" class="mod">
+  <div id="tab-ln" class="mod hid" data-rd-title="Nợ &amp; Vay">
     <div class="sr">
       <div class="card g"><span class="lbl">Người nợ mình</span><span class="val" id="ln-cho">0₫</span></div>
       <div class="card r"><span class="lbl">Mình đang nợ</span><span class="val" id="ln-di">0₫</span></div>
@@ -838,7 +1728,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <div id="ln-edit-ban" class="edit-ban hid"><span>✏️ Đang sửa khoản vay</span><button onclick="cancelEditLN()" style="background:none;border:none;color:#9ca3af;font-size:12px;cursor:pointer">Huỷ</button></div>
       <input type="text" id="ln-name" placeholder="Tên người / tổ chức"/>
       <div class="fr">
-        <select id="ln-dir"><option value="cho">💚 Tôi cho vay</option><option value="di">❤️ Tôi đi vay</option></select>
+        <select id="ln-dir"><option value="cho">↑ Tôi cho vay</option><option value="di">↓ Tôi đi vay</option></select>
         <select id="ln-rtype">
           <option value="interest_only">Trả lãi, gốc cuối kỳ</option>
           <option value="amortizing">Trả đều gốc + lãi (PMT)</option>
@@ -874,14 +1764,14 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <div class="fl">Ngày trả cố định hàng tháng (nếu có)</div>
       <input type="number" id="ln-payday" placeholder="VD: 15 (ngày 15 mỗi tháng)" inputmode="numeric" min="1" max="31"/>
       <input type="text" id="ln-note" placeholder="Ghi chú (mục đích, điều kiện...)"/>
-      <button class="mic-btn" id="mic-ln" onclick="startVoice('ln')">🎤 Nhập bằng giọng nói</button>
-      <button class="sbtn" id="ln-sbtn" onclick="addLN()">💾 Lưu</button>
+      <button class="mic-btn" id="mic-ln" onclick="startVoice('ln')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>Nhập giọng nói</button>
+      <button class="sbtn" id="ln-sbtn" onclick="addLN()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu</button>
     </div>
     <div id="ln-list" style="display:flex;flex-direction:column;gap:5px"></div>
   </div>
 
   <!-- TAB: KẾ HOẠCH -->
-  <div id="tab-rec" class="mod">
+  <div id="tab-rec" class="mod hid" data-rd-title="Kế Hoạch Định Kỳ">
     <div class="card b full" style="flex-direction:row;align-items:center;justify-content:space-between">
       <div><span class="lbl">Chi định kỳ ước tính/tháng</span><span class="val" id="rec-sum">0₫</span></div>
       <span style="font-size:20px">📅</span>
@@ -905,14 +1795,14 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       <div class="check-row"><input type="checkbox" id="rec-flex"/><label for="rec-flex">Ngày không cố định (±3 ngày)</label></div>
       <div class="fl">Ghi vào</div>
       <select id="rec-target"><option value="personal">💸 Thu Chi cá nhân</option></select>
-      <button class="sbtn" onclick="addRec()">💾 Lưu lịch</button>
+      <button class="sbtn" onclick="addRec()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu lịch</button>
     </div>
     <div id="rec-groups"></div>
-    <div class="rrow"><button class="rbtn" onclick="resetMod('recData',renderRec)">🗑 Xoá tất cả</button></div>
+    <div class="rrow"><button class="rbtn" onclick="resetMod('recData',renderRec)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Xoá tất cả</button></div>
   </div>
 
   <!-- TAB: VÍ TIỀN -->
-  <div id="tab-wallet" class="mod">
+  <div id="tab-wallet" class="mod hid" data-rd-title="Ví Tiền">
     <div id="wall-tots" class="wall-tot"></div>
     <div class="bar">
       <span class="st">Ví của bạn</span>
@@ -950,16 +1840,23 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
   </div>
 
   <!-- TAB: ĐẾM TIỀN -->
-  <div id="tab-count" class="mod hid">
-    <div class="card b full" style="flex-direction:row;align-items:center;justify-content:space-between">
-      <div><span class="lbl">Tổng tiền đếm được</span><span class="val pos" id="cnt-total">0₫</span></div>
-      <button onclick="clearCount()" style="padding:5px 11px;background:none;border:1px solid #374151;color:#6b7280;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit">🗑 Xoá</button>
+  <div id="tab-count" class="mod hid" data-rd-title="Đếm Tiền">
+    <div class="card b full" style="flex-direction:row;align-items:center;justify-content:space-between;gap:10px">
+      <div style="display:flex;flex-direction:column;min-width:0;flex-shrink:1"><span class="lbl" style="white-space:nowrap">Tổng đếm được</span><span class="val pos" id="cnt-total" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">0₫</span></div>
+      <div style="display:flex;gap:7px;align-items:center;flex-shrink:0">
+        <button onclick="openCountToWallet()" class="abtn" style="font-size:11px;padding:6px 12px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>Nhập vào ví
+        </button>
+        <button onclick="clearCount()" style="padding:5px 11px;background:none;border:1px solid #374151;color:#6b7280;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Xoá
+        </button>
+      </div>
     </div>
     <div id="cnt-rows" style="display:flex;flex-direction:column;gap:5px"></div>
   </div>
 
   <!-- TAB: CÀI ĐẶT -->
-  <div id="tab-settings" class="mod">
+  <div id="tab-settings" class="mod hid" data-rd-title="Cài Đặt">
     <div class="card b full" style="flex-direction:row;align-items:center;justify-content:space-between">
       <div><span class="lbl">Xin chào</span><span class="val" id="set-name">—</span></div>
       <div class="ua" id="set-ava" style="width:38px;height:38px;font-size:14px"></div>
@@ -995,7 +1892,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
         <div style="font-size:11px;color:#9ca3af;line-height:1.6;margin-bottom:6px">Dán thông tin từ <b style="color:#60a5fa">Firebase Console</b> → Project Settings → Your apps → Web app:</div>
         <input type="text" id="fb-api-key" placeholder="apiKey (AIzaSy...)" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:11px;font-family:inherit;width:100%;outline:none;margin-bottom:6px"/>
         <input type="text" id="fb-db-url" placeholder="databaseURL (https://ten-project-default-rtdb.firebaseio.com)" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:11px;font-family:inherit;width:100%;outline:none;margin-bottom:6px"/>
-        <button onclick="saveFbConfig()" style="width:100%;padding:9px;background:#f59e0b;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">💾 Lưu & Kết nối</button>
+        <button onclick="saveFbConfig()" style="width:100%;padding:9px;background:#f59e0b;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu & Kết nối</button>
         <div style="font-size:10px;color:#6b7280;margin-top:5px;line-height:1.6">
           📋 Hướng dẫn tạo Firebase miễn phí → <button onclick="toggleFbGuide()" style="background:none;border:none;color:#60a5fa;font-size:10px;cursor:pointer;font-family:inherit;padding:0">Xem hướng dẫn ▸</button>
         </div>
@@ -1029,7 +1926,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
         <div><div class="fl">Giá mua (₫/chỉ)</div><input type="text" id="sjc-buy" class="mi" inputmode="numeric" placeholder="VD: 9.200.000" data-raw="0" oninput="onMI(this)" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:7px 9px;font-size:12px;font-family:inherit;width:100%;outline:none"/></div>
         <div><div class="fl">Giá bán (₫/chỉ)</div><input type="text" id="sjc-sell" class="mi" inputmode="numeric" placeholder="VD: 9.250.000" data-raw="0" oninput="onMI(this)" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:7px 9px;font-size:12px;font-family:inherit;width:100%;outline:none"/></div>
       </div>
-      <button onclick="saveSJC()" style="padding:8px;background:#f59e0b;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">💾 Lưu giá SJC</button>
+      <button onclick="saveSJC()" style="padding:8px;background:#f59e0b;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu giá SJC</button>
       <div style="font-size:10px;color:#6b7280" id="sjc-upd">Chưa cập nhật</div>
     </div>
     <div class="st" style="padding:4px 2px">Tính năng</div>
@@ -1038,13 +1935,13 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
         <input type="checkbox" id="feat-store" onchange="toggleStore()"/>
         <label for="feat-store" style="font-size:13px;color:#e2e8f0;font-weight:600">🏪 Module Cửa Hàng</label>
       </div>
-      <div style="font-size:11px;color:#6b7280;padding-left:24px">Bật nếu bạn có cửa hàng / kinh doanh.</div>
+      <div style="font-size:11px;color:#6b7280;padding-left:24px">Bật nếu bạn có cửa hàng / kinh doanh. <span style="color:#f59e0b;font-weight:600">Tính phí</span></div>
       <div style="height:8px"></div>
       <div class="check-row" style="padding:4px 0">
         <input type="checkbox" id="feat-count" onchange="toggleCount()"/>
         <label for="feat-count" style="font-size:13px;color:#e2e8f0;font-weight:600">🧮 Module Đếm Tiền</label>
       </div>
-      <div style="font-size:11px;color:#6b7280;padding-left:24px">Tiện ích đếm tiền mặt nhanh theo mệnh giá.</div>
+      <div style="font-size:11px;color:#6b7280;padding-left:24px">Tiện ích đếm tiền mặt nhanh theo mệnh giá. <span style="color:#f59e0b;font-weight:600">Tính phí</span></div>
       <div style="height:8px"></div>
       <div class="check-row" style="padding:4px 0">
         <input type="checkbox" id="feat-cost" onchange="toggleCost()"/>
@@ -1089,10 +1986,30 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <input type="text" id="sw-name" placeholder="Tên cửa hàng (VD: Laboong, Coffee ABC...)" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <div class="fl">Loại cửa hàng</div>
     <div class="stype-grid" id="sw-type-grid">
-      <div class="type-chip on" data-stype="food" onclick="pickSwType(this)"><span class="type-chip-ico">🍜</span><div><div class="type-chip-nm">Đồ ăn & Đồ uống</div><div style="font-size:9px;color:#6b7280">Café, Quán ăn, Trà sữa</div></div></div>
-      <div class="type-chip" data-stype="retail" onclick="pickSwType(this)"><span class="type-chip-ico">🛍️</span><div><div class="type-chip-nm">Bán lẻ</div><div style="font-size:9px;color:#6b7280">Tạp hoá, Thời trang</div></div></div>
-      <div class="type-chip" data-stype="service" onclick="pickSwType(this)"><span class="type-chip-ico">💼</span><div><div class="type-chip-nm">Dịch vụ</div><div style="font-size:9px;color:#6b7280">Salon, Spa, Sửa chữa</div></div></div>
-      <div class="type-chip" data-stype="other" onclick="pickSwType(this)"><span class="type-chip-ico">📦</span><div><div class="type-chip-nm">Khác</div><div style="font-size:9px;color:#6b7280">Loại khác</div></div></div>
+      <div class="type-chip on" data-stype="food" onclick="pickSwType(this)">
+        <span class="type-chip-ico" style="background:rgba(249,115,22,.14);color:#f97316">
+          <svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+        </span>
+        <div><div class="type-chip-nm">Đồ ăn & Đồ uống</div><div style="font-size:9px;color:#6b7280">Café, Quán ăn, Trà sữa</div></div>
+      </div>
+      <div class="type-chip" data-stype="retail" onclick="pickSwType(this)">
+        <span class="type-chip-ico" style="background:rgba(236,72,153,.14);color:#ec4899">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </span>
+        <div><div class="type-chip-nm">Bán lẻ</div><div style="font-size:9px;color:#6b7280">Tạp hoá, Thời trang</div></div>
+      </div>
+      <div class="type-chip" data-stype="service" onclick="pickSwType(this)">
+        <span class="type-chip-ico" style="background:rgba(59,130,246,.14);color:#60a5fa">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </span>
+        <div><div class="type-chip-nm">Dịch vụ</div><div style="font-size:9px;color:#6b7280">Salon, Spa, Sửa chữa</div></div>
+      </div>
+      <div class="type-chip" data-stype="other" onclick="pickSwType(this)">
+        <span class="type-chip-ico" style="background:rgba(245,158,11,.14);color:#fbbf24">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </span>
+        <div><div class="type-chip-nm">Khác</div><div style="font-size:9px;color:#6b7280">Loại khác</div></div>
+      </div>
     </div>
     <div class="fl">Bán hàng qua sàn thương mại điện tử?</div>
     <div class="platform-grid" id="plat-grid"></div>
@@ -1104,15 +2021,111 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
 </div>
 
 <!-- Store Type Modal -->
+<div id="modal-count-wallet" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-count-wallet')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-ttl">Nhập tiền đếm vào ví</span>
+      <button class="modal-close" onclick="closeModal('modal-count-wallet')">×</button>
+    </div>
+    <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:12px;color:#9ca3af;font-weight:600">Tổng tiền đếm được</span>
+      <span id="cwl-amount" style="font-size:20px;font-weight:800;color:#4ade80">0₫</span>
+    </div>
+    <div class="fl">Loại giao dịch</div>
+    <select id="cwl-type" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:9px 11px;font-size:12px;font-family:inherit;outline:none;width:100%">
+      <option value="thu">↑ Thu nhập (tiền về ví)</option>
+      <option value="chi">↓ Chi tiêu (tiền ra khỏi ví)</option>
+    </select>
+    <div class="fl">Chọn ví <span style="color:#ef4444">*</span></div>
+    <select id="cwl-wallet" style="background:#0f1117;border:1px solid #2563eb;color:#e8eaf0;border-radius:7px;padding:9px 11px;font-size:12px;font-family:inherit;outline:none;width:100%"></select>
+    <div class="fl">Danh mục</div>
+    <select id="cwl-cat" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:9px 11px;font-size:12px;font-family:inherit;outline:none;width:100%"></select>
+    <div class="fl">Ghi chú</div>
+    <input id="cwl-note" type="text" placeholder="VD: Kiểm quỹ cuối ngày…" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:9px 11px;font-size:12px;font-family:inherit;outline:none;width:100%;box-sizing:border-box"/>
+    <button class="sbtn" onclick="confirmCountToWallet()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu vào ví
+    </button>
+  </div>
+</div>
+
+<div id="modal-hero-bg" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-hero-bg')">
+  <div class="modal-card" onclick="event.stopPropagation()" style="gap:10px">
+    <div class="modal-hdr">
+      <span class="modal-ttl">🖼️ Ảnh nền thẻ tổng quan</span>
+      <button class="modal-close" onclick="closeModal('modal-hero-bg')">×</button>
+    </div>
+    <button class="sbtn" onclick="closeModal('modal-hero-bg');setTimeout(function(){document.getElementById('rd-hero-file').click()},80)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-.15em"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      Chọn ảnh mới từ thiết bị
+    </button>
+    <button onclick="closeModal('modal-hero-bg');rdHeroBgReset()" style="padding:12px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;width:100%">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-.15em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+      Xoá ảnh — dùng nền mặc định
+    </button>
+  </div>
+</div>
+
+<div id="modal-cat-mgr" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-cat-mgr')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-ttl">📋 Quản lý danh mục</span>
+      <button class="modal-close" onclick="closeModal('modal-cat-mgr')">×</button>
+    </div>
+    <div style="display:flex;gap:6px">
+      <button id="catmgr-thu-btn" class="abtn" onclick="catMgrSwitch('thu')" style="flex:1">↑ Thu nhập</button>
+      <button id="catmgr-chi-btn" class="abtn abtn-ghost" onclick="catMgrSwitch('chi')" style="flex:1">↓ Chi tiêu</button>
+    </div>
+    <div id="catmgr-list" style="display:flex;flex-direction:column;gap:6px;max-height:320px;overflow-y:auto"></div>
+    <div style="display:flex;gap:6px">
+      <input id="catmgr-inp" type="text" placeholder="Tên danh mục mới…" style="flex:1;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:8px;padding:9px 11px;font-size:12px;font-family:inherit;outline:none" onkeydown="if(event.key==='Enter')catMgrAdd()"/>
+      <button class="abtn" onclick="catMgrAdd()">＋ Thêm</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-rename-store" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-rename-store')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-ttl">✏️ Đổi tên cửa hàng</span>
+      <button class="modal-close" onclick="closeModal('modal-rename-store')">×</button>
+    </div>
+    <div class="fl">Tên cửa hàng</div>
+    <input id="rename-store-inp" type="text" placeholder="Nhập tên mới…"
+      style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:10px 12px;font-size:13px;font-family:inherit;width:100%;outline:none;box-sizing:border-box"
+      onkeydown="if(event.key==='Enter')confirmRenameStore()"/>
+    <button class="sbtn" onclick="confirmRenameStore()">✓ Lưu tên mới</button>
+  </div>
+</div>
+
 <div id="modal-store-type" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-store-type')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-hdr"><span class="modal-ttl">🏷️ Loại cửa hàng</span><button class="modal-close" onclick="closeModal('modal-store-type')">×</button></div>
     <div style="font-size:11px;color:#9ca3af;margin-bottom:10px">Chọn loại phù hợp để mở tính năng chuyên biệt.<br/>⭐ Chọn <b style="color:#f59e0b">Đồ ăn & Đồ uống</b> để bật Module Tính Cost.</div>
     <div class="stype-grid" id="stype-grid">
-      <div class="type-chip" data-stype="food" onclick="pickStoreTypeMod(this)"><span class="type-chip-ico">🍜</span><div><div class="type-chip-nm">Đồ ăn & Đồ uống</div><div style="font-size:9px;color:#6b7280">Tính cost công thức món</div></div></div>
-      <div class="type-chip" data-stype="retail" onclick="pickStoreTypeMod(this)"><span class="type-chip-ico">🛍️</span><div><div class="type-chip-nm">Bán lẻ</div><div style="font-size:9px;color:#6b7280">Tạp hoá, Thời trang</div></div></div>
-      <div class="type-chip" data-stype="service" onclick="pickStoreTypeMod(this)"><span class="type-chip-ico">💼</span><div><div class="type-chip-nm">Dịch vụ</div><div style="font-size:9px;color:#6b7280">Salon, Spa, Sửa chữa</div></div></div>
-      <div class="type-chip" data-stype="other" onclick="pickStoreTypeMod(this)"><span class="type-chip-ico">📦</span><div><div class="type-chip-nm">Khác</div><div style="font-size:9px;color:#6b7280">Loại khác</div></div></div>
+      <div class="type-chip" data-stype="food" onclick="pickStoreTypeMod(this)">
+        <span class="type-chip-ico" style="background:rgba(249,115,22,.14);color:#f97316">
+          <svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+        </span>
+        <div><div class="type-chip-nm">Đồ ăn & Đồ uống</div><div style="font-size:9px;color:#6b7280">Tính cost công thức món</div></div>
+      </div>
+      <div class="type-chip" data-stype="retail" onclick="pickStoreTypeMod(this)">
+        <span class="type-chip-ico" style="background:rgba(236,72,153,.14);color:#ec4899">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </span>
+        <div><div class="type-chip-nm">Bán lẻ</div><div style="font-size:9px;color:#6b7280">Tạp hoá, Thời trang</div></div>
+      </div>
+      <div class="type-chip" data-stype="service" onclick="pickStoreTypeMod(this)">
+        <span class="type-chip-ico" style="background:rgba(59,130,246,.14);color:#60a5fa">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </span>
+        <div><div class="type-chip-nm">Dịch vụ</div><div style="font-size:9px;color:#6b7280">Salon, Spa, Sửa chữa</div></div>
+      </div>
+      <div class="type-chip" data-stype="other" onclick="pickStoreTypeMod(this)">
+        <span class="type-chip-ico" style="background:rgba(245,158,11,.14);color:#fbbf24">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </span>
+        <div><div class="type-chip-nm">Khác</div><div style="font-size:9px;color:#6b7280">Loại khác</div></div>
+      </div>
     </div>
     <button class="sbtn" onclick="saveStoreType()">✓ Xác nhận</button>
   </div>
@@ -1146,7 +2159,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <input type="text" id="ing-pkgprice" class="mi" inputmode="numeric" placeholder="VD: 26.000" data-raw="0" oninput="onMI(this);updIngPreview()" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <div id="ing-preview" class="rc-preview" style="margin-top:8px;min-height:0"></div>
     <div style="font-size:10px;color:#6b7280;margin-top:4px">💡 Điện: 1 số điện ≈ 4.000₫ · Nước máy: 1.000 lít ≈ 30.000₫ · Nước sôi: cộng thêm điện/gas đun (~200–500₫/lít)</div>
-    <button class="sbtn" onclick="saveIng()">💾 Lưu nguyên liệu</button>
+    <button class="sbtn" onclick="saveIng()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu nguyên liệu</button>
   </div>
 </div>
 
@@ -1232,7 +2245,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <div id="semi-items" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px"></div>
     <button onclick="addSemiItem()" style="width:100%;padding:8px;background:rgba(var(--tc-rgb),0.08);border:1.5px dashed rgba(var(--tc-rgb),0.3);color:var(--tc);border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">＋ Thêm nguyên liệu</button>
     <div id="semi-preview" class="rc-preview" style="margin-top:8px;min-height:0"></div>
-    <button class="sbtn" onclick="saveSemi()">💾 Lưu bán thành phẩm</button>
+    <button class="sbtn" onclick="saveSemi()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu bán thành phẩm</button>
   </div>
 </div>
 
@@ -1267,7 +2280,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
       </div>
     </div>
     <div id="rc-preview" class="rc-preview" style="margin-top:8px"></div>
-    <button class="sbtn" onclick="saveRecipe()">💾 Lưu thành phẩm</button>
+    <button class="sbtn" onclick="saveRecipe()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu thành phẩm</button>
     <div style="height:4px;flex-shrink:0"></div>
   </div>
 </div>
@@ -1309,7 +2322,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     </select>
     <input type="text" id="ew-note" placeholder="Ghi chú (số TK, tên ngân hàng...)" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <div style="display:flex;gap:7px">
-      <button class="sbtn" onclick="saveEditWallet()" style="flex:2">💾 Lưu thay đổi</button>
+      <button class="sbtn" onclick="saveEditWallet()" style="flex:2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu thay đổi</button>
       <button onclick="delWalletFromModal()" style="flex:1;padding:9px;background:#1e0a0a;color:#f87171;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">🗑 Xoá</button>
     </div>
   </div>
@@ -1335,7 +2348,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <input type="date" id="etc-date" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <div class="fl">Ghi chú</div>
     <input type="text" id="etc-note" placeholder="Ghi chú..." style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
-    <button class="sbtn" onclick="saveEditTC()">💾 Lưu thay đổi</button>
+    <button class="sbtn" onclick="saveEditTC()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu thay đổi</button>
   </div>
 </div>
 
@@ -1359,7 +2372,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <div class="fl">Ngày</div>
     <input type="date" id="ep-date" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <input type="text" id="ep-note" placeholder="Ghi chú..." style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
-    <button class="sbtn" onclick="saveEditPayment()">💾 Lưu thay đổi</button>
+    <button class="sbtn" onclick="saveEditPayment()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu thay đổi</button>
   </div>
 </div>
 <!-- Edit SH Transaction Modal -->
@@ -1381,7 +2394,7 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
     <input type="date" id="esh-date" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <div class="fl">Ghi chú</div>
     <input type="text" id="esh-note" placeholder="Ghi chú..." style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
-    <button class="sbtn" onclick="saveEditSH()">💾 Lưu thay đổi</button>
+    <button class="sbtn" onclick="saveEditSH()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu thay đổi</button>
   </div>
 </div>
 <!-- Pay Loan Modal -->
@@ -1476,8 +2489,45 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
 <script>
 // ══════ CONSTANTS ══════
 const SYMS={VND:'₫',USD:'$',EUR:'€',JPY:'¥',CNY:'¥',KRW:'₩',SGD:'S$',GBP:'£',USDT:'₮'};
-const WTLBL={cash:'💵 Tiền mặt',bank:'🏦 Ngân hàng',foreign:'💱 Ngoại tệ',borrowed:'⚠️ Tiền vay',crypto:'🪙 Crypto'};
+const WTLBL={cash:'Tiền mặt',bank:'Ngân hàng',foreign:'Ngoại tệ',borrowed:'Tiền vay',crypto:'Crypto'};
 const WTCLR={cash:'#22c55e',bank:'#60a5fa',foreign:'#f59e0b',borrowed:'#ef4444',crypto:'#a855f7'};
+const WTICO={
+  cash:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>`,
+  bank:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>`,
+  foreign:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  borrowed:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  crypto:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9 8h4.5a2.5 2.5 0 0 1 0 5H9V8z"/><path d="M9 13h5a2.5 2.5 0 0 1 0 5H9v-5z"/><line x1="9" y1="8" x2="9" y2="18"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="18" x2="12" y2="20"/></svg>`,
+};
+// SVG icon helpers dùng trong wallet section
+const _svgPerson=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>`;
+const _svgShop=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><line x1="12" y1="10" x2="12" y2="21"/></svg>`;
+// Store-type specific icons
+const _stypeIco={
+  food:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="11"/><path d="M21 15a2 2 0 1 1-4 0V2"/><path d="M19 2v5"/></svg>`,
+  retail:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
+  service:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>`,
+};
+function _getStoreIco(storeId){
+  const s=storeData.find(x=>x.id===Number(storeId));
+  return _stypeIco[s?.storeType]||_svgShop;
+}
+const _svgWarn=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+const _svgArrUp=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`;
+const _svgArrDn=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>`;
+const _svgEdit=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+const _svgWallet=`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>`;
+// Trả về icon ví theo loại (WTICO) với kích thước phù hợp cho inline text
+function _walIco(w,sz){
+  sz=sz||11;
+  const t=w&&w.type;
+  if(t&&WTICO[t]){
+    return WTICO[t]
+      .replace(/width="\d+"/,'width="'+sz+'"')
+      .replace(/height="\d+"/,'height="'+sz+'"')
+      .replace('<svg ','<svg style="vertical-align:-.1em;margin-right:3px" ');
+  }
+  return _svgWallet;
+}
 const AVCLRS=['#2563eb','#dc2626','#16a34a','#d97706','#7c3aed','#0891b2','#db2777','#059669'];
 const COINS=[{id:'bitcoin',l:'BTC'},{id:'ethereum',l:'ETH'},{id:'binancecoin',l:'BNB'},{id:'solana',l:'SOL'},
   {id:'ripple',l:'XRP'},{id:'dogecoin',l:'DOGE'},{id:'cardano',l:'ADA'},{id:'tether',l:'USDT'},{id:'polkadot',l:'DOT'},{id:'shiba-inu',l:'SHIB'}];
@@ -1859,10 +2909,16 @@ function applyFeats(){
   const b=document.getElementById('tab-sh-btn');
   features.storeEnabled?b.classList.remove('hid'):b.classList.add('hid');
   const cb=document.getElementById('feat-store');if(cb)cb.checked=!!features.storeEnabled;
+  // Home dashboard tile — Cửa Hàng
+  const tileShEl=document.getElementById('rd-tile-sh');
+  if(tileShEl)features.storeEnabled?tileShEl.classList.remove('hid'):tileShEl.classList.add('hid');
   // Count tab
   const countBtn=document.getElementById('tab-count-btn');
   if(countBtn)features.countEnabled?countBtn.classList.remove('hid'):countBtn.classList.add('hid');
   const ccb=document.getElementById('feat-count');if(ccb)ccb.checked=!!features.countEnabled;
+  // Home dashboard tile — Đếm Tiền
+  const tileCountEl=document.getElementById('rd-tile-count');
+  if(tileCountEl)features.countEnabled?tileCountEl.classList.remove('hid'):tileCountEl.classList.add('hid');
   if(features.countEnabled&&document.getElementById('cnt-rows')&&!document.getElementById('cnt-'+DENOMS[0]))initCountRows();
   // Cost tab in store view
   const costTab=document.getElementById('stab-cost');
@@ -2298,25 +3354,25 @@ function renderWallets(){
   // Cá nhân
   if(Object.keys(pTot).length){
     totHtml+=Object.entries(pTot).map(([c,v])=>`
-      <div class="wt"><div class="wt-c">👤 Cá nhân (${c})</div><div class="wt-v ${v>=0?'pos':'neg'}">${fmt(v,c)}</div></div>`).join('');
+      <div class="wt"><div class="wt-c">${_svgPerson}Cá nhân (${c})</div><div class="wt-v ${v>=0?'pos':'neg'}">${fmt(v,c)}</div></div>`).join('');
   }
   // Từng cửa hàng
   Object.entries(storeTots).forEach(([sid,tots])=>{
     const sn=storeData.find(s=>s.id===Number(sid))?.name||'Cửa hàng';
     Object.entries(tots).forEach(([c,v])=>{
-      totHtml+=`<div class="wt"><div class="wt-c">🏪 ${sn} (${c})</div><div class="wt-v ${v>=0?'pos':'neg'}">${fmt(v,c)}</div></div>`;
+      totHtml+=`<div class="wt"><div class="wt-c">${_getStoreIco(sid)}${sn} (${c})</div><div class="wt-v ${v>=0?'pos':'neg'}">${fmt(v,c)}</div></div>`;
     });
     // Công nợ cửa hàng
     if(storeDebtTots[sid]){
       Object.entries(storeDebtTots[sid]).forEach(([c,v])=>{
-        totHtml+=`<div class="wt"><div class="wt-c" style="color:#ef4444">⚠️ Nợ ${sn}</div><div class="wt-v neg">${fmt(v,c)}</div></div>`;
+        totHtml+=`<div class="wt"><div class="wt-c" style="color:#ef4444">${_svgWarn}Nợ ${sn}</div><div class="wt-v neg">${fmt(v,c)}</div></div>`;
       });
     }
   });
   // Công nợ cá nhân
   if(Object.keys(pDebtTot).length){
     totHtml+=Object.entries(pDebtTot).map(([c,v])=>`
-      <div class="wt"><div class="wt-c" style="color:#ef4444">⚠️ Nợ cá nhân</div><div class="wt-v neg">${fmt(v,c)}</div></div>`).join('');
+      <div class="wt"><div class="wt-c" style="color:#ef4444">${_svgWarn}Nợ cá nhân</div><div class="wt-v neg">${fmt(v,c)}</div></div>`).join('');
   }
   document.getElementById('wall-tots').innerHTML=totHtml||'<div class="wt"><div class="wt-c">Chưa có ví</div></div>';
 
@@ -2326,10 +3382,13 @@ function renderWallets(){
       <div class="wline" style="background:${WTCLR[w.type]||'#60a5fa'}"></div>
       <div style="padding-left:8px">
         <div class="wcn">${w.name}</div>
-        <div class="wct">${WTLBL[w.type]||w.type}</div>
+        <div class="wct" style="display:flex;align-items:center;gap:5px;color:${WTCLR[w.type]||'#60a5fa'}">
+          <span style="display:flex;align-items:center;opacity:.85">${WTICO[w.type]||''}</span>
+          <span>${WTLBL[w.type]||w.type}</span>
+        </div>
         <div class="wcb ${b>=0?'pos':'neg'}">${fmt(b,w.currency)}</div>
         <div class="wci">Gốc: ${fmt(w.initialBalance,w.currency)}${w.note?` · ${w.note.slice(0,14)}`:''}</div>
-        <div class="wca"><button class="wce" onclick="openEditWallet(${w.id})">✏️ Sửa</button></div>
+        <div class="wca"><button class="wce" onclick="openEditWallet(${w.id})">${_svgEdit}Sửa</button></div>
       </div>
     </div>`;
   }
@@ -2346,7 +3405,7 @@ function renderWallets(){
     });
     let totStr=Object.entries(realTot).map(([c,v])=>`<span style="color:${v>=0?'#22c55e':'#ef4444'}">${fmt(v,c)}</span>`).join(' · ');
     if(Object.keys(debtTot).length){
-      totStr+=Object.entries(debtTot).map(([c,v])=>`<span style="color:#ef4444;font-size:9px"> ⚠️${fmt(v,c)}</span>`).join('');
+      totStr+=Object.entries(debtTot).map(([c,v])=>`<span style="color:#ef4444;font-size:9px">${_svgWarn}${fmt(v,c)}</span>`).join('');
     }
     return `<div>
       <div class="wgrp-hdr" onclick="toggleWGrp('${key}')">
@@ -2364,22 +3423,71 @@ function renderWallets(){
 
   const personal=walletData.filter(w=>!w.storeId);
   const sgroups={};walletData.filter(w=>w.storeId).forEach(w=>{if(!sgroups[w.storeId])sgroups[w.storeId]=[];sgroups[w.storeId].push(w);});
-  let html=grpSection('personal','👤 Cá nhân',personal,true);
+  let html=grpSection('personal',`${_svgPerson}Cá nhân`,personal,true);
   Object.entries(sgroups).forEach(([sid,ws])=>{
     const sn=storeData.find(s=>s.id===Number(sid))?.name||'Cửa hàng';
-    html+=grpSection('store_'+sid,`🏪 ${sn}`,ws,false);
+    html+=grpSection('store_'+sid,`${_getStoreIco(sid)}${sn}`,ws,false);
   });
   document.getElementById('wallet-list').innerHTML=html||'<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có ví nào. Nhấn "＋ Thêm ví" để bắt đầu.</div>';
   renderTransferHist();
 }
 
 // ══════ MODULE 1: THU CHI ══════
-const catThu=['Lương','Thưởng','Kinh doanh','Đầu tư','Chuyển ví','Khác'];
-const catChi=['Ăn uống','Di chuyển','Mua sắm','Hóa đơn','Giải trí','Sức khỏe','Chuyển ví','Khác'];
+const _defCatThu=['Lương','Thưởng','Kinh doanh','Đầu tư','Chuyển ví','Khác'];
+const _defCatChi=['Ăn uống','Di chuyển','Mua sắm','Hóa đơn','Giải trí','Sức khỏe','Chuyển ví','Khác'];
+let catThu=JSON.parse(localStorage.getItem('catThu')||'null')||[..._defCatThu];
+let catChi=JSON.parse(localStorage.getItem('catChi')||'null')||[..._defCatChi];
+function saveCats(){localStorage.setItem('catThu',JSON.stringify(catThu));localStorage.setItem('catChi',JSON.stringify(catChi));}
 let tcFilter='all';
 let tcMonth=new Date().toISOString().slice(0,7);
 let tcFilterMode='month';
 function updCatTC(){const t=document.getElementById('tc-type').value;document.getElementById('tc-cat').innerHTML=(t==='thu'?catThu:catChi).map(c=>`<option>${c}</option>`).join('');}
+
+// ── Category Manager ──
+let _catMgrMode='chi';
+function openCatManager(){
+  _catMgrMode=document.getElementById('tc-type')?.value||'chi';
+  catMgrSwitch(_catMgrMode);
+  document.getElementById('modal-cat-mgr').classList.remove('hid');
+}
+function catMgrSwitch(mode){
+  _catMgrMode=mode;
+  document.getElementById('catmgr-thu-btn').className='abtn'+(mode==='thu'?'':' abtn-ghost');
+  document.getElementById('catmgr-chi-btn').className='abtn'+(mode==='chi'?'':' abtn-ghost');
+  catMgrRender();
+}
+function catMgrRender(){
+  const cats=_catMgrMode==='thu'?catThu:catChi;
+  const el=document.getElementById('catmgr-list');
+  if(!cats.length){el.innerHTML='<div style="font-size:11px;color:#4b5563;text-align:center;padding:8px">Chưa có danh mục</div>';return;}
+  el.innerHTML=cats.map((c,i)=>`
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="text" value="${c.replace(/"/g,'&quot;')}" style="flex:1;background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:7px 10px;font-size:12px;font-family:inherit;outline:none"
+        onblur="catMgrRename(${i},this.value)" onkeydown="if(event.key==='Enter')this.blur()"/>
+      <button onclick="catMgrDel(${i})" style="width:28px;height:28px;border-radius:7px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.2);color:#f87171;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+      </button>
+    </div>`).join('');
+}
+function catMgrRename(i,val){
+  val=val.trim();if(!val)return catMgrRender();
+  const cats=_catMgrMode==='thu'?catThu:catChi;
+  cats[i]=val;saveCats();updCatTC();
+}
+function catMgrDel(i){
+  const cats=_catMgrMode==='thu'?catThu:catChi;
+  if(cats.length<=1)return toast('⚠️ Cần ít nhất 1 danh mục','#f59e0b');
+  cats.splice(i,1);saveCats();updCatTC();catMgrRender();
+}
+function catMgrAdd(){
+  const inp=document.getElementById('catmgr-inp');
+  const val=(inp.value||'').trim();
+  if(!val)return toast('⚠️ Nhập tên danh mục','#f59e0b');
+  const cats=_catMgrMode==='thu'?catThu:catChi;
+  if(cats.includes(val))return toast('⚠️ Danh mục đã tồn tại','#f59e0b');
+  cats.push(val);saveCats();updCatTC();inp.value='';catMgrRender();
+  toast('✓ Đã thêm "'+val+'"');
+}
 function ftc(f,btn){tcFilter=f;document.querySelectorAll('#tab-tc .ftabs .fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTC();}
 function changeTcMonth(d){
   const [y,m]=tcMonth.split('-').map(Number);
@@ -2481,10 +3589,10 @@ function renderTC(){
     const w=r.walletId?walletData.find(x=>x.id===r.walletId):null;
     return `<div class="ri ${r.type}"><div class="rli">
       <span class="rc">${r.category}</span>
-      ${w?`<span class="rw">👛 ${w.name}</span>`:''}
+      ${w?`<span class="rw">${_walIco(w)}${w.name}</span>`:''}
       <span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span>
     </div>
-    <div class="rr"><span class="ra">${r.type==='thu'?'+':'-'}${fmt(r.amount,r.currency||'VND')}</span><button class="xbtn" style="color:#60a5fa;margin-right:2px" onclick="editTC(${r.id})">✏️</button><button class="xbtn" onclick="delTC(${r.id})">×</button></div></div>`;}).join('');
+    <div class="rr"><span class="ra">${r.type==='thu'?'+':'-'}${fmt(r.amount,r.currency||'VND')}</span><button class="xbtn" style="color:#60a5fa;margin-right:2px" onclick="editTC(${r.id})">${_svgEdit}</button><button class="xbtn" onclick="delTC(${r.id})">×</button></div></div>`;}).join('');
   updWSelects();
 }
 
@@ -2672,6 +3780,51 @@ function clearCount(){
   DENOMS.forEach(d=>{const el=document.getElementById('cnt-'+d);if(el)el.value=0;});
   updCountTotal();
 }
+function openCountToWallet(){
+  let total=0;
+  DENOMS.forEach(d=>{total+=Math.max(0,parseInt(document.getElementById('cnt-'+d)?.value)||0)*d;});
+  if(!total)return toast('⚠️ Chưa đếm tiền nào!','#f59e0b');
+  // Hiển thị tổng
+  const amtEl=document.getElementById('cwl-amount');
+  if(amtEl)amtEl.textContent=fmt(total);
+  // Điền danh sách ví (chỉ ví cá nhân)
+  const wSel=document.getElementById('cwl-wallet');
+  if(wSel){
+    const personalWals=(typeof walletData!=='undefined'?walletData:[]).filter(w=>!w.storeId&&w.type!=='borrowed');
+    wSel.innerHTML=personalWals.length
+      ? personalWals.map(w=>`<option value="${w.id}">${w.name}</option>`).join('')
+      : '<option value="">— Chưa có ví —</option>';
+  }
+  // Cập nhật danh mục theo loại
+  function updCwlCat(){
+    const t=document.getElementById('cwl-type').value;
+    const cats=t==='thu'?(typeof catThu!=='undefined'?catThu:['Khác']):(typeof catChi!=='undefined'?catChi:['Khác']);
+    document.getElementById('cwl-cat').innerHTML=cats.map(c=>`<option>${c}</option>`).join('');
+  }
+  document.getElementById('cwl-type').onchange=updCwlCat;
+  updCwlCat();
+  document.getElementById('cwl-note').value='Kiểm quỹ — đếm tiền mặt';
+  document.getElementById('modal-count-wallet').classList.remove('hid');
+}
+function confirmCountToWallet(){
+  let total=0;
+  DENOMS.forEach(d=>{total+=Math.max(0,parseInt(document.getElementById('cnt-'+d)?.value)||0)*d;});
+  if(!total)return toast('⚠️ Tổng tiền bằng 0!','#f59e0b');
+  const type=document.getElementById('cwl-type').value;
+  const wid=parseInt(document.getElementById('cwl-wallet').value)||null;
+  if(!wid)return toast('⚠️ Chọn ví!','#f59e0b');
+  const cat=document.getElementById('cwl-cat').value||'Khác';
+  const note=document.getElementById('cwl-note').value.trim()||'Đếm tiền mặt';
+  const now=new Date();
+  const dateVal=now.toISOString().slice(0,10);
+  const dt=now.toISOString().slice(0,16).replace('T',' ');
+  tcData.push({id:Date.now(),type,category:cat,amount:total,currency:'VND',walletId:wid,note,date:dateVal,dt});
+  if(typeof save==='function')save('tcData',tcData);
+  if(typeof renderTC==='function')renderTC();
+  if(typeof renderWallets==='function')renderWallets();
+  closeModal('modal-count-wallet');
+  toast('✓ Đã nhập '+fmt(total)+' vào ví');
+}
 function toggleCount(){
   features.countEnabled=document.getElementById('feat-count').checked;
   save('features',features);applyFeats();
@@ -2696,7 +3849,7 @@ function renderTransferHist(){
     const pairNote=t.note?.replace(' (xuất)','').replace(' (nhận)','');
     return `<div class="ri ${isOut?'chi':'thu'}">
       <div class="rli">
-        <span class="rc">${isOut?'⬆️ Xuất':'⬇️ Nhận'} · ${w?.name||'?'}</span>
+        <span class="rc">${isOut?_svgArrUp+'Xuất':_svgArrDn+'Nhận'} · ${w?.name||'?'}</span>
         <span class="rn">${pairNote||''} · ${t.date}</span>
       </div>
       <div class="rr">
@@ -2764,8 +3917,23 @@ function createStoreFromWizard(){
 }
 function switchStoreFromSel(){curStoreId=Number(document.getElementById('store-sel').value)||storeData[0]?.id;updShWallet();updShTypeBadge();setShView('txn');renderSH();}
 function renameStoreCurrent(){
-  const s=storeData.find(x=>x.id===curStoreId);const n=prompt('Đổi tên:',s?.name);
-  if(!n?.trim())return;s.name=n.trim();save('storeData',storeData.filter(s=>!s._ownerId));renderStoresSel();renderSH();updRecOpts();toast('✓ Đã đổi tên');
+  const s=storeData.find(x=>x.id===curStoreId);
+  if(!s)return;
+  const inp=document.getElementById('rename-store-inp');
+  if(inp)inp.value=s.name||'';
+  document.getElementById('modal-rename-store').classList.remove('hid');
+  setTimeout(()=>inp&&inp.focus(),120);
+}
+function confirmRenameStore(){
+  const s=storeData.find(x=>x.id===curStoreId);
+  const inp=document.getElementById('rename-store-inp');
+  const n=(inp?.value||'').trim();
+  if(!n)return toast('⚠️ Nhập tên cửa hàng!','#f59e0b');
+  s.name=n;
+  save('storeData',storeData.filter(s=>!s._ownerId));
+  renderStoresSel();renderSH();updRecOpts();
+  closeModal('modal-rename-store');
+  toast('✓ Đã đổi tên thành "'+n+'"');
 }
 function delStore(){
   if(storeData.length<=1)return toast('⚠️ Cần ít nhất 1 cửa hàng!','#f59e0b');
@@ -2911,9 +4079,14 @@ function saveStoreType(){
 }
 function updShTypeBadge(){
   const s=storeData.find(x=>x.id===curStoreId);
-  const TYPE_LABELS={food:'🍜',retail:'🛍️',service:'💼',other:'📦'};
+  const _svgStore='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/></svg>';
+  const _svgFood='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>';
+  const _svgRetail='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>';
+  const _svgService='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
+  const _svgBox='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>';
+  const TYPE_LABELS={food:_svgFood,retail:_svgRetail,service:_svgService,other:_svgBox};
   const btn=document.getElementById('sh-type-btn');
-  if(btn)btn.textContent=TYPE_LABELS[s?.storeType||'other']||'🏷️';
+  if(btn)btn.innerHTML=TYPE_LABELS[s?.storeType||'other']||_svgStore;
   const isFood=s?.storeType==='food';
   const tabsEl=document.querySelector('.store-main-tabs');
   if(tabsEl)tabsEl.style.display=isFood?'':'none';
@@ -3184,7 +4357,7 @@ function saveSemiCats(sid,d){localStorage.setItem('semiCats_'+sid,JSON.stringify
 // ── RECIPE CATEGORIES ──
 function getRecipeCats(sid){return JSON.parse(localStorage.getItem('recipeCats_'+sid)||'[]');}
 function saveRecipeCats(sid,d){localStorage.setItem('recipeCats_'+sid,JSON.stringify(d));_debouncedSaveCost(sid);}
-let _collCats=new Set();
+let _collCats=new Set(),_seenCats=new Set();
 function toggleCatCollapse(catId){
   if(_collCats.has(catId))_collCats.delete(catId);else _collCats.add(catId);
   renderIngList();
@@ -3226,7 +4399,7 @@ function delIngCat(id){
 }
 
 // ── SEMI CATEGORIES CRUD ──
-let _collSemiCats=new Set();
+let _collSemiCats=new Set(),_seenSemiCats=new Set();
 function toggleSemiCatCollapse(catId){if(_collSemiCats.has(catId))_collSemiCats.delete(catId);else _collSemiCats.add(catId);renderSemiList();}
 function openSemiCatsModal(){renderSemiCatsList();document.getElementById('modal-semi-cats').classList.remove('hid');}
 function renderSemiCatsList(){
@@ -3261,7 +4434,7 @@ function delSemiCat(id){
 }
 
 // ── RECIPE CATEGORIES CRUD ──
-let _collRecipeCats=new Set();
+let _collRecipeCats=new Set(),_seenRecipeCats=new Set();
 function toggleRecipeCatCollapse(catId){if(_collRecipeCats.has(catId))_collRecipeCats.delete(catId);else _collRecipeCats.add(catId);renderRecipeList();}
 function openRecipeCatsModal(){renderRecipeCatsList();document.getElementById('modal-recipe-cats').classList.remove('hid');}
 function renderRecipeCatsList(){
@@ -3400,6 +4573,10 @@ function renderIngList(){
   cats.forEach(c=>grouped.set(c.id,[]));
   grouped.set(null,[]);
   ings.forEach(g=>{const key=g.catId&&grouped.has(g.catId)?g.catId:null;grouped.get(key).push(g);});
+  // Default collapsed on first sight
+  cats.forEach(c=>{if(!_seenCats.has(c.id)){_collCats.add(c.id);_seenCats.add(c.id);}});
+  const uncat=grouped.get(null)||[];
+  if(uncat.length&&!_seenCats.has('uncat')){_collCats.add('uncat');_seenCats.add('uncat');}
   let html='';
   cats.forEach(c=>{
     const grp=grouped.get(c.id)||[];
@@ -3412,7 +4589,6 @@ function renderIngList(){
     if(!collapsed&&grp.length)html+=`<div class="cat-body">${grp.map(g=>_ingRowHtml(g)).join('')}</div>`;
     else if(!collapsed&&!grp.length)html+=`<div style="font-size:11px;color:#4b5563;padding:6px 12px">Trống</div>`;
   });
-  const uncat=grouped.get(null)||[];
   if(uncat.length){
     const collapsed=_collCats.has('uncat');
     html+=`<div class="cat-hdr" onclick="toggleCatCollapse('uncat')">
@@ -3544,6 +4720,10 @@ function renderSemiList(){
   if(!cats.length){list.innerHTML=semis.map(sm=>_semiCardHtml(sm,ings)).join('');return;}
   const grouped=new Map();cats.forEach(c=>grouped.set(c.id,[]));grouped.set(null,[]);
   semis.forEach(s=>{const key=s.catId&&grouped.has(s.catId)?s.catId:null;grouped.get(key).push(s);});
+  // Default collapsed on first sight
+  cats.forEach(c=>{if(!_seenSemiCats.has(c.id)){_collSemiCats.add(c.id);_seenSemiCats.add(c.id);}});
+  const uncat=grouped.get(null)||[];
+  if(uncat.length&&!_seenSemiCats.has('uncat')){_collSemiCats.add('uncat');_seenSemiCats.add('uncat');}
   let html='';
   cats.forEach(c=>{
     const grp=grouped.get(c.id)||[];
@@ -3556,7 +4736,6 @@ function renderSemiList(){
     if(!collapsed&&grp.length)html+=`<div class="cat-body">${grp.map(sm=>_semiCardHtml(sm,ings)).join('')}</div>`;
     else if(!collapsed&&!grp.length)html+=`<div style="font-size:11px;color:#4b5563;padding:6px 12px">Trống</div>`;
   });
-  const uncat=grouped.get(null)||[];
   if(uncat.length){
     const collapsed=_collSemiCats.has('uncat');
     html+=`<div class="cat-hdr" onclick="toggleSemiCatCollapse('uncat')">
@@ -3741,6 +4920,10 @@ function renderRecipeList(){
   if(!cats.length){list.innerHTML=recipes.map(r=>_recipeCardHtml(r,ings,semis)).join('');return;}
   const grouped=new Map();cats.forEach(c=>grouped.set(c.id,[]));grouped.set(null,[]);
   recipes.forEach(r=>{const key=r.catId&&grouped.has(r.catId)?r.catId:null;grouped.get(key).push(r);});
+  // Default collapsed on first sight
+  cats.forEach(c=>{if(!_seenRecipeCats.has(c.id)){_collRecipeCats.add(c.id);_seenRecipeCats.add(c.id);}});
+  const uncat=grouped.get(null)||[];
+  if(uncat.length&&!_seenRecipeCats.has('uncat')){_collRecipeCats.add('uncat');_seenRecipeCats.add('uncat');}
   let html='';
   cats.forEach(c=>{
     const grp=grouped.get(c.id)||[];
@@ -3753,7 +4936,6 @@ function renderRecipeList(){
     if(!collapsed&&grp.length)html+=`<div class="cat-body">${grp.map(r=>_recipeCardHtml(r,ings,semis)).join('')}</div>`;
     else if(!collapsed&&!grp.length)html+=`<div style="font-size:11px;color:#4b5563;padding:6px 12px">Trống</div>`;
   });
-  const uncat=grouped.get(null)||[];
   if(uncat.length){
     const collapsed=_collRecipeCats.has('uncat');
     html+=`<div class="cat-hdr" onclick="toggleRecipeCatCollapse('uncat')">
@@ -3884,21 +5066,21 @@ function renderSH(){
     const w=r.walletId?walletData.find(x=>x.id===r.walletId):null;
     if(r.type==='transfer-out'){
       return `<div class="ri" style="border-left-color:#f59e0b;opacity:.9">
-        <div class="rli"><span class="rc" style="color:#f59e0b">⇄ Chuyển tiền đi</span>${w?`<span class="rw" style="color:#f59e0b">👛 ${w.name}</span>`:''}<span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span></div>
+        <div class="rli"><span class="rc" style="color:#f59e0b">⇄ Chuyển tiền đi</span>${w?`<span class="rw" style="color:#f59e0b">${_walIco(w)}${w.name}</span>`:''}<span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span></div>
         <div class="rr"><span class="ra" style="color:#f59e0b">-${fmt(r.amount,r.currency||'VND')}</span>${canEditSH?`<button class="xbtn" onclick="delSH(${r.id})">×</button>`:''}</div></div>`;
     }
     if(r.type==='transfer-in'){
       return `<div class="ri" style="border-left-color:#60a5fa;opacity:.9">
-        <div class="rli"><span class="rc" style="color:#60a5fa">⇄ Tiền về cửa hàng</span>${w?`<span class="rw" style="color:#60a5fa">👛 ${w.name}</span>`:''}<span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span></div>
+        <div class="rli"><span class="rc" style="color:#60a5fa">⇄ Tiền về cửa hàng</span>${w?`<span class="rw" style="color:#60a5fa">${_walIco(w)}${w.name}</span>`:''}<span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span></div>
         <div class="rr"><span class="ra" style="color:#60a5fa">+${fmt(r.amount,r.currency||'VND')}</span>${canEditSH?`<button class="xbtn" onclick="delSH(${r.id})">×</button>`:''}</div></div>`;
     }
-    const auditBadge=(canSeePL&&r._editedBy)?`<span style="font-size:9px;color:#f59e0b;background:rgba(245,158,11,0.1);border-radius:10px;padding:1px 6px;margin-left:4px">✏️ ${r._editedBy}</span>`:'';
+    const auditBadge=(canSeePL&&r._editedBy)?`<span style="font-size:9px;color:#f59e0b;background:rgba(245,158,11,0.1);border-radius:10px;padding:1px 6px;margin-left:4px">${_svgEdit}${r._editedBy}</span>`:'';
     return `<div class="ri ${r.type}"><div class="rli">
       <span class="rc">${r.category}${auditBadge}</span>
-      ${w?`<span class="rw">👛 ${w.name}</span>`:''}
+      ${w?`<span class="rw">${_walIco(w)}${w.name}</span>`:''}
       <span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span>
     </div>
-    <div class="rr"><span class="ra">${r.type==='revenue'?'+':'-'}${fmt(r.amount,r.currency||'VND')}</span>${canEditSH?`<button class="xbtn" style="color:#60a5fa;margin-right:2px" onclick="editSH(${r.id})">✏️</button><button class="xbtn" onclick="delSH(${r.id})">×</button>`:''}</div></div>`;}).join('');
+    <div class="rr"><span class="ra">${r.type==='revenue'?'+':'-'}${fmt(r.amount,r.currency||'VND')}</span>${canEditSH?`<button class="xbtn" style="color:#60a5fa;margin-right:2px" onclick="editSH(${r.id})">${_svgEdit}</button><button class="xbtn" onclick="delSH(${r.id})">×</button>`:''}</div></div>`;}).join('');
   updWSelects();
 }
 
@@ -4088,7 +5270,7 @@ function openLnForm(){
   document.getElementById('form-ln').classList.toggle('hid');
 }
 function cancelEditLN(){
-  editLnId=null;document.getElementById('ln-sbtn').textContent='💾 Lưu';
+  editLnId=null;document.getElementById('ln-sbtn').textContent='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu';
   document.getElementById('ln-edit-ban').classList.add('hid');clearLnForm();document.getElementById('form-ln').classList.add('hid');
 }
 function clearLnForm(){
@@ -4130,7 +5312,7 @@ function addLN(){
   if(!name||!amount)return toast('⚠️ Nhập đủ thông tin!','#f59e0b');
   const employeeUserId=Number(document.getElementById('ln-emp-sel')?.value)||null;
   const entry={name,dir,rtype,amount,currency,paidAmount,itype,irate,termMonths,dueDate,date:startDate,payDay,note,employeeUserId};
-  if(editLnId){const idx=lnData.findIndex(x=>x.id===editLnId);if(idx>-1)lnData[idx]={...lnData[idx],...entry};editLnId=null;document.getElementById('ln-sbtn').textContent='💾 Lưu';document.getElementById('ln-edit-ban').classList.add('hid');toast('✓ Đã cập nhật');}
+  if(editLnId){const idx=lnData.findIndex(x=>x.id===editLnId);if(idx>-1)lnData[idx]={...lnData[idx],...entry};editLnId=null;document.getElementById('ln-sbtn').textContent='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu';document.getElementById('ln-edit-ban').classList.add('hid');toast('✓ Đã cập nhật');}
   else{lnData.push({id:Date.now(),...entry,paid:false,expanded:false,payments:[]});toast('✓ Đã thêm khoản nợ');}
   save('lnData',lnData);clearLnForm();document.getElementById('form-ln').classList.add('hid');renderLN();
 }
@@ -4335,8 +5517,8 @@ function renderLN(){
         <div class="ln-acts">
           ${!l.paid?`<button class="btn-mp" onclick="openPayLoan(${l.id})">💰 Trả / Thu</button>`:''}
           <button class="${l.paid?'btn-mu':'btn-settle'}" onclick="togLnPaid(${l.id})">${l.paid?'↩ Mở lại':'✓ Tất toán'}</button>
-          <button class="btn-edit" onclick="editLN(${l.id})">✏️ Sửa</button>
-          <button class="btn-del" onclick="delLN(${l.id})">🗑 Xoá</button>
+          <button class="btn-edit" onclick="editLN(${l.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px;vertical-align:-.1em"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Sửa</button>
+          <button class="btn-del" onclick="delLN(${l.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px;vertical-align:-.1em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>Xoá</button>
         </div>
         ${(l.payments&&l.payments.length)?`<div style="margin-top:6px"><div style="font-size:9px;color:#6b7280;text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px">📋 Lịch sử thanh toán</div>${l.payments.slice().reverse().map(p=>{const pw=walletData.find(x=>x.id===p.walletId);return`<div class="ln-pay-row">
             <div style="display:flex;justify-content:space-between;align-items:center">
@@ -4346,8 +5528,8 @@ function renderLN(){
               </div>
               <div style="display:flex;align-items:center;gap:5px">
                 <span style="color:${l.dir==='di'?'#ef4444':'#22c55e'};font-weight:700">${l.dir==='di'?'-':'+'}${fmt(p.amount)}</span>
-                <button onclick="openEditPayment(${l.id},${p.id})" style="background:rgba(96,165,250,0.1);border:none;color:#60a5fa;font-size:11px;cursor:pointer;padding:3px 6px;border-radius:6px">✏️</button>
-                <button onclick="deletePayment(${l.id},${p.id})" style="background:rgba(239,68,68,0.1);border:none;color:#f87171;font-size:11px;cursor:pointer;padding:3px 6px;border-radius:6px">🗑</button>
+                <button onclick="openEditPayment(${l.id},${p.id})" style="background:rgba(96,165,250,0.1);border:none;color:#60a5fa;font-size:11px;cursor:pointer;padding:3px 6px;border-radius:6px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                <button onclick="deletePayment(${l.id},${p.id})" style="background:rgba(239,68,68,0.1);border:none;color:#f87171;font-size:11px;cursor:pointer;padding:3px 6px;border-radius:6px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
               </div>
             </div>
           </div>`}).join('')}</div>`:''}
@@ -4591,7 +5773,7 @@ function startVoice(mode){
     else if(e.error!=='aborted')toast('❌ Lỗi mic: '+e.error,'#ef4444');
   };
   _voiceRec.onend=()=>{
-    if(btn){btn.classList.remove('listening');btn.innerHTML='🎤 Nhập bằng giọng nói';}
+    if(btn){btn.classList.remove('listening');btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>Nhập giọng nói';}
     _voiceRec=null;_voiceMode=null;
   };
   _voiceRec.start();
@@ -4609,6 +5791,290 @@ renderPlatGrid();showProfs();
 document.getElementById('sw-name')?.addEventListener('input',updSwPreview);
 document.getElementById('sw-debt')?.addEventListener('change',updSwPreview);
 document.getElementById('sw-create-wallets')?.addEventListener('change',updSwPreview);
+
+// ══════ HOME DASHBOARD NAVIGATION ══════
+(function(){
+
+  /* ── showHome: return to home screen ── */
+  window.showHome = function(){
+    document.body.classList.remove('rd-detail');
+    // Hide all mods
+    document.querySelectorAll('.mod').forEach(function(m){ m.classList.add('hid'); });
+    // Show home
+    var h = document.getElementById('rd-home');
+    if(h) h.classList.remove('hid');
+    // Sync data into home screen
+    rdSyncHome();
+  };
+
+  /* ── goTab: navigate from home into a workspace ── */
+  window.goTab = function(tabId){
+    // Chặn nếu module bị tắt
+    if(typeof features !== 'undefined'){
+      if(tabId==='sh' && !features.storeEnabled){
+        if(typeof toast==='function') toast('⚠️ Module Cửa Hàng đang tắt','#f59e0b');
+        return;
+      }
+      if(tabId==='count' && !features.countEnabled){
+        if(typeof toast==='function') toast('⚠️ Module Đếm Tiền đang tắt','#f59e0b');
+        return;
+      }
+    }
+    // Hide home
+    var h = document.getElementById('rd-home');
+    if(h) h.classList.add('hid');
+    // Mark detail mode (shows back button, section title)
+    document.body.classList.add('rd-detail');
+    // Fire original showTab which hides all mods, shows target, updates accent color etc.
+    // showTab expects a real btn element (calls btn.classList.add). We find the hidden
+    // tab-bar button, or fall back to a no-op proxy so no crash occurs.
+    if(typeof showTab === 'function'){
+      var tbBtn = document.querySelector('.tab-bar .tb[onclick*="\''+tabId+'\'"]');
+      var proxy = tbBtn || { classList:{ add:function(){}, remove:function(){} }, dataset:{} };
+      showTab(tabId, proxy);
+    } else {
+      // Fallback if showTab not yet defined
+      document.querySelectorAll('.mod').forEach(function(m){ m.classList.add('hid'); });
+      var tab = document.getElementById('tab-'+tabId);
+      if(tab) tab.classList.remove('hid');
+    }
+  };
+
+  /* ── Sync home screen data from existing rendered DOM ── */
+  function rdSyncHome(){
+    // Balance card
+    var du  = document.getElementById('tc-du');
+    var thu = document.getElementById('tc-thu');
+    var chi = document.getElementById('tc-chi');
+    var lbl = document.getElementById('tc-month-lbl');
+    var rBal = document.getElementById('rd-balance');
+    var rInc = document.getElementById('rd-income');
+    var rExp = document.getElementById('rd-expense');
+    var rLbl = document.getElementById('rd-month-lbl');
+
+    if(du && rBal){
+      rBal.textContent = du.textContent || '—';
+      var raw = (du.textContent||'').replace(/[^\d,.\-]/g,'').replace(/\./g,'').replace(',','.');
+      var val = parseFloat(raw)||0;
+      rBal.className = 'rd-balance ' + (val>=0?'pos':'neg');
+    }
+    if(thu && rInc) rInc.textContent = thu.textContent || '—';
+    if(chi && rExp) rExp.textContent = chi.textContent || '—';
+    if(lbl && rLbl) rLbl.textContent = lbl.textContent || '';
+
+    // Workspace tile: Cá Nhân sub-value
+    var tile = document.getElementById('rd-tile-tc');
+    if(tile && du){
+      var v = du.textContent||'—';
+      tile.textContent = 'Cân đối: ' + v;
+    }
+
+    // Recent feed from tc-list
+    rdSyncFeed();
+  }
+
+  /* Build recent transactions feed */
+  function rdSyncFeed(){
+    var feed = document.getElementById('rd-feed');
+    if(!feed) return;
+    // Pull from tcData array if available
+    var rows = [];
+    if(typeof tcData !== 'undefined' && Array.isArray(tcData)){
+      rows = tcData.slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||'') || (b.id||0)-(a.id||0); }).slice(0,5);
+    }
+    if(!rows.length){
+      feed.innerHTML = '<div class="rd-empty">Chưa có giao dịch nào…</div>';
+      return;
+    }
+    feed.innerHTML = rows.map(function(r){
+      var isThu = r.type==='thu';
+      var color = isThu ? '#4ade80' : '#f87171';
+      var bg    = isThu ? 'rgba(34,197,94,0.14)' : 'rgba(239,68,68,0.14)';
+      var sign  = isThu ? '+' : '−';
+      var amtFmt = typeof fmt === 'function' ? fmt(r.amount||0) : ((r.amount||0).toLocaleString('vi-VN'));
+      var note  = r.note || (r.category||'') || (isThu?'Thu tiền':'Chi tiêu');
+      var dateStr = (r.date||'').slice(5).replace('-','/');
+      // Tên ví
+      var walletName = '';
+      if(r.walletId && typeof walletData !== 'undefined'){
+        var w = walletData.find(function(x){ return x.id===r.walletId; });
+        if(w) walletName = w.name;
+      }
+      var metaParts = [];
+      if(r.category) metaParts.push(_esc(r.category));
+      if(walletName) metaParts.push(_walIco(w,10)+_esc(walletName));
+      metaParts.push(dateStr);
+      return [
+        '<div class="rd-row">',
+          '<div class="rd-avatar" style="background:'+bg+';color:'+color+'">',
+            isThu
+              ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>'
+              : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>',
+          '</div>',
+          '<div class="rd-row-main">',
+            '<div class="rd-row-name">'+_esc(note)+'</div>',
+            '<div class="rd-row-meta">'+metaParts.join(' · ')+'</div>',
+          '</div>',
+          '<div class="rd-row-amt" style="color:'+color+'">'+sign+amtFmt+'</div>',
+        '</div>'
+      ].join('');
+    }).join('');
+  }
+
+  /* HTML escape helper */
+  function _esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ── Watch for app becoming visible (login complete) → show home ── */
+  var appEl = document.getElementById('app');
+  if(appEl){
+    var appObs = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        if(m.type==='attributes' && m.attributeName==='class'){
+          if(!appEl.classList.contains('hid')){
+            // Small delay so renderAll() finishes populating tc-du etc.
+            setTimeout(showHome, 350);
+          }
+        }
+      });
+    });
+    appObs.observe(appEl, { attributes: true });
+  }
+
+  /* ── Keep home data fresh: re-sync whenever tc-du changes ── */
+  function startHomeObserver(){
+    ['tc-du','tc-thu','tc-chi','tc-month-lbl'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) new MutationObserver(function(){
+        var home = document.getElementById('rd-home');
+        if(home && !home.classList.contains('hid')) rdSyncHome();
+      }).observe(el, {childList:true, characterData:true, subtree:true});
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', startHomeObserver);
+  } else {
+    setTimeout(startHomeObserver, 400);
+  }
+
+  // Áp dụng ảnh nền hero card từ localStorage
+  function rdApplyHeroBg(){
+    var hero = document.getElementById('rd-hero');
+    if(!hero) return;
+    var saved = localStorage.getItem('rdHeroBg');
+    if(saved){
+      hero.style.backgroundImage = 'url(' + saved + ')';
+      hero.classList.add('has-bg');
+    } else {
+      hero.style.backgroundImage = '';
+      hero.classList.remove('has-bg');
+    }
+  }
+  window.rdHeroBgPick = function(e){
+    e && e.stopPropagation();
+    var saved = localStorage.getItem('rdHeroBg');
+    if(saved){
+      // Đã có ảnh → mở menu chọn đổi/xoá
+      var m = document.getElementById('modal-hero-bg');
+      if(m) m.classList.remove('hid');
+    } else {
+      document.getElementById('rd-hero-file').click();
+    }
+  };
+  window.rdHeroBgLoad = function(input){
+    var file = input.files && input.files[0];
+    if(!file) return;
+    if(file.size > 4 * 1024 * 1024){
+      if(typeof toast==='function') toast('⚠️ Ảnh quá lớn, chọn ảnh dưới 4MB','#f59e0b');
+      input.value=''; return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try{
+        localStorage.setItem('rdHeroBg', ev.target.result);
+        rdApplyHeroBg();
+        if(typeof toast==='function') toast('✓ Đã cập nhật ảnh nền');
+      } catch(err){
+        if(typeof toast==='function') toast('⚠️ Ảnh quá nặng, thử ảnh nhỏ hơn','#f59e0b');
+      }
+      input.value='';
+    };
+    reader.readAsDataURL(file);
+  };
+  window.rdHeroBgReset = function(){
+    localStorage.removeItem('rdHeroBg');
+    rdApplyHeroBg();
+    if(typeof toast==='function') toast('✓ Đã đặt lại ảnh mặc định');
+  };
+  // Áp dụng khi trang load
+  setTimeout(rdApplyHeroBg, 100);
+
+})();
+
+// ══════ BANKING HERO SYNC ══════
+(function(){
+  /* Greeting by time of day */
+  function setGreeting(){
+    const h=new Date().getHours();
+    const txt=h<5?'Khuya rồi 🌙':h<12?'Chào buổi sáng ☀️':h<18?'Chào buổi chiều 🌤️':'Chào buổi tối 🌙';
+    const el=document.getElementById('hdr-greeting');
+    if(el)el.textContent=txt;
+  }
+  setGreeting();
+
+  /* Force hero card text colors — bypass theme !important override */
+  function applyHeroColors(isPos){
+    const card=document.querySelector('.bank-hero-card');
+    if(!card)return;
+    /* Labels & meta */
+    card.querySelectorAll('.bhc-label').forEach(function(el){el.style.setProperty('color','rgba(255,255,255,0.52)','important')});
+    card.querySelectorAll('.bhc-badge').forEach(function(el){el.style.setProperty('color','rgba(255,255,255,0.68)','important')});
+    card.querySelectorAll('.bhc-stat-lbl').forEach(function(el){el.style.setProperty('color','rgba(255,255,255,0.4)','important')});
+    card.querySelectorAll('.bhc-stat-val').forEach(function(el){el.style.setProperty('color','#f1f5f9','important')});
+    /* Balance amount */
+    const hbal=document.getElementById('hero-balance');
+    if(hbal)hbal.style.setProperty('color',isPos?'#4ade80':'#f87171','important');
+  }
+
+  /* Mirror tc-* values → hero card */
+  function mirrorHero(){
+    const du=document.getElementById('tc-du');
+    const thu=document.getElementById('tc-thu');
+    const chi=document.getElementById('tc-chi');
+    const lbl=document.getElementById('tc-month-lbl');
+    const hbal=document.getElementById('hero-balance');
+    const hthu=document.getElementById('hero-thu');
+    const hchi=document.getElementById('hero-chi');
+    const hmth=document.getElementById('hero-month-badge');
+    if(!hbal)return;
+    if(du&&hbal)hbal.textContent=du.textContent||'—';
+    if(thu&&hthu)hthu.textContent=thu.textContent||'—';
+    if(chi&&hchi)hchi.textContent=chi.textContent||'—';
+    if(lbl&&hmth)hmth.textContent=lbl.textContent||'—';
+    /* Color the main balance */
+    let isPos=true;
+    if(hbal&&du){
+      const raw=(du.textContent||'').replace(/[^\d,.\-]/g,'').replace(/\./g,'').replace(',','.');
+      const val=parseFloat(raw)||0;
+      isPos=val>=0;
+      hbal.className='bhc-amount '+(isPos?'pos':'neg');
+    }
+    applyHeroColors(isPos);
+  }
+
+  function startObserver(){
+    ['tc-du','tc-thu','tc-chi','tc-month-lbl'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)new MutationObserver(mirrorHero).observe(el,{childList:true,characterData:true,subtree:true});
+    });
+    mirrorHero();
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',startObserver);
+  }else{
+    setTimeout(startObserver,200);
+  }
+})();
 
 // ══════ PWA SERVICE WORKER ══════
 if('serviceWorker' in navigator){
