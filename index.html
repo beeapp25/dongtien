@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,viewport-fit=cover"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -51,9 +51,9 @@
   --bg-key:#1a2540;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;min-height:100vh;transition:background .35s}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;min-height:100dvh;transition:background .35s;padding-bottom:env(safe-area-inset-bottom)}
 /* ── LOGIN ── */
-#ls{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 20px;background:var(--bg);position:relative;overflow:hidden}
+#ls{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 20px;padding-bottom:calc(24px + env(safe-area-inset-bottom));background:var(--bg);position:relative;overflow:hidden}
 .ls-orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;animation:orb-drift 10s ease-in-out infinite}
 .ls-orb1{width:380px;height:380px;background:radial-gradient(circle,rgba(37,99,235,0.2) 0%,transparent 70%);top:-120px;left:-80px}
 .ls-orb2{width:280px;height:280px;background:radial-gradient(circle,rgba(139,92,246,0.16) 0%,transparent 70%);bottom:-80px;right:-60px;animation-delay:-5s}
@@ -103,7 +103,7 @@ body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;
 .lg-back{background:none;border:none;color:#4b5563;font-size:12px;cursor:pointer;font-family:inherit;padding:8px;transition:color .2s}
 .lg-back:hover{color:#9ca3af}
 /* ── APP ── */
-#app{max-width:480px;margin:0 auto;display:flex;flex-direction:column;min-height:100vh}
+#app{max-width:480px;margin:0 auto;display:flex;flex-direction:column;min-height:100dvh;padding-bottom:env(safe-area-inset-bottom)}
 .hdr{background:linear-gradient(180deg,var(--bg-card) 0%,var(--bg-card2) 100%);padding:14px 16px 0;border-bottom:1px solid rgba(var(--tc-rgb),0.18);transition:border-color .4s}
 .hdr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .app-title{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.3px}
@@ -1881,43 +1881,17 @@ body[data-theme="pink"] .ri{
         </div>
       </div>
     </div>
-    <div class="st" style="padding:4px 2px">☁️ Kết nối Cloud (Firebase)</div>
-    <div class="card full" style="gap:8px">
-      <div id="fb-status" style="font-size:11px;padding:8px 10px;border-radius:9px;display:none"></div>
-      <div id="fb-default-notice" style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-        <div style="font-size:11px;color:#4ade80">✓ Đã cấu hình sẵn — không cần thêm gì</div>
-        <button onclick="toggleSection('fb-cfg-wrap')" style="background:none;border:1px solid rgba(255,255,255,0.12);color:#9ca3af;border-radius:7px;padding:4px 9px;font-size:10px;cursor:pointer;font-family:inherit">⚙️ Tùy chỉnh</button>
-      </div>
-      <div id="fb-cfg-wrap" class="hid">
-        <div style="font-size:11px;color:#9ca3af;line-height:1.6;margin-bottom:6px">Dán thông tin từ <b style="color:#60a5fa">Firebase Console</b> → Project Settings → Your apps → Web app:</div>
-        <input type="text" id="fb-api-key" placeholder="apiKey (AIzaSy...)" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:11px;font-family:inherit;width:100%;outline:none;margin-bottom:6px"/>
-        <input type="text" id="fb-db-url" placeholder="databaseURL (https://ten-project-default-rtdb.firebaseio.com)" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:11px;font-family:inherit;width:100%;outline:none;margin-bottom:6px"/>
-        <button onclick="saveFbConfig()" style="width:100%;padding:9px;background:#f59e0b;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu & Kết nối</button>
-        <div style="font-size:10px;color:#6b7280;margin-top:5px;line-height:1.6">
-          📋 Hướng dẫn tạo Firebase miễn phí → <button onclick="toggleFbGuide()" style="background:none;border:none;color:#60a5fa;font-size:10px;cursor:pointer;font-family:inherit;padding:0">Xem hướng dẫn ▸</button>
-        </div>
-        <div id="fb-guide" style="display:none;background:#0d1325;border-radius:10px;padding:11px;font-size:10px;color:#9ca3af;line-height:1.8;margin-top:6px">
-          1️⃣ Vào <b style="color:#60a5fa">console.firebase.google.com</b><br/>
-          2️⃣ Tạo project mới → đặt tên → bỏ Google Analytics<br/>
-          3️⃣ Vào <b>Build → Realtime Database</b> → Create database → chọn region → bắt đầu ở <i>test mode</i><br/>
-          4️⃣ Vào <b>Project Settings ⚙️</b> → tab <i>General</i> → kéo xuống <i>Your apps</i> → thêm Web app &lt;/&gt;<br/>
-          5️⃣ Copy <b>apiKey</b> và <b>databaseURL</b> dán vào 2 ô trên<br/>
-          6️⃣ Nhấn <b>Lưu & Kết nối</b> — xong! 🎉
-        </div>
-      </div>
-      <div style="display:flex;gap:6px">
-        <button onclick="pushAllToCloud()" style="flex:1;padding:9px;background:#7c3aed;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">☁️ Đẩy thủ công</button>
-        <button onclick="testFirebase()" style="flex:1;padding:9px;background:none;border:1px solid rgba(255,255,255,0.1);color:#60a5fa;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">🔌 Kiểm tra</button>
-      </div>
-    </div>
-    <div id="sect-backup-hdr" class="st" style="padding:4px 2px">💾 Sao lưu & Khôi phục</div>
-    <div id="sect-backup" class="card full" style="gap:8px">
-      <div style="font-size:11px;color:#9ca3af;line-height:1.5">Khi nhận file HTML mới, hãy <b style="color:#f1f5f9">Xuất</b> dữ liệu trước, mở file mới rồi <b style="color:#f1f5f9">Nhập lại</b>.</div>
-      <div style="display:flex;gap:7px">
-        <button onclick="exportData()" style="flex:1;padding:9px;background:#16a34a;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">⬇️ Xuất (.json)</button>
-        <button onclick="document.getElementById('imp-file').click()" style="flex:1;padding:9px;background:#2563eb;color:#fff;border:none;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">⬆️ Nhập</button>
-        <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(this)"/>
-      </div>
+    <!-- Firebase & Backup controls — ẩn khỏi UI người dùng phổ thông, logic vẫn chạy ngầm -->
+    <div style="display:none">
+      <div id="fb-status"></div>
+      <div id="fb-default-notice"></div>
+      <div id="fb-cfg-wrap"></div>
+      <input type="text" id="fb-api-key"/>
+      <input type="text" id="fb-db-url"/>
+      <div id="fb-guide"></div>
+      <div id="sect-backup-hdr"></div>
+      <div id="sect-backup"></div>
+      <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(this)"/>
     </div>
     <div class="st" style="padding:4px 2px">🥇 Giá Vàng SJC</div>
     <div class="card full" style="gap:7px">
