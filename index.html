@@ -1174,25 +1174,17 @@ body[data-theme="pink"] .ri{
 .theme-chip .th-dot{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.18)}
 .theme-chip .th-name{font-size:11px;font-weight:600;color:var(--tc);white-space:nowrap}
 
-/* ── iOS 26 Glass tap ripple ── */
-.glass-ripple{
-  position:fixed;
-  width:76px;height:76px;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:99999;
-  background:radial-gradient(circle,rgba(255,255,255,0.38) 0%,rgba(255,255,255,0.12) 40%,transparent 70%);
-  backdrop-filter:blur(10px) saturate(180%);
-  -webkit-backdrop-filter:blur(10px) saturate(180%);
-  border:1px solid rgba(255,255,255,0.4);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.6),0 0 20px rgba(var(--tc-rgb),0.18);
-  animation:glassRipple .52s cubic-bezier(.2,.8,.25,1) forwards;
+/* ── Tab slide transition ── */
+@keyframes tabSlideRight{
+  from{opacity:0;transform:translateX(28px)}
+  to  {opacity:1;transform:translateX(0)}
 }
-@keyframes glassRipple{
-  0%  {transform:scale(0);opacity:1}
-  45% {opacity:.65}
-  100%{transform:scale(3.8);opacity:0}
+@keyframes tabSlideLeft{
+  from{opacity:0;transform:translateX(-28px)}
+  to  {opacity:1;transform:translateX(0)}
 }
+.tab-in-right{animation:tabSlideRight 270ms cubic-bezier(.25,.46,.45,.94) both}
+.tab-in-left {animation:tabSlideLeft  270ms cubic-bezier(.25,.46,.45,.94) both}
 </style>
 </head>
 <body>
@@ -1578,8 +1570,8 @@ body[data-theme="pink"] .ri{
 
     <div class="date-filter">
       <div class="df-mode">
-        <button class="dfm on" id="tc-dfm-m" onclick="tcSetMode('month')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>Tháng</button>
         <button class="dfm" id="tc-dfm-d" onclick="tcSetMode('day')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/></svg>Ngày</button>
+        <button class="dfm on" id="tc-dfm-m" onclick="tcSetMode('month')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>Tháng</button>
       </div>
       <div class="df-nav" id="tc-df-month">
         <button class="mn-btn" onclick="changeTcMonth(-1)">‹</button>
@@ -1659,8 +1651,8 @@ body[data-theme="pink"] .ri{
       <!-- Date filter -->
       <div class="date-filter">
         <div class="df-mode">
-          <button class="dfm on" id="sh-dfm-m" onclick="shSetMode('month')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>Tháng</button>
           <button class="dfm" id="sh-dfm-d" onclick="shSetMode('day')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/></svg>Ngày</button>
+          <button class="dfm on" id="sh-dfm-m" onclick="shSetMode('month')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.15em"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>Tháng</button>
         </div>
         <div class="df-nav" id="sh-df-month">
           <button class="mn-btn" onclick="changeShMonth(-1)">‹</button>
@@ -3118,10 +3110,20 @@ const td=()=>new Date().toISOString().split('T')[0];
 
 // ══════ UI ══════
 function tog(id){document.getElementById(id).classList.toggle('hid');}
+const _TAB_ORDER=['tc','sh','inv','ln','rec','wallet','count','settings'];
+let _prevTabIdx=0;
 function showTab(id,btn){
+  const newIdx=_TAB_ORDER.indexOf(id);
+  const dir=newIdx>=_prevTabIdx?'right':'left';
+  _prevTabIdx=newIdx<0?0:newIdx;
   document.querySelectorAll('.mod').forEach(m=>m.classList.add('hid'));
   document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.remove('hid');btn.classList.add('active');
+  const el=document.getElementById('tab-'+id);
+  el.classList.remove('hid');
+  el.classList.remove('tab-in-right','tab-in-left');
+  void el.offsetWidth; // force reflow để restart animation
+  el.classList.add(dir==='right'?'tab-in-right':'tab-in-left');
+  btn.classList.add('active');
   // Reset tất cả form về đóng khi chuyển tab
   ['form-ln','form-tc','form-sh','form-inv','form-rec'].forEach(fid=>{
     const el=document.getElementById(fid);if(el)el.classList.add('hid');
@@ -6281,21 +6283,6 @@ if('serviceWorker' in navigator){
       .catch(e=>console.log('SW error:',e.message));
   }
 }
-
-/* ── iOS 26 Glass tap ripple ── */
-(function(){
-  const TARGETS='button,a,.tab,.coll-hdr,[onclick],.pk,.ibtn,label,.nm-btn,.tc-btn,.hdr-btn,.ibchart,.ibf,.ibe,.ibd,.lg-btn,.theme-chip,.ua,.av-pick,.pin-act,.bhc-stat-icon';
-  document.addEventListener('pointerdown',function(e){
-    const t=e.target.closest(TARGETS);
-    if(!t)return;
-    const r=document.createElement('div');
-    r.className='glass-ripple';
-    r.style.left=(e.clientX-38)+'px';
-    r.style.top=(e.clientY-38)+'px';
-    document.body.appendChild(r);
-    r.addEventListener('animationend',()=>r.remove(),{once:true});
-  },{passive:true});
-})();
 </script>
 </body>
 </html>
