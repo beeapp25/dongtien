@@ -1358,14 +1358,14 @@ body[data-theme="pink"] .ri{
     <!-- Quick action row -->
     <div class="rd-actions">
       <!-- Thu tiền -->
-      <button class="rd-action" onclick="goTab('tc');setTimeout(function(){var s=document.getElementById('tc-type');if(s)s.value='thu';if(typeof updCatTC==='function')updCatTC();var f=document.getElementById('form-tc');if(f){f.classList.remove('hid');setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},80);}},150)">
+      <button class="rd-action" onclick="goTab('tc',true);setTimeout(function(){var s=document.getElementById('tc-type');if(s)s.value='thu';if(typeof updCatTC==='function')updCatTC();var f=document.getElementById('form-tc');if(f){f.classList.remove('hid');setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},80);}},80)">
         <div class="rd-act-ico" style="background:rgba(34,197,94,.18)">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4ade80" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
         </div>
         <div class="rd-act-lbl">Thu tiền<span>Ghi nhận thu</span></div>
       </button>
       <!-- Chi tiêu -->
-      <button class="rd-action" onclick="goTab('tc');setTimeout(function(){var s=document.getElementById('tc-type');if(s)s.value='chi';if(typeof updCatTC==='function')updCatTC();var f=document.getElementById('form-tc');if(f){f.classList.remove('hid');setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},80);}},150)">
+      <button class="rd-action" onclick="goTab('tc',true);setTimeout(function(){var s=document.getElementById('tc-type');if(s)s.value='chi';if(typeof updCatTC==='function')updCatTC();var f=document.getElementById('form-tc');if(f){f.classList.remove('hid');setTimeout(function(){f.scrollIntoView({behavior:'smooth',block:'center'})},80);}},80)">
         <div class="rd-act-ico" style="background:rgba(239,68,68,.18)">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#f87171" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
         </div>
@@ -3112,7 +3112,7 @@ const td=()=>new Date().toISOString().split('T')[0];
 function tog(id){document.getElementById(id).classList.toggle('hid');}
 const _TAB_ORDER=['tc','sh','inv','ln','rec','wallet','count','settings'];
 let _prevTabIdx=0;
-function showTab(id,btn){
+function showTab(id,btn,noAnim){
   const newIdx=_TAB_ORDER.indexOf(id);
   const dir=newIdx>=_prevTabIdx?'right':'left';
   _prevTabIdx=newIdx<0?0:newIdx;
@@ -3120,9 +3120,11 @@ function showTab(id,btn){
   document.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
   const el=document.getElementById('tab-'+id);
   el.classList.remove('hid');
-  el.classList.remove('tab-in-right','tab-in-left');
-  void el.offsetWidth; // force reflow để restart animation
-  el.classList.add(dir==='right'?'tab-in-right':'tab-in-left');
+  if(!noAnim){
+    el.classList.remove('tab-in-right','tab-in-left');
+    void el.offsetWidth;
+    el.classList.add(dir==='right'?'tab-in-right':'tab-in-left');
+  }
   btn.classList.add('active');
   // Reset tất cả form về đóng khi chuyển tab
   ['form-ln','form-tc','form-sh','form-inv','form-rec'].forEach(fid=>{
@@ -6005,7 +6007,7 @@ document.getElementById('sw-create-wallets')?.addEventListener('change',updSwPre
   };
 
   /* ── goTab: navigate from home into a workspace ── */
-  window.goTab = function(tabId){
+  window.goTab = function(tabId,noAnim){
     // Chặn nếu module bị tắt
     if(typeof features !== 'undefined'){
       if(tabId==='sh' && !features.storeEnabled){
@@ -6028,7 +6030,7 @@ document.getElementById('sw-create-wallets')?.addEventListener('change',updSwPre
     if(typeof showTab === 'function'){
       var tbBtn = document.querySelector('.tab-bar .tb[onclick*="\''+tabId+'\'"]');
       var proxy = tbBtn || { classList:{ add:function(){}, remove:function(){} }, dataset:{} };
-      showTab(tabId, proxy);
+      showTab(tabId, proxy, noAnim);
     } else {
       // Fallback if showTab not yet defined
       document.querySelectorAll('.mod').forEach(function(m){ m.classList.add('hid'); });
