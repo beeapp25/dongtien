@@ -12,22 +12,11 @@
 <title>💼 Dòng Tiền</title>
 
 <!-- PWA Manifest inline -->
-<link rel="manifest" href="data:application/json,{
-  &quot;name&quot;:&quot;Dòng Tiền&quot;,
-  &quot;short_name&quot;:&quot;Dòng Tiền&quot;,
-  &quot;description&quot;:&quot;Quản lý tài chính cá nhân và cửa hàng&quot;,
-  &quot;start_url&quot;:&quot;.&quot;,
-  &quot;display&quot;:&quot;standalone&quot;,
-  &quot;background_color&quot;:&quot;#0f1117&quot;,
-  &quot;theme_color&quot;:&quot;#0f1117&quot;,
-  &quot;orientation&quot;:&quot;portrait&quot;,
-  &quot;icons&quot;:[
-    {&quot;src&quot;:&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230f1117'/%3E%3Ctext x='256' y='340' font-size='280' text-anchor='middle'%3E💼%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;,&quot;purpose&quot;:&quot;any maskable&quot;}
-  ]
-}"/>
+<link rel="manifest" href="manifest.json"/>
 
-<!-- Apple touch icon (SVG encoded) -->
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='80' fill='%230f1117'/%3E%3Ctext x='256' y='340' font-size='280' text-anchor='middle'%3E💼%3C/text%3E%3C/svg%3E"/>
+<!-- Apple touch icon (PNG) -->
+<link rel="apple-touch-icon" sizes="180x180" href="icon.png"/>
+<link rel="icon" type="image/png" sizes="512x512" href="icon.png"/>
 
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1041,7 +1030,9 @@ body.rd-detail .rd-back-btn{display:flex}
 .rd-row-main{flex:1;min-width:0}
 .rd-row-name{
   font-size:13px;font-weight:700;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#f1f5f9;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;color:#f1f5f9;
+  line-height:1.35;
 }
 .rd-row-meta{font-size:11px;color:#6b7280;margin-top:2px}
 .rd-row-amt{font-size:14px;font-weight:800;white-space:nowrap}
