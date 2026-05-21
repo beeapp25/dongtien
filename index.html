@@ -764,10 +764,12 @@ body[data-theme="white"] .type-chip,body[data-theme="pink"] .type-chip{color:#47
 }
 .hdr-top{
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px 14px !important;
-  background:rgba(8,13,24,0.85) !important;
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:12px 14px !important;
+  background:rgba(8,13,24,0.88) !important;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:20px;
+  margin:10px 12px 0 !important;
   margin-bottom:0 !important;
 }
 
@@ -1043,42 +1045,40 @@ body[data-theme="white"] .rd-empty,
 body[data-theme="pink"] .rd-empty{color:#6b7280 !important}
 body[data-theme="white"] .rd-action,
 body[data-theme="pink"] .rd-action{background:#fff !important;border-color:rgba(0,0,0,.09) !important;color:#344054 !important;box-shadow:0 4px 14px rgba(0,0,0,.08) !important}
-body[data-theme="white"] .hdr-top,
-body[data-theme="pink"] .hdr-top{background:rgba(255,255,255,.9) !important;border-bottom-color:rgba(0,0,0,.08) !important}
-body[data-theme="white"] .rd-back-btn,body[data-theme="white"] .rd-settings-btn,
-body[data-theme="pink"] .rd-back-btn,body[data-theme="pink"] .rd-settings-btn{
-  background:#fff !important;border-color:rgba(0,0,0,.1) !important;color:#344054 !important;
-}
+/* hdr-top & back/settings buttons overrides moved to header theme block below */
 
-/* ── Header LUÔN dark navy, bất kể theme ── */
-body[data-theme="white"] .hdr-top,
-body[data-theme="pink"]  .hdr-top{
-  background:rgba(8,13,24,.94) !important;
-  border-bottom-color:rgba(255,255,255,.06) !important;
+/* ── Header: dark mặc định ── */
+.hdr .app-title{color:#f1f5f9 !important}
+.hdr .bank-greeting{color:rgba(255,255,255,.42) !important}
+/* ── Header theme trắng: nền sáng, chữ tối ── */
+body[data-theme="white"] .hdr-top{
+  background:rgba(255,255,255,.92) !important;
+  border-color:rgba(0,0,0,.08) !important;
 }
-.hdr .app-title,
-body[data-theme="white"] .hdr .app-title,
-body[data-theme="pink"]  .hdr .app-title{color:#f1f5f9 !important}
-.hdr .bank-greeting,
-body[data-theme="white"] .hdr .bank-greeting,
-body[data-theme="pink"]  .hdr .bank-greeting{color:rgba(255,255,255,.42) !important}
-/* back & settings buttons: luôn sáng trên nền tối */
+body[data-theme="white"] .hdr .app-title{color:#0f172a !important}
+body[data-theme="white"] .hdr .bank-greeting{color:#64748b !important}
+body[data-theme="white"] .hdr .un{color:#334155 !important}
 body[data-theme="white"] .rd-back-btn,
-body[data-theme="white"] .rd-settings-btn,
-body[data-theme="pink"]  .rd-back-btn,
-body[data-theme="pink"]  .rd-settings-btn{
-  background:rgba(255,255,255,.1) !important;
-  border-color:rgba(255,255,255,.14) !important;
-  color:#93c5fd !important;
+body[data-theme="white"] .rd-settings-btn{
+  background:#f1f5f9 !important;border-color:rgba(0,0,0,.1) !important;color:#475569 !important;
 }
-/* Tab bar cũng tối → chữ sáng */
+/* ── Header theme hồng: nền hồng nhạt, chữ tối ── */
+body[data-theme="pink"] .hdr-top{
+  background:rgba(253,242,248,.92) !important;
+  border-color:rgba(236,72,153,.12) !important;
+}
+body[data-theme="pink"] .hdr .app-title{color:#831843 !important}
+body[data-theme="pink"] .hdr .bank-greeting{color:#be185d !important}
+body[data-theme="pink"] .hdr .un{color:#9d174d !important}
+body[data-theme="pink"] .rd-back-btn,
+body[data-theme="pink"] .rd-settings-btn{
+  background:rgba(236,72,153,.1) !important;border-color:rgba(236,72,153,.2) !important;color:#be185d !important;
+}
+/* Tab bar */
 body[data-theme="white"] .tab-bar .tb,
 body[data-theme="pink"] .tab-bar .tb{color:rgba(200,215,245,.5) !important}
 body[data-theme="white"] .tab-bar .tb.active,
 body[data-theme="pink"] .tab-bar .tb.active{color:#fff !important}
-/* username trong header */
-body[data-theme="white"] .hdr .un,
-body[data-theme="pink"] .hdr .un{color:rgba(255,255,255,.65) !important}
 
 /* ── Light theme overrides ── */
 body[data-theme="white"] .bank-hero-card,
@@ -1774,13 +1774,13 @@ body[data-theme="pink"] .ri{
   <div id="tab-rec" class="mod hid" data-rd-title="Kế Hoạch Định Kỳ">
     <div class="card b full" style="flex-direction:row;align-items:center;justify-content:space-between">
       <div><span class="lbl">Chi định kỳ ước tính/tháng</span><span class="val" id="rec-sum">0₫</span></div>
-      <span style="font-size:20px">📅</span>
+      <span style="display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:rgba(99,102,241,0.15);color:#818cf8"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><circle cx="8" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="15" r="1" fill="currentColor" stroke="none"/></svg></span>
     </div>
     <div class="bar"><span class="st">Lịch thu chi định kỳ</span><button class="abtn" onclick="tog('form-rec')">＋ Thêm</button></div>
     <div id="form-rec" class="fc hid">
       <input type="text" id="rec-name" placeholder="Tên khoản (VD: Tiền điện Laboong)"/>
       <div class="fr">
-        <select id="rec-type"><option value="chi">❤️ Chi</option><option value="thu">💚 Thu</option></select>
+        <select id="rec-type"><option value="chi">↓ Chi</option><option value="thu">↑ Thu</option></select>
         <select id="rec-cat"><option>Hóa đơn</option><option>Ăn uống</option><option>Di chuyển</option><option>Mua sắm</option><option>Giải trí</option><option>Sức khỏe</option><option>Khác</option></select>
       </div>
       <div class="check-row" style="margin:2px 0"><input type="checkbox" id="rec-est"/><label for="rec-est">Số tiền ước tính (không cố định)</label></div>
@@ -1794,7 +1794,7 @@ body[data-theme="pink"] .ri{
       </div>
       <div class="check-row"><input type="checkbox" id="rec-flex"/><label for="rec-flex">Ngày không cố định (±3 ngày)</label></div>
       <div class="fl">Ghi vào</div>
-      <select id="rec-target"><option value="personal">💸 Thu Chi cá nhân</option></select>
+      <select id="rec-target"><option value="personal">Thu Chi cá nhân</option></select>
       <button class="sbtn" onclick="addRec()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu lịch</button>
     </div>
     <div id="rec-groups"></div>
@@ -2332,11 +2332,11 @@ body[data-theme="pink"] .ri{
 <!-- Edit TC Transaction Modal -->
 <div id="modal-edit-tc" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-edit-tc')">
   <div class="modal-card" onclick="event.stopPropagation()">
-    <div class="modal-hdr"><span class="modal-ttl">✏️ Sửa giao dịch</span><button class="modal-close" onclick="closeModal('modal-edit-tc')">×</button></div>
+    <div class="modal-hdr"><span class="modal-ttl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Sửa giao dịch</span><button class="modal-close" onclick="closeModal('modal-edit-tc')">×</button></div>
     <input type="hidden" id="etc-id"/>
     <div class="fl">Loại</div>
     <select id="etc-type" onchange="updCatETC()" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none">
-      <option value="thu">💚 Thu</option><option value="chi">❤️ Chi</option>
+      <option value="thu">↑ Thu</option><option value="chi">↓ Chi</option>
     </select>
     <div class="fl">Danh mục</div>
     <select id="etc-cat" style="background:#080d18;border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"></select>
@@ -2400,7 +2400,7 @@ body[data-theme="pink"] .ri{
 <!-- Pay Loan Modal -->
 <div id="modal-pay-loan" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-pay-loan')">
   <div class="modal-card" onclick="event.stopPropagation()">
-    <div class="modal-hdr"><span class="modal-ttl" id="pln-title">💰 Ghi nhận thanh toán</span><button class="modal-close" onclick="closeModal('modal-pay-loan')">×</button></div>
+    <div class="modal-hdr"><span class="modal-ttl" id="pln-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="14" r="2"/></svg>Ghi nhận thanh toán</span><button class="modal-close" onclick="closeModal('modal-pay-loan')">×</button></div>
     <input type="hidden" id="pln-id"/>
     <div style="background:#0d1325;border-radius:11px;padding:10px 12px;font-size:11px;color:#9ca3af" id="pln-info"></div>
     <div class="fl">Số tiền thanh toán lần này</div>
@@ -2453,7 +2453,7 @@ body[data-theme="pink"] .ri{
 <!-- Gold Chart -->
 <div id="modal-gold" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-gold')">
   <div class="modal-card" onclick="event.stopPropagation()">
-    <div class="modal-hdr"><span class="modal-ttl">🥇 Biểu đồ & Phân tích Vàng</span><button class="modal-close" onclick="closeModal('modal-gold')">×</button></div>
+    <div class="modal-hdr"><span class="modal-ttl"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Biểu đồ & Phân tích Vàng</span><button class="modal-close" onclick="closeModal('modal-gold')">×</button></div>
     <div id="gm-sjc" style="background:#2d1f06;border-radius:9px;padding:10px">
       <div style="font-size:10px;color:#f59e0b;font-weight:600;margin-bottom:5px">🇻🇳 Giá SJC trong nước (thủ công)</div>
       <div style="display:flex;gap:14px">
@@ -5169,7 +5169,14 @@ function renderINV(){
   const p=tc2-ti,pct=ti?((p/ti)*100).toFixed(1):0;
   document.getElementById('inv-total').textContent=fmt(ti);document.getElementById('inv-cur').textContent=fmt(tc2);
   const pe=document.getElementById('inv-profit');pe.textContent=`${p>0?'+':p<0?'':''}${fmt(p)} (${p>0?'+':p<0?'':''}${pct}%)`;pe.className='val '+(p>0?'pos':p<0?'neg':'');
-  const EMO={gold:'🥇',stock:'📊',crypto:'🪙',savings:'🏦',realestate:'🏠',other:'📦'};
+  const EMO={
+    gold:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>`,
+    stock:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+    crypto:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><circle cx="12" cy="12" r="10"/><path d="M9 8h4.5a2.5 2.5 0 0 1 0 5H9V8z"/><path d="M9 13h5a2.5 2.5 0 0 1 0 5H9v-5z"/><line x1="9" y1="8" x2="9" y2="18"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="18" x2="12" y2="20"/></svg>`,
+    savings:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>`,
+    realestate:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+    other:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`,
+  };
   const BCL={gold:'gold',stock:'stock',crypto:'crypto',savings:'savings',realestate:'def',other:'def'};
   const BLB={gold:'Vàng',stock:'Cổ phiếu',crypto:'Crypto',savings:'Tiết kiệm',realestate:'BĐS',other:'Khác'};
   document.getElementById('inv-list').innerHTML=invData.map(item=>{
@@ -5185,7 +5192,7 @@ function renderINV(){
       <div><div class="icard-nm">${EMO[item.itype]||'📦'} ${item.name}</div>
       <span class="ibadge ${BCL[item.itype]||'def'}">${BLB[item.itype]||item.itype}</span>
       ${item.preApp?'<span class="ibadge def" style="margin-left:3px">Trước app</span>':''}
-      ${wn?`<span class="ibadge def" style="margin-left:3px">👛${wn.slice(0,10)}</span>`:''}</div>
+      ${wn?`<span class="ibadge def" style="margin-left:3px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:2px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>${wn.slice(0,10)}</span>`:''}</div>
       ${det}
       <div class="irow"><span class="dim">Tổng vốn</span><span>${fmt(iv)}</span></div>
       <div class="irow"><span class="dim">Giá trị HT</span><span>${fmt(cv)}</span></div>
@@ -5195,10 +5202,10 @@ function renderINV(){
         <button onclick="savePE(${item.id})">✓</button>
       </div>
       <div class="iacts">
-        ${isGold?`<button class="ibchart" onclick="openGoldModal()">📊 Biểu đồ</button>`:''}
-        ${isCrypto||isGold?`<button class="ibf" onclick="fetchAllPrices()">↻ Live</button>`:''}
-        <button class="ibe" onclick="showPE(${item.id})">✏️ Sửa giá</button>
-        <button class="ibd" onclick="delINV(${item.id})">Xoá</button>
+        ${isGold?`<button class="ibchart" onclick="openGoldModal()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Biểu đồ</button>`:''}
+        ${isCrypto||isGold?`<button class="ibf" onclick="fetchAllPrices()"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Live</button>`:''}
+        <button class="ibe" onclick="showPE(${item.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Sửa giá</button>
+        <button class="ibd" onclick="delINV(${item.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>Xoá</button>
       </div>
     </div>`;
   }).join('');
@@ -5379,7 +5386,9 @@ function openPayLoan(id){
   document.getElementById('pln-id').value=id;
   const rem=Math.max(0,l.amount-(l.paidAmount||0));
   const isOwed=l.dir==='cho';// cho = người khác nợ mình
-  document.getElementById('pln-title').textContent=isOwed?'💚 Ghi nhận khách trả nợ':'❤️ Ghi nhận trả nợ';
+  const _pIcoUp='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em;margin-right:5px"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+  const _pIcoDn='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em;margin-right:5px"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+  document.getElementById('pln-title').innerHTML=isOwed?`${_pIcoUp}Ghi nhận khách trả nợ`:`${_pIcoDn}Ghi nhận trả nợ`;
   document.getElementById('pln-wallet-lbl').textContent=isOwed?'Tiền về ví nào?':'Chi từ ví nào?';
   document.getElementById('pln-info').innerHTML=`<b style="color:#f1f5f9">${l.name}</b><br>Gốc: ${fmt(l.amount)} · Đã trả: ${fmt(l.paidAmount||0)} · <span style="color:${rem>0?'#ef4444':'#22c55e'}">Còn lại: ${fmt(rem)}</span>`;
   const plnAmt=document.getElementById('pln-amt');plnAmt.value='';plnAmt.dataset.raw='0';
@@ -5515,7 +5524,7 @@ function renderLN(){
         </div>
         ${l.note?`<div style="font-size:10px;color:#6b7280">📝 ${l.note}</div>`:''}
         <div class="ln-acts">
-          ${!l.paid?`<button class="btn-mp" onclick="openPayLoan(${l.id})">💰 Trả / Thu</button>`:''}
+          ${!l.paid?`<button class="btn-mp" onclick="openPayLoan(${l.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="14" r="2"/></svg>Trả / Thu</button>`:''}
           <button class="${l.paid?'btn-mu':'btn-settle'}" onclick="togLnPaid(${l.id})">${l.paid?'↩ Mở lại':'✓ Tất toán'}</button>
           <button class="btn-edit" onclick="editLN(${l.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px;vertical-align:-.1em"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Sửa</button>
           <button class="btn-del" onclick="delLN(${l.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px;vertical-align:-.1em"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>Xoá</button>
@@ -5538,7 +5547,7 @@ function renderLN(){
 }
 
 // ══════ MODULE 5: KẾ HOẠCH ══════
-function updRecOpts(){const s=document.getElementById('rec-target');if(!s)return;s.innerHTML=`<option value="personal">💸 Thu Chi cá nhân</option>`+storeData.map(st=>`<option value="${st.id}">🏪 ${st.name}</option>`).join('');}
+function updRecOpts(){const s=document.getElementById('rec-target');if(!s)return;s.innerHTML=`<option value="personal">Thu Chi cá nhân</option>`+storeData.map(st=>`<option value="${st.id}">${st.name}</option>`).join('');}
 function addRec(){
   const name=document.getElementById('rec-name').value.trim(),type=document.getElementById('rec-type').value;
   const cat=document.getElementById('rec-cat').value,amt=gv(document.getElementById('rec-amt'));
@@ -5584,13 +5593,15 @@ function renderRec(){
     const dueL=isLate?`Quá hạn ${Math.abs(diff)}N`:isToday?'Hôm nay/ngày mai':`Còn ${diff}N`;
     const amtD=r.isEstimate?`~${fmt(r.amount,r.currency||'VND')}`:fmt(r.amount,r.currency||'VND');
     return `<div class="ri2"><div class="rd" style="background:${color}"></div>
-      <div class="ri2-i"><div class="ri2-n">${r.type==='thu'?'💚':'❤️'} ${r.name}${r.isEstimate?' <span style="font-size:9px;color:#f59e0b">(ước tính)</span>':''}</div>
+      <div class="ri2-i"><div class="ri2-n">${r.type==='thu'?'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>':'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>'} ${r.name}${r.isEstimate?' <span style="font-size:9px;color:#f59e0b">(ước tính)</span>':''}</div>
       <div class="ri2-w">${freq} · ${dueL}</div></div>
       <div class="ri2-r"><span class="ri2-a">${amtD}</span>
       <div style="display:flex;gap:3px"><button class="pbtn ${isLate?'late':isToday?'due':''}" onclick="payRec(${r.id})">${r.isEstimate?'Ghi (nhập)':'Ghi'}</button><button class="xbtn" onclick="delRec(${r.id})">×</button></div></div></div>`;
   }
   // Group: personal + each store
-  const groups=[{key:'personal',label:'💸 Cá nhân',items:recData.filter(r=>r.target==='personal')},...storeData.map(s=>({key:s.id,label:`🏪 ${s.name}`,items:recData.filter(r=>r.target===s.id)}))].filter(g=>g.items.length);
+  const _icoUser='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em;margin-right:4px"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>';
+  const _icoShop='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.12em;margin-right:4px"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><line x1="12" y1="10" x2="12" y2="21"/></svg>';
+  const groups=[{key:'personal',label:`${_icoUser}Cá nhân`,items:recData.filter(r=>r.target==='personal')},...storeData.map(s=>({key:s.id,label:`${_icoShop}${s.name}`,items:recData.filter(r=>r.target===s.id)}))].filter(g=>g.items.length);
   grpContainer.innerHTML=groups.map(g=>{
     const sorted=[...g.items].map(r=>({...r,nd:getND(r)})).sort((a,b)=>a.nd-b.nd);
     const tot=g.items.filter(r=>(r.currency||'VND')==='VND'&&r.type!=='thu').reduce((s,r)=>s+r.amount,0);
