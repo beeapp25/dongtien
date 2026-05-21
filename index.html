@@ -52,56 +52,103 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:#e8eaf0;min-height:100dvh;transition:background .35s;padding-bottom:env(safe-area-inset-bottom)}
-/* ── LOGIN ── */
-#ls{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 20px;padding-bottom:calc(24px + env(safe-area-inset-bottom));background:var(--bg);position:relative;overflow:hidden}
-.ls-orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;animation:orb-drift 10s ease-in-out infinite}
-.ls-orb1{width:380px;height:380px;background:radial-gradient(circle,rgba(37,99,235,0.2) 0%,transparent 70%);top:-120px;left:-80px}
-.ls-orb2{width:280px;height:280px;background:radial-gradient(circle,rgba(139,92,246,0.16) 0%,transparent 70%);bottom:-80px;right:-60px;animation-delay:-5s}
-.ls-orb3{width:220px;height:220px;background:radial-gradient(circle,rgba(20,184,166,0.12) 0%,transparent 70%);top:50%;left:55%;animation-delay:-2.5s}
-@keyframes orb-drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(18px,-14px) scale(1.06)}66%{transform:translate(-12px,18px) scale(0.94)}}
+/* ── LOGIN — iOS 26 Liquid Glass ── */
+#ls{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 20px;padding-bottom:calc(24px + env(safe-area-inset-bottom));position:relative;overflow:hidden;
+  background:linear-gradient(145deg,#04091a 0%,#0a1230 35%,#06102a 65%,#100620 100%)}
+/* Background mesh orbs */
+.ls-orb{position:absolute;border-radius:50%;pointer-events:none;animation:orb-drift 12s ease-in-out infinite}
+.ls-orb1{width:520px;height:520px;background:radial-gradient(circle,rgba(37,99,235,0.38) 0%,transparent 65%);filter:blur(80px);top:-160px;left:-120px}
+.ls-orb2{width:420px;height:420px;background:radial-gradient(circle,rgba(124,58,237,0.30) 0%,transparent 65%);filter:blur(70px);bottom:-100px;right:-80px;animation-delay:-4s}
+.ls-orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(20,184,166,0.20) 0%,transparent 65%);filter:blur(60px);top:45%;left:50%;animation-delay:-8s}
+.ls-orb4{width:240px;height:240px;background:radial-gradient(circle,rgba(236,72,153,0.20) 0%,transparent 65%);filter:blur(55px);top:20%;right:-60px;animation-delay:-2s}
+@keyframes orb-drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(22px,-18px) scale(1.08)}66%{transform:translate(-14px,22px) scale(0.93)}}
 .ls-inner{display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:420px;position:relative;z-index:1}
 @media(min-width:640px){.ls-inner{flex-direction:row;align-items:flex-start;max-width:740px;gap:52px}
 .ls-brand{flex:0 0 200px;align-items:flex-start;text-align:left}.ls-content{flex:1}}
+/* Brand */
 .ls-brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding-top:8px}
-.ls-logo{font-size:60px;line-height:1;filter:drop-shadow(0 6px 20px rgba(37,99,235,0.5));animation:logo-pulse 4s ease-in-out infinite}
-@keyframes logo-pulse{0%,100%{filter:drop-shadow(0 6px 20px rgba(37,99,235,0.5))}50%{filter:drop-shadow(0 8px 28px rgba(99,102,241,0.7))}}
-.ls-title{font-size:30px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(135deg,#f1f5f9 30%,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.ls-sub{font-size:12px;color:#4b5563;margin-top:2px}
-.ls-divider{width:40px;height:2px;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:2px;margin-top:4px}
+.ls-logo-wrap{width:84px;height:84px;border-radius:26px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(28px) saturate(160%);-webkit-backdrop-filter:blur(28px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.18);
+  box-shadow:0 12px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.22),inset 0 -1px 0 rgba(0,0,0,0.15);
+  animation:logo-pulse 5s ease-in-out infinite}
+@keyframes logo-pulse{0%,100%{box-shadow:0 12px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.22),0 0 0 0 rgba(99,102,241,0)}50%{box-shadow:0 16px 50px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.28),0 0 30px 4px rgba(99,102,241,0.18)}}
+.ls-logo{font-size:46px;line-height:1}
+.ls-title{font-size:28px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(135deg,#f8fafc 30%,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ls-sub{font-size:11px;color:rgba(148,163,184,0.7);margin-top:1px}
+.ls-divider{width:36px;height:2px;background:linear-gradient(90deg,#3b82f6,#8b5cf6);border-radius:2px;margin-top:4px}
 .ls-content{width:100%}
+/* Profile grid */
 .pg{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:12px}
-.pc{background:linear-gradient(145deg,var(--bg-surf),var(--bg-surf2));border:1px solid rgba(255,255,255,0.07);border-radius:22px;padding:22px 12px 18px;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .18s,box-shadow .18s,border-color .18s;box-shadow:0 4px 20px rgba(0,0,0,0.5)}
-.pc:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,0.55);border-color:rgba(255,255,255,0.13)}
-.pc:active{transform:scale(.93);box-shadow:0 2px 10px rgba(0,0,0,0.5)}
-.pca{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.5),0 0 0 3px rgba(255,255,255,0.08)}
+.pc{
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(32px) saturate(160%);-webkit-backdrop-filter:blur(32px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.13);
+  border-radius:24px;padding:22px 12px 18px;
+  display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .18s,background .18s,box-shadow .18s,border-color .18s;
+  box-shadow:0 8px 32px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.16)}
+.pc:hover{transform:translateY(-3px);background:rgba(255,255,255,0.11);border-color:rgba(255,255,255,0.22);box-shadow:0 14px 44px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.2)}
+.pc:active{transform:scale(.92)}
+.pca{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,0.45),0 0 0 3px rgba(255,255,255,0.1)}
 .pcn{font-size:13px;font-weight:700;color:#f1f5f9}
-.pci{font-size:10px;color:#4b5563;background:rgba(255,255,255,0.04);padding:2px 8px;border-radius:20px}
-.add-pb{background:rgba(255,255,255,0.02);border:1.5px dashed rgba(255,255,255,0.1);border-radius:18px;padding:16px;color:#4b5563;font-size:12px;cursor:pointer;font-family:inherit;width:100%;transition:all .2s}
-.add-pb:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.2);color:#9ca3af}
+.pci{font-size:10px;color:rgba(148,163,184,0.6);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:20px;border:1px solid rgba(255,255,255,0.07)}
+.add-pb{
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1.5px dashed rgba(255,255,255,0.14);border-radius:18px;padding:16px;
+  color:rgba(148,163,184,0.6);font-size:12px;cursor:pointer;font-family:inherit;width:100%;transition:all .2s}
+.add-pb:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.25);color:#e2e8f0}
 /* PIN screen */
 .pin-s{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%}
 .pin-user{display:flex;align-items:center;gap:10px;margin-bottom:2px}
-.pin-ava{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,0.5)}
+.pin-ava{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;box-shadow:0 4px 18px rgba(0,0,0,0.5),0 0 0 3px rgba(255,255,255,0.1)}
 .pin-lbl{font-size:16px;font-weight:700;color:#f1f5f9}
 .pin-dots{display:flex;gap:14px}
-.pin-dot{width:18px;height:18px;border-radius:50%;background:var(--bg-input);border:2px solid rgba(255,255,255,0.1);transition:all .25s cubic-bezier(.34,1.56,.64,1)}
-.pin-dot.on{background:#3b82f6;border-color:#3b82f6;box-shadow:0 0 16px rgba(59,130,246,0.7);transform:scale(1.2)}
-.pin-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:260px}
-.pk{aspect-ratio:1;max-height:72px;background:linear-gradient(160deg,var(--bg-key),var(--bg-card));border:1px solid rgba(255,255,255,0.07);border-radius:50%;font-size:20px;font-weight:600;color:#e2e8f0;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,0.45),0 1px 0 rgba(255,255,255,0.06) inset;transition:transform .12s,box-shadow .12s;-webkit-tap-highlight-color:transparent;user-select:none}
-.pk:active{transform:scale(.86);box-shadow:0 2px 6px rgba(0,0,0,0.6)}
-.forgot-pin{background:none;border:none;color:#4b5563;font-size:11px;cursor:pointer;font-family:inherit;padding:4px 8px;transition:color .2s}
-.forgot-pin:hover{color:#60a5fa}
-/* Create form */
-.cf{background:linear-gradient(145deg,var(--bg-card),var(--bg-form2));border:1px solid rgba(255,255,255,0.07);border-radius:22px;padding:22px;width:100%;display:flex;flex-direction:column;gap:13px;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
-.cf input{background:var(--bg);border:1px solid rgba(255,255,255,0.08);color:#e8eaf0;border-radius:11px;padding:12px 14px;font-size:13px;font-family:inherit;width:100%;outline:none;transition:border-color .2s,box-shadow .2s}
-.cf input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+.pin-dot{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.18);transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.pin-dot.on{background:#3b82f6;border-color:#3b82f6;box-shadow:0 0 18px rgba(59,130,246,0.75);transform:scale(1.22)}
+.pin-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:272px}
+.pk{
+  aspect-ratio:1;max-height:76px;
+  background:rgba(255,255,255,0.09);
+  backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);
+  border:1px solid rgba(255,255,255,0.14);border-radius:50%;
+  font-size:21px;font-weight:600;color:#e8eef6;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.2),inset 0 -1px 0 rgba(0,0,0,0.12);
+  transition:transform .1s,background .1s;-webkit-tap-highlight-color:transparent;user-select:none}
+.pk:active{transform:scale(.85);background:rgba(255,255,255,0.18);box-shadow:0 3px 10px rgba(0,0,0,0.5)}
+.forgot-pin{background:none;border:none;color:rgba(100,116,139,0.8);font-size:11px;cursor:pointer;font-family:inherit;padding:4px 10px;transition:color .2s;border-radius:20px}
+.forgot-pin:hover{color:#93c5fd;background:rgba(147,197,253,0.08)}
+/* Create / forgot form — glass card */
+.cf{
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(36px) saturate(160%);-webkit-backdrop-filter:blur(36px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.13);border-radius:24px;padding:22px;width:100%;
+  display:flex;flex-direction:column;gap:13px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.16)}
+.cf input,.cf select{
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:12px;
+  padding:12px 14px;font-size:13px;font-family:inherit;width:100%;outline:none;transition:border-color .2s,box-shadow .2s}
+.cf input:focus,.cf select:focus{border-color:rgba(99,102,241,0.7);box-shadow:0 0 0 3px rgba(99,102,241,0.18)}
+.cf select option{background:#0f1117;color:#e8eaf0}
 .cr{display:flex;gap:8px;flex-wrap:wrap}
 .cc{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:transform .15s,box-shadow .15s}
-.cc.on{border-color:#fff;transform:scale(1.18);box-shadow:0 0 14px rgba(255,255,255,0.35)}
-.lg-btn{background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff;border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(37,99,235,0.5);transition:transform .15s,box-shadow .15s}
-.lg-btn:active{transform:scale(.97);box-shadow:0 3px 10px rgba(37,99,235,0.3)}
-.lg-back{background:none;border:none;color:#4b5563;font-size:12px;cursor:pointer;font-family:inherit;padding:8px;transition:color .2s}
-.lg-back:hover{color:#9ca3af}
+.cc.on{border-color:#fff;transform:scale(1.18);box-shadow:0 0 16px rgba(255,255,255,0.4)}
+.lg-btn{
+  background:linear-gradient(135deg,rgba(37,99,235,0.85),rgba(79,70,229,0.85));
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  color:#fff;border:1px solid rgba(255,255,255,0.18);border-radius:14px;padding:14px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;
+  box-shadow:0 8px 24px rgba(37,99,235,0.4),inset 0 1px 0 rgba(255,255,255,0.2);
+  transition:transform .15s,box-shadow .15s}
+.lg-btn:active{transform:scale(.97)}
+.lg-back{background:none;border:none;color:rgba(100,116,139,0.7);font-size:12px;cursor:pointer;font-family:inherit;padding:8px 12px;transition:color .2s;border-radius:20px}
+.lg-back:hover{color:#94a3b8;background:rgba(255,255,255,0.05)}
 /* ── APP ── */
 #app{max-width:480px;margin:0 auto;display:flex;flex-direction:column;min-height:100dvh;padding-bottom:env(safe-area-inset-bottom)}
 .hdr{background:linear-gradient(180deg,var(--bg-card) 0%,var(--bg-card2) 100%);padding:14px 16px 0;border-bottom:1px solid rgba(var(--tc-rgb),0.18);transition:border-color .4s}
@@ -1126,6 +1173,26 @@ body[data-theme="pink"] .ri{
 .theme-chip.active{background:rgba(255,255,255,0.13)}
 .theme-chip .th-dot{width:18px;height:18px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.18)}
 .theme-chip .th-name{font-size:11px;font-weight:600;color:var(--tc);white-space:nowrap}
+
+/* ── iOS 26 Glass tap ripple ── */
+.glass-ripple{
+  position:fixed;
+  width:76px;height:76px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:99999;
+  background:radial-gradient(circle,rgba(255,255,255,0.38) 0%,rgba(255,255,255,0.12) 40%,transparent 70%);
+  backdrop-filter:blur(10px) saturate(180%);
+  -webkit-backdrop-filter:blur(10px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.4);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.6),0 0 20px rgba(var(--tc-rgb),0.18);
+  animation:glassRipple .52s cubic-bezier(.2,.8,.25,1) forwards;
+}
+@keyframes glassRipple{
+  0%  {transform:scale(0);opacity:1}
+  45% {opacity:.65}
+  100%{transform:scale(3.8);opacity:0}
+}
 </style>
 </head>
 <body>
@@ -1135,9 +1202,10 @@ body[data-theme="pink"] .ri{
   <div class="ls-orb ls-orb1"></div>
   <div class="ls-orb ls-orb2"></div>
   <div class="ls-orb ls-orb3"></div>
+  <div class="ls-orb ls-orb4"></div>
   <div class="ls-inner">
     <div class="ls-brand">
-      <div class="ls-logo">💼</div>
+      <div class="ls-logo-wrap"><div class="ls-logo">💼</div></div>
       <div class="ls-title">Dòng Tiền</div>
       <div class="ls-sub">Quản lý tài chính thông minh</div>
       <div class="ls-divider"></div>
@@ -1165,19 +1233,39 @@ body[data-theme="pink"] .ri{
         <div class="fl">Màu đại diện</div>
         <div class="cr" id="color-row"></div>
         <input type="text" id="new-pin" placeholder="PIN 4 số (tuỳ chọn)" inputmode="numeric" maxlength="4"/>
+        <div class="fl" style="margin-top:2px">Câu hỏi bảo mật (để khôi phục PIN)</div>
+        <select id="new-secq">
+          <option value="">-- Chọn câu hỏi bảo mật --</option>
+          <option value="pet">Tên con vật nuôi đầu tiên của bạn?</option>
+          <option value="school">Tên trường tiểu học của bạn?</option>
+          <option value="city">Tên thành phố / quê hương của bạn?</option>
+          <option value="movie">Bộ phim hoặc sách yêu thích nhất?</option>
+          <option value="street">Tên con đường bạn lớn lên?</option>
+          <option value="food">Món ăn yêu thích của bạn?</option>
+        </select>
+        <input type="text" id="new-seca" placeholder="Câu trả lời bảo mật"/>
         <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.15);border-radius:10px;padding:10px 12px;font-size:11px;color:#6b7280;line-height:1.5">
           💡 Sau khi tạo, chủ cửa hàng vào <b style="color:#f1f5f9">Cài đặt → Phân quyền</b> để cấp quyền.
         </div>
         <button class="lg-btn" onclick="createProfile()">Tạo hồ sơ</button>
         <button class="lg-back" onclick="showProfs()">← Quay lại</button>
       </div>
-      <!-- Quên PIN recovery -->
+      <!-- Quên PIN recovery — 2 bước -->
       <div id="forgot-wrap" class="cf hid">
-        <div style="font-size:14px;font-weight:700;color:#f59e0b">🔑 Đặt lại PIN</div>
-        <div style="font-size:11px;color:#9ca3af;line-height:1.6">Nhập <b style="color:#f1f5f9">đúng tên hồ sơ</b> để xác nhận, sau đó đặt PIN mới.</div>
-        <input type="text" id="forgot-name" placeholder="Nhập tên hồ sơ để xác nhận"/>
-        <input type="text" id="forgot-newpin" placeholder="PIN mới (4 số, để trống = bỏ PIN)" inputmode="numeric" maxlength="4"/>
-        <button class="lg-btn" style="background:linear-gradient(135deg,#d97706,#b45309);box-shadow:0 6px 20px rgba(217,119,6,0.4)" onclick="confirmForgotPIN()">✓ Đặt lại PIN</button>
+        <div style="font-size:14px;font-weight:700;color:#f59e0b"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><circle cx="12" cy="16" r="1"/><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Đặt lại PIN</div>
+        <!-- Bước 1: tìm hồ sơ -->
+        <div id="forgot-step1">
+          <div style="font-size:11px;color:#9ca3af;line-height:1.6;margin-bottom:10px">Nhập tên hồ sơ để tìm câu hỏi bảo mật.</div>
+          <input type="text" id="forgot-name" placeholder="Tên hồ sơ của bạn"/>
+          <button class="lg-btn" style="margin-top:4px;background:linear-gradient(135deg,rgba(217,119,6,0.85),rgba(180,83,9,0.85));border-color:rgba(255,200,100,0.2);box-shadow:0 8px 24px rgba(217,119,6,0.35)" onclick="forgotStep1()">Tiếp tục →</button>
+        </div>
+        <!-- Bước 2: trả lời câu hỏi -->
+        <div id="forgot-step2" class="hid">
+          <div id="forgot-q-box" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:10px 12px;font-size:12px;color:#fbbf24;line-height:1.6;margin-bottom:4px"></div>
+          <input type="text" id="forgot-answer" placeholder="Câu trả lời của bạn"/>
+          <input type="text" id="forgot-newpin" placeholder="PIN mới (4 số, để trống = bỏ PIN)" inputmode="numeric" maxlength="4"/>
+          <button class="lg-btn" style="background:linear-gradient(135deg,rgba(217,119,6,0.85),rgba(180,83,9,0.85));border-color:rgba(255,200,100,0.2);box-shadow:0 8px 24px rgba(217,119,6,0.35)" onclick="confirmForgotPIN()">✓ Xác nhận & Đặt lại PIN</button>
+        </div>
         <button class="lg-back" onclick="showProfs()">← Quay lại</button>
       </div>
     </div>
@@ -1861,6 +1949,16 @@ body[data-theme="pink"] .ri{
       <div><span class="lbl">Xin chào</span><span class="val" id="set-name">—</span></div>
       <div class="ua" id="set-ava" style="width:38px;height:38px;font-size:14px"></div>
     </div>
+    <div id="sect-members-wrap" style="display:none">
+      <div class="coll-hdr" onclick="toggleSection('sect-members');renderMemberMgmt()">
+        <div class="st" style="padding:4px 2px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>Quản lý thành viên <span style="font-size:9px;background:rgba(245,158,11,0.18);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);border-radius:20px;padding:1px 6px;margin-left:4px;font-weight:600">Chủ</span></div>
+        <span class="coll-arr" id="arr-sect-members">›</span>
+      </div>
+      <div id="sect-members" class="card full hid" style="gap:8px">
+        <div style="font-size:11px;color:#6b7280;line-height:1.5">Bạn bè / người thân quên PIN? Đặt lại PIN cho họ tại đây.</div>
+        <div id="member-mgmt-list"></div>
+      </div>
+    </div>
     <div class="coll-hdr" onclick="toggleSection('sect-theme')">
       <div class="st" style="padding:4px 2px">🎨 Giao diện</div>
       <span class="coll-arr open" id="arr-sect-theme">›</span>
@@ -2428,34 +2526,44 @@ body[data-theme="pink"] .ri{
 <div id="modal-gold" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-gold')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-hdr"><span class="modal-ttl"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Biểu đồ & Phân tích Vàng</span><button class="modal-close" onclick="closeModal('modal-gold')">×</button></div>
-    <div id="gm-sjc" style="background:#2d1f06;border-radius:9px;padding:10px">
-      <div style="font-size:10px;color:#f59e0b;font-weight:600;margin-bottom:5px">🇻🇳 Giá SJC trong nước (thủ công)</div>
-      <div style="display:flex;gap:14px">
-        <div><div style="font-size:9px;color:#9ca3af">Giá mua</div><div style="font-size:15px;font-weight:700;color:#f59e0b" id="gm-sjc-buy">—</div></div>
-        <div><div style="font-size:9px;color:#9ca3af">Giá bán</div><div style="font-size:15px;font-weight:700;color:#fbbf24" id="gm-sjc-sell">—</div></div>
-        <div style="flex:1;text-align:right"><div style="font-size:9px;color:#9ca3af">Cập nhật</div><div style="font-size:10px;color:#6b7280" id="gm-sjc-time">—</div></div>
+    <div style="background:#2d1f06;border-radius:12px;padding:14px">
+      <div style="font-size:10px;color:#f59e0b;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px">🇻🇳 Giá SJC</div>
+      <div style="display:flex;gap:10px;margin-bottom:10px">
+        <div style="flex:1;background:rgba(0,0,0,.25);border-radius:9px;padding:10px;text-align:center">
+          <div style="font-size:9px;color:#9ca3af;margin-bottom:3px">Giá mua/chỉ</div>
+          <div style="font-size:16px;font-weight:800;color:#f59e0b" id="gm-sjc-buy">—</div>
+        </div>
+        <div style="flex:1;background:rgba(0,0,0,.25);border-radius:9px;padding:10px;text-align:center">
+          <div style="font-size:9px;color:#9ca3af;margin-bottom:3px">Giá bán/chỉ</div>
+          <div style="font-size:16px;font-weight:800;color:#fbbf24" id="gm-sjc-sell">—</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1;background:rgba(0,0,0,.25);border-radius:9px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#9ca3af;margin-bottom:2px">₫/gram</div>
+          <div style="font-size:13px;font-weight:700;color:#f1f5f9" id="gm-gram">—</div>
+        </div>
+        <div style="flex:1;background:rgba(0,0,0,.25);border-radius:9px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#9ca3af;margin-bottom:2px">₫/lượng</div>
+          <div style="font-size:13px;font-weight:700;color:#f1f5f9" id="gm-luong">—</div>
+        </div>
+        <div style="flex:1;background:rgba(0,0,0,.25);border-radius:9px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#9ca3af;margin-bottom:2px">Cập nhật</div>
+          <div style="font-size:10px;color:#6b7280" id="gm-sjc-time">—</div>
+        </div>
       </div>
     </div>
-    <div style="text-align:center;background:#111827;border-radius:10px;padding:11px">
-      <div style="font-size:10px;color:#6b7280;margin-bottom:3px">Vàng quốc tế (PAXG)</div>
-      <div style="font-size:22px;font-weight:700;color:#f59e0b" id="gm-chi">—</div>
-      <div style="font-size:10px;color:#9ca3af">₫/chỉ</div>
-      <div style="display:flex;justify-content:center;gap:14px;margin-top:6px">
-        <div><div style="font-size:9px;color:#6b7280">₫/gram</div><div style="font-size:11px;font-weight:600;color:#f1f5f9" id="gm-gram">—</div></div>
-        <div><div style="font-size:9px;color:#6b7280">₫/lượng</div><div style="font-size:11px;font-weight:600;color:#f1f5f9" id="gm-luong">—</div></div>
-        <div><div style="font-size:9px;color:#6b7280">24h</div><div style="font-size:11px;font-weight:600" id="gm-chg">—</div></div>
-      </div>
-    </div>
-    <div style="font-size:11px;color:#6b7280;text-align:center;min-height:16px" id="gm-status">Đang tải...</div>
+    <div style="font-size:11px;color:#6b7280;text-align:center;min-height:14px" id="gm-status"></div>
     <div style="background:#111827;border-radius:9px;padding:10px">
-      <div style="font-size:10px;color:#6b7280;margin-bottom:6px">Biến động 7 ngày (₫/chỉ)</div>
+      <div style="font-size:10px;color:#6b7280;margin-bottom:6px">Lịch sử giá SJC (₫/chỉ)</div>
       <canvas id="goldChart" height="150"></canvas>
+      <div style="font-size:9px;color:#374151;margin-top:5px" id="gm-hist-note">Biểu đồ xây dựng từ các lần cập nhật giá thủ công.</div>
     </div>
     <div style="background:#111827;border-radius:9px;padding:11px">
-      <div style="font-size:11px;font-weight:700;color:#f59e0b;margin-bottom:7px">🤖 Phân tích xu hướng</div>
-      <div id="gm-analysis" style="font-size:11px;color:#6b7280">Đang phân tích...</div>
+      <div style="font-size:11px;font-weight:700;color:#f59e0b;margin-bottom:7px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:4px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Phân tích</div>
+      <div id="gm-analysis" style="font-size:11px;color:#6b7280">—</div>
     </div>
-    <div style="font-size:9px;color:#374151;text-align:center">Nguồn: CoinGecko PAXG · Giá QT thường thấp hơn SJC trong nước. Không phải lời khuyên đầu tư.</div>
+    <button onclick="window.open('https://sjc.com.vn','_blank')" style="width:100%;padding:10px;background:rgba(245,158,11,0.12);color:#f59e0b;border:1px solid rgba(245,158,11,0.25);border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:5px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Xem giá tại sjc.com.vn</button>
   </div>
 </div>
 
@@ -2601,10 +2709,17 @@ function createProfile(){
   const name=document.getElementById('new-name').value.trim(),pin=document.getElementById('new-pin').value.trim();
   if(!name)return toast('⚠️ Nhập tên!','#f59e0b');
   if(pin&&!/^\d{4}$/.test(pin))return toast('⚠️ PIN phải 4 chữ số!','#f59e0b');
-  const u={id:Date.now(),name,color:selClr,pin:pin||''};
+  const secQ=document.getElementById('new-secq').value;
+  const secA=document.getElementById('new-seca').value.trim();
+  if(pin&&!secQ)return toast('⚠️ Chọn câu hỏi bảo mật để có thể khôi phục PIN!','#f59e0b');
+  if(pin&&!secA)return toast('⚠️ Nhập câu trả lời bảo mật!','#f59e0b');
+  const u={id:Date.now(),name,color:selClr,pin:pin||'',secQ:secQ||'',secA:secA.toLowerCase()||''};
   allUsers.push(u);saveAllUsers();
-  document.getElementById('new-name').value='';document.getElementById('new-pin').value='';
-  showProfs();toast('✓ Đã tạo hồ sơ '+name+' · Cấp quyền cửa hàng trong Cài đặt');
+  document.getElementById('new-name').value='';
+  document.getElementById('new-pin').value='';
+  document.getElementById('new-secq').value='';
+  document.getElementById('new-seca').value='';
+  showProfs();toast('✓ Đã tạo hồ sơ '+name);
 }
 function loginUser(uid){
   const u=allUsers.find(x=>x.id===uid);if(!u)return;
@@ -2618,19 +2733,42 @@ function loginUser(uid){
   renderPK();renderPD();
 }
 function renderPD(){document.getElementById('pin-dots').innerHTML=Array.from({length:4},(_,i)=>`<div class="pin-dot ${i<pinBuf.length?'on':''}"></div>`).join('');}
+const SEC_Q_LBL={pet:'Tên con vật nuôi đầu tiên của bạn?',school:'Tên trường tiểu học của bạn?',city:'Tên thành phố / quê hương của bạn?',movie:'Bộ phim hoặc sách yêu thích nhất?',street:'Tên con đường bạn lớn lên?',food:'Món ăn yêu thích của bạn?'};
 function forgotPIN(){
   ['pin-wrap','prof-wrap','create-wrap'].forEach(id=>document.getElementById(id).classList.add('hid'));
   document.getElementById('forgot-wrap').classList.remove('hid');
   document.getElementById('forgot-name').value='';
+  document.getElementById('forgot-step1').classList.remove('hid');
+  document.getElementById('forgot-step2').classList.add('hid');
+}
+function forgotStep1(){
+  const name=document.getElementById('forgot-name').value.trim();
+  if(!name)return toast('⚠️ Nhập tên hồ sơ!','#f59e0b');
+  const u=allUsers.find(x=>x.name.toLowerCase()===name.toLowerCase());
+  if(!u)return toast('❌ Không tìm thấy hồ sơ "'+name+'"','#ef4444');
+  if(!u.secQ||!u.secA){
+    // Hồ sơ cũ chưa có câu hỏi bảo mật — yêu cầu admin xử lý
+    return toast('⚠️ Hồ sơ này chưa cài câu hỏi bảo mật. Liên hệ người tạo hồ sơ để đặt lại PIN.','#f59e0b');
+  }
+  document.getElementById('forgot-q-box').textContent='🔐 '+SEC_Q_LBL[u.secQ]||u.secQ;
+  document.getElementById('forgot-answer').value='';
   document.getElementById('forgot-newpin').value='';
+  document.getElementById('forgot-step1').classList.add('hid');
+  document.getElementById('forgot-step2').classList.remove('hid');
 }
 function confirmForgotPIN(){
   const name=document.getElementById('forgot-name').value.trim();
+  const answer=document.getElementById('forgot-answer').value.trim().toLowerCase();
   const newPin=document.getElementById('forgot-newpin').value.trim();
-  if(!name)return toast('⚠️ Nhập tên hồ sơ!','#f59e0b');
+  if(!answer)return toast('⚠️ Nhập câu trả lời!','#f59e0b');
   if(newPin&&!/^\d{4}$/.test(newPin))return toast('⚠️ PIN phải đúng 4 số!','#f59e0b');
   const u=allUsers.find(x=>x.name.toLowerCase()===name.toLowerCase());
-  if(!u)return toast('❌ Không tìm thấy hồ sơ "'+name+'"','#ef4444');
+  if(!u)return toast('❌ Lỗi: không tìm thấy hồ sơ','#ef4444');
+  if(answer!==u.secA){
+    toast('❌ Câu trả lời không đúng!','#ef4444');
+    document.getElementById('forgot-answer').value='';
+    return;
+  }
   u.pin=newPin||'';saveAllUsers();
   toast('✓ Đặt lại PIN thành công cho '+u.name+'!');
   showProfs();
@@ -2997,7 +3135,7 @@ function showTab(id,btn){
   root.style.setProperty('--tc-dim',`rgba(${rgb},0.13)`);
   root.style.setProperty('--tc-glow',`rgba(${rgb},0.28)`);
   if(id==='sh')renderShState();if(id==='rec')updRecOpts();if(id==='wallet')renderWallets();
-  if(id==='settings'){loadSJC();renderPermSection();loadFbConfigUI();loadTheme();}
+  if(id==='settings'){loadSJC();renderPermSection();showMemberMgmtIfOwner();loadFbConfigUI();loadTheme();}
   if(id==='count'&&!document.getElementById('cnt-'+DENOMS[0]))initCountRows();
 }
 function toast(msg,color='#22c55e',dur=2300){const t=document.getElementById('toast');t.textContent=msg;t.style.background=color;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);}
@@ -3125,11 +3263,19 @@ function importData(input){
 function saveSJC(){
   const buy=gv(document.getElementById('sjc-buy')),sell=gv(document.getElementById('sjc-sell'));
   if(!buy||!sell)return toast('⚠️ Nhập cả 2 giá!','#f59e0b');
-  const s={buy,sell,updated:new Date().toLocaleString('vi-VN')};
+  const now=new Date().toLocaleString('vi-VN');
+  const s={buy,sell,updated:now};
   localStorage.setItem(SK.features+'_sjc',JSON.stringify(s));
+  // Lưu lịch sử giá để vẽ chart
+  const histKey=SK.features+'_sjc_hist';
+  const hist=JSON.parse(localStorage.getItem(histKey)||'[]');
+  hist.push({buy,sell,ts:Date.now(),label:new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})});
+  if(hist.length>60)hist.splice(0,hist.length-60);
+  localStorage.setItem(histKey,JSON.stringify(hist));
   toast('✓ Đã lưu giá SJC');loadSJC();
-  invData.filter(i=>i.itype==='gold'&&i.useSJC).forEach(item=>{
-    item.currentPrice=item.unit==='chi'?buy:item.unit==='luong'?buy*10:Math.round(buy/3.75);
+  // Tự động cập nhật giá vàng SJC trong danh mục đầu tư
+  invData.filter(i=>i.itype==='gold').forEach(item=>{
+    item.currentPrice=item.unit==='chi'?sell:item.unit==='luong'?sell*10:Math.round(sell/3.75);
   });save('invData',invData);renderINV();
 }
 function loadSJC(){
@@ -3596,6 +3742,41 @@ function syncStorePerms(){
     else if(p[s.id].ownerId===CU.id&&p[s.id].name!==s.name){p[s.id].name=s.name;changed=true;}
   });
   if(changed)setPerms(p);
+}
+function isAppOwner(){
+  if(!CU||!allUsers.length)return false;
+  return CU.id===Math.min(...allUsers.map(u=>u.id));
+}
+function showMemberMgmtIfOwner(){
+  const wrap=document.getElementById('sect-members-wrap');
+  if(wrap)wrap.style.display=isAppOwner()?'':'none';
+}
+function renderMemberMgmt(){
+  if(!isAppOwner())return; // chỉ chủ app mới được dùng
+  try{const raw=localStorage.getItem('dT_v7_users');if(raw)allUsers=JSON.parse(raw);}catch{}
+  const others=allUsers.filter(u=>u.id!==CU?.id);
+  const el=document.getElementById('member-mgmt-list');
+  if(!el)return;
+  if(!others.length){el.innerHTML='<div style="font-size:11px;color:#6b7280;text-align:center;padding:8px">Chỉ có một hồ sơ.</div>';return;}
+  el.innerHTML=others.map(u=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:9px 10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:11px">
+      <div style="width:36px;height:36px;border-radius:50%;background:${u.color};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0">${ini(u.name)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:700;color:#f1f5f9">${_esc(u.name)}</div>
+        <div style="font-size:10px;color:#6b7280">${u.pin?'🔒 Có PIN':'Không PIN'}${u.secQ?' · Có câu hỏi bảo mật':' · Chưa có câu hỏi bảo mật'}</div>
+      </div>
+      <button onclick="adminResetPIN(${u.id})" style="padding:6px 12px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);color:#f59e0b;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><circle cx="12" cy="16" r="1"/><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Đặt lại PIN</button>
+    </div>`).join('');
+}
+function adminResetPIN(uid){
+  const u=allUsers.find(x=>x.id===uid);if(!u)return;
+  const newPin=prompt(`Đặt PIN mới cho "${u.name}" (4 số, để trống = bỏ PIN):`);
+  if(newPin===null)return; // cancelled
+  if(newPin&&!/^\d{4}$/.test(newPin)){toast('⚠️ PIN phải đúng 4 số!','#f59e0b');return;}
+  u.pin=newPin||'';
+  saveAllUsers();
+  toast(`✓ Đã đặt lại PIN cho ${u.name}`);
+  renderMemberMgmt();
 }
 function renderPermSection(){
   // Always reload allUsers from localStorage to catch profiles created after login
@@ -5099,43 +5280,72 @@ async function fetchAllPrices(){
   const cItems=invData.filter(i=>i.coinId),gItems=invData.filter(i=>i.itype==='gold');
   if(!cItems.length&&!gItems.length){toast('Không có tài sản tự động cập nhật','#f59e0b');return;}
   if(cItems.length){try{const ids=[...new Set(cItems.map(i=>i.coinId))].join(',');const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=vnd`);const d=await r.json();cItems.forEach(item=>{if(d[item.coinId]?.vnd)item.currentPrice=d[item.coinId].vnd;});}catch(e){}}
-  if(gItems.length){try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=vnd');const d=await r.json();const pax=d['pax-gold']?.vnd;if(pax){const pg=pax/31.1035;gItems.forEach(item=>{if(item.unit==='chi')item.currentPrice=Math.round(pg*3.75);else if(item.unit==='luong')item.currentPrice=Math.round(pg*37.5);else item.currentPrice=Math.round(pg);});toast(`✓ Xong · Vàng QT ≈ ${fmt(Math.round(pg*3.75))}/chỉ`);}else toast('✓ Crypto OK · Không lấy được giá vàng');}catch(e){toast('✓ Crypto OK (lỗi giá vàng)');}}
-  else toast('✓ Đã cập nhật Crypto');
+  if(gItems.length){
+    try{
+      const raw=localStorage.getItem(SK.features+'_sjc');
+      const s=raw?JSON.parse(raw):null;
+      const sellPerChi=s?.sell||0;
+      if(sellPerChi>0){
+        gItems.forEach(item=>{
+          if(item.unit==='chi')item.currentPrice=sellPerChi;
+          else if(item.unit==='luong')item.currentPrice=sellPerChi*10;
+          else item.currentPrice=Math.round(sellPerChi/3.75);
+        });
+        toast(`✓ Xong · SJC ${fmt(sellPerChi)}/chỉ`);
+      }else toast('⚠️ Chưa có giá SJC — vào Cài đặt cập nhật','#f59e0b');
+    }catch(e){toast('⚠️ Lỗi đọc giá SJC','#ef4444');}
+  }else if(cItems.length) toast('✓ Đã cập nhật Crypto');
   save('invData',invData);renderINV();
 }
-async function openGoldModal(){
+function openGoldModal(){
   document.getElementById('modal-gold').classList.remove('hid');
-  document.getElementById('gm-status').textContent='Đang tải...';
-  document.getElementById('gm-analysis').textContent='Đang phân tích...';
   loadSJC();
-  try{
-    const[pr,hr]=await Promise.all([fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=vnd&include_24hr_change=true'),fetch('https://api.coingecko.com/api/v3/coins/pax-gold/market_chart?vs_currency=vnd&days=7')]);
-    const pd=await pr.json(),hd=await hr.json();
-    const pax=pd['pax-gold']?.vnd,chg=pd['pax-gold']?.usd_24h_change||0;
-    if(!pax)throw new Error('no data');
-    const pg=pax/31.1035,chi=Math.round(pg*3.75);
-    document.getElementById('gm-chi').textContent=fmt(chi);
-    document.getElementById('gm-gram').textContent=fmt(Math.round(pg));
-    document.getElementById('gm-luong').textContent=fmt(Math.round(pg*37.5));
-    const ce=document.getElementById('gm-chg');ce.textContent=`${chg>=0?'+':''}${chg.toFixed(2)}%`;ce.style.color=chg>=0?'#22c55e':'#ef4444';
+  // Đọc giá SJC hiện tại
+  const raw=localStorage.getItem(SK.features+'_sjc');
+  const s=raw?JSON.parse(raw):null;
+  const sellChi=s?.sell||0,buyChi=s?.buy||0;
+  if(sellChi){
+    document.getElementById('gm-sjc-buy').textContent=fmt(buyChi);
+    document.getElementById('gm-sjc-sell').textContent=fmt(sellChi);
+    document.getElementById('gm-sjc-time').textContent=s.updated||'—';
+    document.getElementById('gm-gram').textContent=fmt(Math.round(sellChi/3.75));
+    document.getElementById('gm-luong').textContent=fmt(sellChi*10);
     document.getElementById('gm-status').textContent='';
-    const rawP=hd.prices||[];
-    const labels=rawP.map(p=>{const d=new Date(p[0]);return`${d.getDate()}/${d.getMonth()+1}`;});
-    const vals=rawP.map(p=>Math.round((p[1]/31.1035)*3.75));
-    if(gcInst){gcInst.destroy();gcInst=null;}
-    const ctx=document.getElementById('goldChart').getContext('2d');
-    gcInst=new Chart(ctx,{type:'line',data:{labels,datasets:[{data:vals,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.08)',tension:0.4,fill:true,pointRadius:4,pointBackgroundColor:'#f59e0b',pointBorderColor:'#1a1d27',pointBorderWidth:2}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'₫/chỉ: '+fmt(c.parsed.y)}}},scales:{x:{ticks:{color:'#6b7280',font:{size:9}},grid:{color:'#1e2130'}},y:{ticks:{color:'#6b7280',font:{size:9},callback:v=>Math.round(v/1000000)+'M'},grid:{color:'#1e2130'}}}}});
-    const n=vals.length,wChg=((vals[n-1]-vals[0])/vals[0]*100).toFixed(2);
-    const isUp=wChg>1,isDn=wChg<-1;
-    const max7=Math.max(...vals),min7=Math.min(...vals);
-    const pos=chi>max7*0.985?`⚠️ Gần <b>đỉnh tuần</b> (${fmt(max7)}/chỉ) — thận trọng.`:chi<min7*1.015?`💡 Gần <b>đáy tuần</b> (${fmt(min7)}/chỉ) — có thể cân nhắc.`:`Ở vùng giữa (${fmt(min7)}–${fmt(max7)}/chỉ).`;
-    document.getElementById('gm-analysis').innerHTML=`<div style="line-height:1.8;color:#d1d5db">
-      <div>${isUp?`📈 <b style="color:#22c55e">Tăng</b>`:isDn?`📉 <b style="color:#ef4444">Giảm</b>`:'➡️ <b style="color:#9ca3af">Đi ngang</b>'} ${wChg}% / 7 ngày</div>
-      <div>📅 Hôm nay: ${chg>=0?'Tăng':'Giảm'} ${Math.abs(chg).toFixed(2)}%</div>
-      <div>📏 ${pos}</div>
-      <div style="font-size:9px;color:#4b5563;margin-top:5px;border-top:1px solid #1e2130;padding-top:4px">Giá PAXG quốc tế. Không phải lời khuyên đầu tư.</div>
+  }else{
+    document.getElementById('gm-status').textContent='⚠️ Chưa có giá SJC — vào Cài đặt cập nhật';
+  }
+  // Vẽ chart từ lịch sử thủ công
+  const histKey=SK.features+'_sjc_hist';
+  const hist=JSON.parse(localStorage.getItem(histKey)||'[]');
+  if(gcInst){gcInst.destroy();gcInst=null;}
+  const ctx=document.getElementById('goldChart').getContext('2d');
+  if(hist.length>=2){
+    const labels=hist.map(h=>h.label||'—');
+    const buys=hist.map(h=>h.buy||0);
+    const sells=hist.map(h=>h.sell||0);
+    gcInst=new Chart(ctx,{type:'line',data:{labels,datasets:[
+      {label:'Bán',data:sells,borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,0.08)',tension:0.4,fill:true,pointRadius:3,pointBackgroundColor:'#fbbf24',pointBorderWidth:0},
+      {label:'Mua',data:buys,borderColor:'#f59e0b',backgroundColor:'transparent',tension:0.4,borderDash:[3,3],pointRadius:2,pointBackgroundColor:'#f59e0b',pointBorderWidth:0}
+    ]},options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#9ca3af',font:{size:9}}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}}},scales:{x:{ticks:{color:'#6b7280',font:{size:9},maxTicksLimit:8},grid:{color:'#1e2130'}},y:{ticks:{color:'#6b7280',font:{size:9},callback:v=>Math.round(v/1000000)+'M'},grid:{color:'#1e2130'}}}}});
+    document.getElementById('gm-hist-note').textContent=`${hist.length} lần cập nhật được ghi nhận.`;
+    // Phân tích từ lịch sử
+    const n=hist.length,first=hist[0].sell,last=hist[n-1].sell;
+    const chgPct=first?((last-first)/first*100).toFixed(1):0;
+    const maxS=Math.max(...sells),minS=Math.min(...sells);
+    const isUp=chgPct>1,isDn=chgPct<-1;
+    const spread=sellChi-buyChi;
+    document.getElementById('gm-analysis').innerHTML=`<div style="line-height:1.9;color:#d1d5db">
+      <div>${isUp?`<b style="color:#22c55e">▲ Tăng</b>`:isDn?`<b style="color:#ef4444">▼ Giảm</b>`:`<b style="color:#9ca3af">→ Đi ngang</b>`} ${chgPct}% kể từ lần đầu nhập</div>
+      <div style="color:#9ca3af">Cao nhất: <b style="color:#fbbf24">${fmt(maxS)}</b> · Thấp nhất: <b style="color:#fbbf24">${fmt(minS)}</b></div>
+      <div style="color:#9ca3af">Chênh mua/bán: <b style="color:#f1f5f9">${fmt(spread)}/chỉ</b></div>
+      <div style="font-size:9px;color:#4b5563;margin-top:5px;border-top:1px solid #1e2130;padding-top:4px">Dựa trên giá SJC bạn đã nhập thủ công. Không phải lời khuyên đầu tư.</div>
     </div>`;
-  }catch(e){document.getElementById('gm-status').textContent='❌ Không tải được. Kiểm tra internet.';}
+  }else{
+    // Chưa đủ lịch sử — vẽ chart trống
+    gcInst=new Chart(ctx,{type:'line',data:{labels:[],datasets:[]},options:{responsive:true}});
+    document.getElementById('gm-hist-note').textContent='Cập nhật giá SJC nhiều lần để xem biểu đồ lịch sử.';
+    document.getElementById('gm-analysis').textContent=sellChi?`Giá bán hiện tại: ${fmt(sellChi)}/chỉ · ${fmt(sellChi*10)}/lượng`:'Chưa có dữ liệu.';
+  }
 }
 function delINV(id){if(!confirm('Xoá tài sản?'))return;const i=invData.findIndex(x=>x.id===id);if(i>-1){invData.splice(i,1);save('invData',invData);renderINV();}}
 function renderINV(){
@@ -6071,6 +6281,21 @@ if('serviceWorker' in navigator){
       .catch(e=>console.log('SW error:',e.message));
   }
 }
+
+/* ── iOS 26 Glass tap ripple ── */
+(function(){
+  const TARGETS='button,a,.tab,.coll-hdr,[onclick],.pk,.ibtn,label,.nm-btn,.tc-btn,.hdr-btn,.ibchart,.ibf,.ibe,.ibd,.lg-btn,.theme-chip,.ua,.av-pick,.pin-act,.bhc-stat-icon';
+  document.addEventListener('pointerdown',function(e){
+    const t=e.target.closest(TARGETS);
+    if(!t)return;
+    const r=document.createElement('div');
+    r.className='glass-ripple';
+    r.style.left=(e.clientX-38)+'px';
+    r.style.top=(e.clientY-38)+'px';
+    document.body.appendChild(r);
+    r.addEventListener('animationend',()=>r.remove(),{once:true});
+  },{passive:true});
+})();
 </script>
 </body>
 </html>
