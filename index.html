@@ -1598,6 +1598,9 @@ body[data-theme="pink"] .ri{
       <div class="card r"><span class="lbl">Chi tháng này</span><span class="val" id="tc-chi">0₫</span></div>
       <div class="card b full"><span class="lbl">Cân đối tháng</span><span class="val" id="tc-du">0₫</span></div>
     </div>
+    <!-- Nguồn thu từ cửa hàng (chỉ hiện khi có dữ liệu + store module bật) -->
+    <div id="tc-store-breakdown" style="display:none"></div>
+
     <div class="bar">
       <div class="ftabs">
         <button class="fb on" onclick="ftc('all',this)">Tất cả</button>
@@ -1634,7 +1637,7 @@ body[data-theme="pink"] .ri{
   <!-- TAB: CỬA HÀNG -->
   <div id="tab-sh" class="mod hid" data-rd-title="Cửa Hàng">
     <div id="sh-empty" class="hid" style="text-align:center;padding:28px 16px">
-      <div style="font-size:36px;margin-bottom:10px">🏪</div>
+      <div style="margin-bottom:10px;color:#4b5563"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><line x1="12" y1="10" x2="12" y2="21"/></svg></div>
       <div style="font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:6px">Chưa có cửa hàng nào</div>
       <div style="font-size:11px;color:#6b7280;margin-bottom:14px">Thêm cửa hàng để theo dõi doanh thu và chi phí riêng biệt.</div>
       <button class="abtn" onclick="openStoreWizard()">＋ Thêm cửa hàng đầu tiên</button>
@@ -1941,6 +1944,7 @@ body[data-theme="pink"] .ri{
       <button class="sbtn" onclick="addWallet()">💾 Tạo ví</button>
     </div>
     <div id="wallet-list" style="display:flex;flex-direction:column;gap:10px"></div>
+    <div id="wallet-pt-section" style="display:none"></div>
     <div class="sdiv" style="margin-top:4px"><span>⇄ Lịch sử chuyển ví</span></div>
     <div id="transfer-hist" class="rl"></div>
   </div>
@@ -2023,7 +2027,7 @@ body[data-theme="pink"] .ri{
     <div class="card full">
       <div class="check-row" style="padding:4px 0">
         <input type="checkbox" id="feat-store" onchange="toggleStore()"/>
-        <label for="feat-store" style="font-size:13px;color:#e2e8f0;font-weight:600">🏪 Module Cửa Hàng</label>
+        <label for="feat-store" style="font-size:13px;color:#e2e8f0;font-weight:600"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><line x1="12" y1="10" x2="12" y2="21"/></svg>Module Cửa Hàng</label>
       </div>
       <div style="font-size:11px;color:#6b7280;padding-left:24px">Bật nếu bạn có cửa hàng / kinh doanh. <span style="color:#f59e0b;font-weight:600">Tính phí</span></div>
       <div style="height:8px"></div>
@@ -2041,7 +2045,7 @@ body[data-theme="pink"] .ri{
       <div style="height:8px"></div>
       <div class="check-row" style="padding:4px 0">
         <input type="checkbox" id="feat-parttime" onchange="togglePartTime()"/>
-        <label for="feat-parttime" style="font-size:13px;color:#e2e8f0;font-weight:600">⏱️ Module Tính Lương</label>
+        <label for="feat-parttime" style="font-size:13px;color:#e2e8f0;font-weight:600"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Module Tính Lương</label>
       </div>
       <div style="font-size:11px;color:#6b7280;padding-left:24px">Chấm công & tính thu nhập part-time theo giờ.</div>
     </div>
@@ -2072,21 +2076,57 @@ body[data-theme="pink"] .ri{
       <button class="rbtn" style="width:100%;padding:8px;font-size:12px;color:#ef4444;border-color:#ef4444" onclick="deleteProfile()">Xoá hồ sơ của tôi</button>
     </div>
   </div>
-</div>
 
-<!-- TAB: TÍNH LƯƠNG PART-TIME -->
-<div id="tab-parttime" class="mod hid" data-rd-title="Tính Lương">
-  <div class="bar"><span class="st">⏱️ Tính Lương Part-time</span></div>
+  <!-- TAB: TÍNH LƯƠNG PART-TIME -->
+  <div id="tab-parttime" class="mod hid" data-rd-title="Tính Lương">
+  <div class="bar" style="display:flex;justify-content:space-between;align-items:center">
+    <span class="st"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Tính Lương Part-time</span>
+    <button onclick="document.getElementById('modal-pt-job').classList.remove('hid');setTimeout(()=>document.getElementById('pt-job-name').focus(),80)" style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);color:#a78bfa;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;white-space:nowrap">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Thêm việc
+    </button>
+  </div>
 
-  <!-- THỐNG KÊ — hiển thị trên cùng -->
+  <!-- 1. CÔNG VIỆC CỦA BẠN (collapsible) -->
+  <div class="card full" style="gap:0">
+    <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="ptToggleJobs()">
+      <span style="font-size:12px;font-weight:700;color:#e2e8f0">Công việc của bạn <span id="pt-job-count" style="font-size:10px;color:#6b7280;font-weight:400"></span></span>
+      <span id="pt-job-chevron" style="color:#6b7280;font-size:16px;transition:transform .2s;display:inline-block">›</span>
+    </div>
+    <div id="pt-job-list-wrap" class="hid" style="display:flex;flex-direction:column;gap:6px;margin-top:10px">
+      <div id="pt-job-list" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </div>
+
+  <!-- 2. GHI GIỜ LÀM -->
+  <div class="card full" style="gap:10px" id="pt-log-card">
+    <div style="font-size:12px;font-weight:700;color:#e2e8f0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Giờ làm hôm nay</div>
+    <select id="pt-log-job" style="background:var(--bg-input);border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"></select>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="number" id="pt-today-h" placeholder="Số giờ" inputmode="decimal" step="0.5" min="0.5" max="24" style="flex:1;background:var(--bg-input);border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:10px 12px;font-size:15px;font-family:inherit;outline:none;text-align:center" oninput="calcPtToday()"/>
+      <span style="font-size:13px;color:#6b7280">giờ</span>
+      <button class="abtn" onclick="openPtLogModal()" style="white-space:nowrap;background:linear-gradient(135deg,#a78bfa,#f472b6)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.1em"><polyline points="20 6 9 17 4 12"/></svg>Ghi</button>
+    </div>
+    <div id="pt-today-preview" style="font-size:12px;color:#a5b4fc;min-height:18px"></div>
+  </div>
+
+  <!-- 3. TỔNG QUAN & LỊCH SỬ -->
   <div class="card full" style="gap:8px" id="pt-stats-wrap">
 
     <!-- Điều hướng NGÀY -->
     <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
       <button onclick="ptNavDay(-1)" style="background:rgba(255,255,255,0.06);border:none;color:#a5b4fc;font-size:18px;cursor:pointer;border-radius:8px;padding:4px 12px;line-height:1">‹</button>
       <div style="text-align:center;flex:1">
-        <div style="font-size:13px;font-weight:700;color:#e2e8f0" id="pt-day-label">Hôm nay</div>
-        <div style="font-size:10px;color:#6b7280" id="pt-day-date"></div>
+        <div style="display:inline-flex;align-items:center;gap:6px">
+          <div style="font-size:13px;font-weight:700;color:#e2e8f0" id="pt-day-label">—</div>
+          <div style="position:relative;display:inline-flex">
+            <button onclick="document.getElementById('pt-day-picker').showPicker?.()??document.getElementById('pt-day-picker').click()" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:#6b7280;border-radius:6px;padding:3px 5px;cursor:pointer;display:flex;align-items:center;line-height:1">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </button>
+            <input type="date" id="pt-day-picker" onchange="ptPickDay(this.value)" style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;pointer-events:none;border:none;padding:0;margin:0"/>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#6b7280" id="pt-day-date"></div>
       </div>
       <button onclick="ptNavDay(1)" id="pt-day-next" style="background:rgba(255,255,255,0.06);border:none;color:#a5b4fc;font-size:18px;cursor:pointer;border-radius:8px;padding:4px 12px;line-height:1">›</button>
     </div>
@@ -2116,91 +2156,156 @@ body[data-theme="pink"] .ri{
       </div>
       <span style="font-size:16px;font-weight:800;color:#818cf8" id="pt-tot-earn">—</span>
     </div>
+
+    <!-- Lịch sử các ngày đi làm -->
+    <div style="border-top:1px solid rgba(255,255,255,0.06);margin:2px 0"></div>
+    <div style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.4px;text-transform:uppercase">Lịch sử đi làm</div>
+    <div id="pt-log-list" style="display:flex;flex-direction:column;gap:4px;max-height:260px;overflow-y:auto"></div>
   </div>
 
-  <!-- MỤC TIÊU THÁNG -->
-  <div class="card full" style="gap:10px">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <span style="font-size:12px;font-weight:700;color:#e2e8f0">🎯 Mục tiêu tháng này</span>
-      <button class="abtn sm" onclick="tog('pt-goal-form')" style="font-size:10px">Đặt mục tiêu</button>
-    </div>
-    <!-- Form đặt mục tiêu -->
-    <div id="pt-goal-form" class="hid" style="flex-direction:column;gap:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px">
-      <div class="fl">Mục tiêu thu nhập tháng này (₫)</div>
-      <input type="text" id="pt-goal-inp" class="mi" inputmode="numeric" data-raw="0" placeholder="VD: 5.000.000" oninput="onMI(this)"/>
-      <div class="fl">Tính giờ dựa trên công việc nào?</div>
-      <select id="pt-goal-job" style="background:var(--bg-input);border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"></select>
-      <button class="sbtn" onclick="savePtGoal()">Lưu mục tiêu</button>
-    </div>
-    <!-- Hiển thị tiến độ -->
-    <div id="pt-goal-display" style="display:none;flex-direction:column;gap:8px">
-      <div style="display:flex;justify-content:space-between;align-items:baseline">
-        <span style="font-size:11px;color:#9ca3af">Mục tiêu</span>
-        <span style="font-size:13px;font-weight:700;color:#f472b6" id="pt-goal-target-lbl">—</span>
-      </div>
-      <!-- Thanh tiến độ -->
-      <div style="background:rgba(255,255,255,0.07);border-radius:99px;height:8px;overflow:hidden">
-        <div id="pt-goal-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#a78bfa,#f472b6);transition:width .4s ease;width:0%"></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:#6b7280">
-        <span id="pt-goal-earned-lbl">Đã kiếm: 0₫</span>
-        <span id="pt-goal-pct-lbl">0%</span>
-      </div>
-      <!-- Cần thêm bao nhiêu -->
-      <div id="pt-goal-need" style="background:rgba(244,114,182,0.08);border:1px solid rgba(244,114,182,0.2);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:4px">
-        <div style="font-size:11px;color:#f9a8d4;font-weight:600">Còn cần kiếm thêm</div>
-        <div style="font-size:18px;font-weight:800;color:#f472b6" id="pt-goal-remain">—</div>
-        <div style="font-size:11px;color:#9ca3af" id="pt-goal-hours-lbl">≈ — giờ làm nữa</div>
-        <div style="font-size:10px;color:#6b7280;margin-top:2px" id="pt-goal-per-day">—</div>
+  <!-- 4. MỤC TIÊU (collapsible) -->
+  <div class="card full" style="gap:0">
+    <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding-bottom:2px" onclick="ptToggleGoal()">
+      <span style="font-size:12px;font-weight:700;color:#e2e8f0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Mục tiêu</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="abtn sm" onclick="event.stopPropagation();tog('pt-goal-form')" style="font-size:10px">Đặt mục tiêu</button>
+        <span id="pt-goal-chevron" style="color:#6b7280;font-size:16px;transition:transform .2s;display:inline-block">›</span>
       </div>
     </div>
-    <div id="pt-goal-done" style="display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:12px;text-align:center">
-      <div style="font-size:20px">🎉</div>
-      <div style="font-size:13px;font-weight:700;color:#4ade80;margin-top:4px">Đã đạt mục tiêu tháng này!</div>
-      <div style="font-size:11px;color:#6b7280;margin-top:2px" id="pt-goal-over-lbl"></div>
+    <div id="pt-goal-body" style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+      <div id="pt-goal-form" class="hid" style="display:flex;flex-direction:column;gap:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px">
+        <div style="display:flex;gap:8px">
+          <div style="flex:1">
+            <div class="fl">Mục tiêu tháng (₫)</div>
+            <input type="text" id="pt-goal-inp" class="mi" inputmode="numeric" data-raw="0" placeholder="VD: 5.000.000" oninput="onMI(this)" style="margin-top:4px"/>
+          </div>
+          <div style="flex:1">
+            <div class="fl">Mục tiêu ngày (₫)</div>
+            <input type="text" id="pt-goal-day-inp" class="mi" inputmode="numeric" data-raw="0" placeholder="VD: 200.000" oninput="onMI(this)" style="margin-top:4px"/>
+          </div>
+        </div>
+        <button class="sbtn" onclick="savePtGoal()">Lưu mục tiêu</button>
+      </div>
+      <div id="pt-goal-display" style="display:none;flex-direction:column;gap:8px">
+        <div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.5px;text-transform:uppercase">Tháng này</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;color:#9ca3af">Mục tiêu</span>
+          <span style="font-size:13px;font-weight:700;color:#f472b6" id="pt-goal-target-lbl">—</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.07);border-radius:99px;height:8px;overflow:hidden">
+          <div id="pt-goal-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#a78bfa,#f472b6);transition:width .4s ease;width:0%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:#6b7280">
+          <span id="pt-goal-earned-lbl">Đã kiếm: 0₫</span>
+          <span id="pt-goal-pct-lbl">0%</span>
+        </div>
+        <div id="pt-goal-need" style="background:rgba(244,114,182,0.08);border:1px solid rgba(244,114,182,0.2);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <span style="font-size:11px;color:#f9a8d4;font-weight:600">Còn cần kiếm thêm</span>
+            <span style="font-size:16px;font-weight:800;color:#f472b6" id="pt-goal-remain">—</span>
+          </div>
+          <div style="font-size:10px;color:#6b7280" id="pt-goal-per-day">—</div>
+          <div id="pt-goal-job-breakdown" style="display:flex;flex-direction:column;gap:4px;margin-top:2px"></div>
+        </div>
+      </div>
+      <div id="pt-goal-done" style="display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:20px">🎉</div>
+        <div style="font-size:13px;font-weight:700;color:#4ade80;margin-top:4px">Đã đạt mục tiêu tháng!</div>
+        <div style="font-size:11px;color:#6b7280;margin-top:2px" id="pt-goal-over-lbl"></div>
+      </div>
+      <div id="pt-goal-day-display" style="display:none;flex-direction:column;gap:8px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px">
+        <div style="font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.5px;text-transform:uppercase">Hôm nay</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <span style="font-size:11px;color:#9ca3af">Mục tiêu ngày</span>
+          <span style="font-size:13px;font-weight:700;color:#60a5fa" id="pt-goal-day-target-lbl">—</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.07);border-radius:99px;height:6px;overflow:hidden">
+          <div id="pt-goal-day-bar" style="height:100%;border-radius:99px;background:linear-gradient(90deg,#38bdf8,#60a5fa);transition:width .4s ease;width:0%"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:#6b7280">
+          <span id="pt-goal-day-earned-lbl">Đã kiếm: 0₫</span>
+          <span id="pt-goal-day-pct-lbl">0%</span>
+        </div>
+        <div id="pt-goal-day-need" style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <span style="font-size:11px;color:#93c5fd;font-weight:600">Còn cần hôm nay</span>
+            <span style="font-size:16px;font-weight:800;color:#60a5fa" id="pt-goal-day-remain">—</span>
+          </div>
+          <div id="pt-goal-day-breakdown" style="display:flex;flex-direction:column;gap:4px;margin-top:2px"></div>
+        </div>
+        <div id="pt-goal-day-done" style="display:none;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:8px;padding:8px;text-align:center;font-size:12px;font-weight:700;color:#4ade80">🎉 Đã đạt mục tiêu ngày!</div>
+      </div>
     </div>
   </div>
 
-  <!-- DANH SÁCH CÔNG VIỆC -->
-  <div class="card full" style="gap:8px">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <span style="font-size:12px;font-weight:700;color:#e2e8f0">Công việc của bạn</span>
-      <button class="abtn sm" onclick="tog('pt-add-job')">＋ Thêm việc</button>
-    </div>
-    <div id="pt-add-job" class="hid" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px;flex-direction:column;gap:8px">
-      <input type="text" id="pt-job-name" placeholder="Tên công việc (VD: Phục vụ quán A)"/>
-      <div class="fr" style="gap:8px">
-        <div style="flex:1"><div class="fl">Lương/giờ (₫)</div><input type="text" id="pt-job-rate" class="mi" inputmode="numeric" data-raw="0" placeholder="VD: 25.000" oninput="onMI(this)"/></div>
+  <!-- 5. VÍ PART-TIME -->
+  <div class="card full" style="gap:6px" id="pt-wallet-card">
+    <div style="font-size:12px;font-weight:700;color:#e2e8f0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>Ví Part-time</div>
+    <div id="pt-wallet-summary" style="display:none;flex-direction:column;gap:6px">
+      <div style="display:flex;gap:6px">
+        <div style="flex:1;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:9px;padding:8px 10px">
+          <div style="font-size:10px;color:#86efac;margin-bottom:2px">Đã nhận vào ví</div>
+          <div style="font-size:14px;font-weight:800;color:#4ade80" id="pt-paid-amt">—</div>
+        </div>
+        <div style="flex:1;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);border-radius:9px;padding:8px 10px">
+          <div style="font-size:10px;color:#fde68a;margin-bottom:2px">Lương chờ nhận</div>
+          <div style="font-size:14px;font-weight:800;color:#fbbf24" id="pt-pending-amt">—</div>
+        </div>
       </div>
-      <button class="sbtn" onclick="addPtJob()">Lưu công việc</button>
-    </div>
-    <div id="pt-job-list"></div>
-  </div>
-
-  <!-- GHI CÔNG HÔM NAY -->
-  <div class="card full" style="gap:10px" id="pt-log-card">
-    <div style="font-size:12px;font-weight:700;color:#e2e8f0">Ghi công hôm nay</div>
-    <select id="pt-log-job" style="background:var(--bg-input);border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"></select>
-    <div style="display:flex;gap:8px;align-items:center">
-      <input type="number" id="pt-today-h" placeholder="Số giờ" inputmode="decimal" step="0.5" min="0.5" max="24" style="flex:1;background:var(--bg-input);border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:10px 12px;font-size:15px;font-family:inherit;outline:none;text-align:center" oninput="calcPtToday()"/>
-      <span style="font-size:13px;color:#6b7280">giờ</span>
-      <button class="abtn" onclick="logPtToday()" style="white-space:nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-.1em"><polyline points="20 6 9 17 4 12"/></svg>Ghi</button>
-    </div>
-    <div id="pt-today-preview" style="font-size:12px;color:#a5b4fc;min-height:18px"></div>
-    <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:10px;display:flex;flex-direction:column;gap:8px">
-      <div class="fl" style="margin-bottom:2px">Vào ví nào?</div>
-      <select id="pt-wallet" style="background:var(--bg-input);border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:9px 12px;font-size:12px;font-family:inherit;width:100%;outline:none"></select>
-      <button class="abtn" style="width:100%;justify-content:center;background:linear-gradient(135deg,rgba(34,197,94,0.85),rgba(22,163,74,0.85));box-shadow:0 3px 12px rgba(34,197,94,0.3)" onclick="logPtAndAddToWallet()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.1em"><polyline points="20 6 9 17 4 12"/></svg>
-        Ghi công + thêm vào ví
+      <button id="pt-receive-btn" onclick="ptReceivePending()" style="display:none;width:100%;padding:10px;background:linear-gradient(135deg,rgba(251,191,36,0.85),rgba(245,158,11,0.85));border:none;color:#1c1917;font-size:12px;font-weight:700;cursor:pointer;border-radius:10px;font-family:inherit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><polyline points="8 13 12 17 16 13"/><line x1="12" y1="17" x2="12" y2="11"/></svg>Nhận lương tháng này
       </button>
     </div>
+    <div id="pt-wallet-empty" style="font-size:11px;color:#4b5563;text-align:center;padding:6px 0">Chưa có dữ liệu lương</div>
   </div>
 
-  <!-- LỊCH SỬ -->
-  <div class="card full" style="gap:6px">
-    <div style="font-size:12px;font-weight:700;color:#e2e8f0">Lịch sử tháng này</div>
-    <div id="pt-log-list" style="display:flex;flex-direction:column;gap:4px;max-height:260px;overflow-y:auto"></div>
+</div>
+
+<!-- MODAL: CHỌN HÌNH THỨC NHẬN LƯƠNG -->
+<div id="modal-pt-pay" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-pt-pay')">
+  <div class="modal-card" onclick="event.stopPropagation()" style="gap:12px">
+    <div class="modal-hdr">
+      <span class="modal-ttl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><polyline points="8 13 12 17 16 13"/><line x1="12" y1="17" x2="12" y2="11"/></svg>Nhận lương thế nào?</span>
+      <button class="modal-close" onclick="closeModal('modal-pt-pay')">×</button>
+    </div>
+    <div style="text-align:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.07)">
+      <div style="font-size:11px;color:#6b7280" id="pt-pay-desc">—</div>
+      <div style="font-size:22px;font-weight:800;color:#a5b4fc;margin-top:2px" id="pt-pay-amt">—</div>
+    </div>
+    <!-- Bước 1: chọn hình thức -->
+    <div id="pt-pay-step1" style="display:flex;flex-direction:column;gap:8px">
+      <button onclick="ptPayNow()" style="width:100%;padding:14px;background:linear-gradient(135deg,rgba(34,197,94,0.9),rgba(22,163,74,0.9));border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;border-radius:12px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        Nhận tiền luôn → vào ví
+      </button>
+      <button onclick="ptPayLater()" style="width:100%;padding:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#cbd5e1;font-size:13px;font-weight:700;cursor:pointer;border-radius:12px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Nhận cuối tháng — ghi nợ
+      </button>
+    </div>
+    <!-- Bước 2: chọn ví -->
+    <div id="pt-pay-step2" style="display:none;flex-direction:column;gap:10px">
+      <div style="font-size:11px;color:#9ca3af">Chọn ví nhận tiền</div>
+      <select id="pt-wallet" style="background:var(--bg-input);border:1px solid rgba(255,255,255,0.1);color:#e8eaf0;border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;width:100%;outline:none"></select>
+      <button onclick="ptConfirmWallet()" style="width:100%;padding:13px;background:linear-gradient(135deg,rgba(34,197,94,0.9),rgba(22,163,74,0.9));border:none;color:#fff;font-size:14px;font-weight:700;cursor:pointer;border-radius:12px;font-family:inherit">✓ Xác nhận + vào ví</button>
+      <button onclick="document.getElementById('pt-pay-step2').style.display='none';document.getElementById('pt-pay-step1').style.display='flex'" style="background:none;border:none;color:#6b7280;font-size:12px;cursor:pointer;font-family:inherit;padding:4px">← Quay lại</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: THÊM CÔNG VIỆC PART-TIME -->
+<div id="modal-pt-job" class="modal-ov hid" onclick="closeModalIfOv(event,'modal-pt-job')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-ttl">＋ Thêm công việc</span>
+      <button class="modal-close" onclick="closeModal('modal-pt-job')">×</button>
+    </div>
+    <div style="font-size:12px;color:#9ca3af;margin-bottom:4px">Tên công việc</div>
+    <input type="text" id="pt-job-name" placeholder="VD: Phục vụ quán A, Gia sư, Giao hàng..." style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;width:100%;outline:none;box-sizing:border-box"/>
+    <div style="font-size:12px;color:#9ca3af;margin-bottom:4px;margin-top:10px">Lương mỗi giờ (₫)</div>
+    <input type="number" id="pt-job-rate" inputmode="numeric" min="1" step="1000" placeholder="VD: 25000" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:9px;padding:10px 12px;font-size:15px;font-family:inherit;width:100%;outline:none;box-sizing:border-box"/>
+    <button onclick="addPtJob()" style="margin-top:14px;width:100%;padding:13px;background:linear-gradient(135deg,#a78bfa,#f472b6);border:none;color:#fff;font-size:14px;font-weight:700;cursor:pointer;border-radius:11px;font-family:inherit">Lưu công việc</button>
+  </div>
   </div>
 </div>
 
@@ -2208,7 +2313,7 @@ body[data-theme="pink"] .ri{
 <!-- Store Wizard -->
 <div id="modal-store" class="modal-ov hid">
   <div class="modal-card">
-    <div class="modal-hdr"><span class="modal-ttl">🏪 Tạo cửa hàng mới</span><button class="modal-close" onclick="closeModal('modal-store')">×</button></div>
+    <div class="modal-hdr"><span class="modal-ttl"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><line x1="12" y1="10" x2="12" y2="21"/></svg>Tạo cửa hàng mới</span><button class="modal-close" onclick="closeModal('modal-store')">×</button></div>
     <input type="text" id="sw-name" placeholder="Tên cửa hàng (VD: Laboong, Coffee ABC...)" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <div class="fl">Loại cửa hàng</div>
     <div class="stype-grid" id="sw-type-grid">
@@ -2242,7 +2347,7 @@ body[data-theme="pink"] .ri{
     <div class="check-row"><input type="checkbox" id="sw-debt" onchange="updSwPreview()"/><label for="sw-debt">Có công nợ → <span style="color:#60a5fa" onclick="event.stopPropagation();openDebtDetail()" id="sw-debt-detail" style="display:none">Chọn loại công nợ ▸</span></label></div>
     <div class="check-row"><input type="checkbox" id="sw-create-wallets" checked onchange="updSwPreview()"/><label for="sw-create-wallets">Tự động tạo ví cho cửa hàng này</label></div>
     <div style="background:#111827;border-radius:8px;padding:10px;font-size:11px;color:#6b7280" id="sw-preview">Sẽ tạo: Tiền mặt + Chuyển khoản</div>
-    <button class="sbtn" onclick="createStoreFromWizard()">🏪 Tạo cửa hàng</button>
+    <button class="sbtn" onclick="createStoreFromWizard()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><line x1="12" y1="10" x2="12" y2="21"/></svg>Tạo cửa hàng</button>
   </div>
 </div>
 
@@ -2549,7 +2654,7 @@ body[data-theme="pink"] .ri{
     <input type="text" id="ew-note" placeholder="Ghi chú (số TK, tên ngân hàng...)" style="background:#0f1117;border:1px solid #2d3246;color:#e8eaf0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;width:100%;outline:none"/>
     <div style="display:flex;gap:7px">
       <button class="sbtn" onclick="saveEditWallet()" style="flex:2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-.15em"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu thay đổi</button>
-      <button onclick="delWalletFromModal()" style="flex:1;padding:9px;background:#1e0a0a;color:#f87171;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">🗑 Xoá</button>
+      <button onclick="delWalletFromModal()" style="flex:1;padding:9px;background:#1e0a0a;color:#f87171;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:4px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Xoá</button>
     </div>
   </div>
 </div>
@@ -2737,21 +2842,32 @@ const WTICO={
 // SVG icon helpers dùng trong wallet section
 const _svgPerson=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>`;
 const _svgShop=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M3 10h18v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10z"/><path d="M3 10l2-6h14l2 6"/><line x1="12" y1="10" x2="12" y2="21"/></svg>`;
-// Store-type specific icons
+// Store-type specific icons — dùng chung 1 bộ SVG, đồng bộ với TYPE_LABELS
+const _SI='style="vertical-align:-.15em;margin-right:5px"';
 const _stypeIco={
-  food:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><line x1="7" y1="2" x2="7" y2="11"/><path d="M21 15a2 2 0 1 1-4 0V2"/><path d="M19 2v5"/></svg>`,
-  retail:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
-  service:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>`,
+  food:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${_SI}><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>`,
+  retail:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${_SI}><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
+  service:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${_SI}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+  other:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" ${_SI}><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
 };
 function _getStoreIco(storeId){
   const s=storeData.find(x=>x.id===Number(storeId));
-  return _stypeIco[s?.storeType]||_svgShop;
+  return _stypeIco[s?.storeType]||_stypeIco.other;
 }
 const _svgWarn=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
 const _svgArrUp=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`;
 const _svgArrDn=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>`;
 const _svgEdit=`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
 const _svgWallet=`<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>`;
+// Shared icon set — dùng cho card headers, button labels (13px inline)
+const _iS='width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.15em;margin-right:5px"';
+const _svgClock=`<svg ${_iS}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+const _svgPencil=`<svg ${_iS}><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>`;
+const _svgTarget=`<svg ${_iS}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`;
+const _svgWalletMd=`<svg ${_iS}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>`;
+const _svgMoneyIn=`<svg ${_iS}><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><polyline points="8 13 12 17 16 13"/><line x1="12" y1="17" x2="12" y2="11"/></svg>`;
+const _svgTrash=`<svg ${_iS}><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`;
+const _svgInfo=`<svg ${_iS}><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
 // Trả về icon ví theo loại (WTICO) với kích thước phù hợp cho inline text
 function _walIco(w,sz){
   sz=sz||11;
@@ -2990,7 +3106,7 @@ function logout(){
 
 // ══════ STORAGE ══════
 let SK={};
-function initSK(uid){SK={tcData:`u${uid}_tc`,shData:`u${uid}_sh`,invData:`u${uid}_inv`,lnData:`u${uid}_ln`,storeData:`u${uid}_str`,recData:`u${uid}_rec`,walletData:`u${uid}_wal`,features:`u${uid}_ft`};}
+function initSK(uid){SK={tcData:`u${uid}_tc`,shData:`u${uid}_sh`,invData:`u${uid}_inv`,lnData:`u${uid}_ln`,storeData:`u${uid}_str`,recData:`u${uid}_rec`,walletData:`u${uid}_wal`,features:`u${uid}_ft`,ptjobs:`u${uid}_ptj`,ptlogs:`u${uid}_ptl`,ptgoal:`u${uid}_ptg`};}
 function load(k,fb){
   try{const r=localStorage.getItem(SK[k]);return r?JSON.parse(r):fb;}catch{return fb;}
 }
@@ -3018,6 +3134,8 @@ async function syncFromCloud(uid){
   }catch(e){console.warn('syncFromCloud:',e.message);return false;}
 }
 let realtimeChannel=null;
+// _suppressRtSync > 0 means we're mid-batch-save; listener should skip loadAll/renderAll
+let _suppressRtSync=0;
 function startRealTimeSync(uid){
   if(!fbDb)return;
   // Detach old listener if any
@@ -3047,6 +3165,8 @@ function startRealTimeSync(uid){
     if(SK[k]){
       const val=snap.val();
       if(val)localStorage.setItem(SK[k],typeof val==='string'?val:JSON.stringify(val));
+      // Skip reload if this change was triggered by our own batch save
+      if(_suppressRtSync>0){_suppressRtSync--;return;}
       loadAll();renderAll();
       toast('🔄 Dữ liệu vừa cập nhật từ thiết bị khác','#60a5fa');
     }
@@ -3168,6 +3288,24 @@ function loadAll(){
   shMonth=new Date().toISOString().slice(0,7);
   // Load stores shared with this user from other users' data
   loadSharedStoreData();
+  // ── Dọn dữ liệu mồ côi: ví và giao dịch thuộc store đã bị xóa ──
+  _cleanupOrphanStoreData();
+}
+function _cleanupOrphanStoreData(){
+  const validIds=new Set(storeData.map(s=>String(s.id)));
+  // Wallets with a storeId that no longer exists
+  const orphanWals=walletData.filter(w=>w.storeId&&!validIds.has(String(w.storeId)));
+  if(orphanWals.length){
+    const orphanWIds=new Set(orphanWals.map(w=>String(w.id)));
+    walletData=walletData.filter(w=>!w.storeId||validIds.has(String(w.storeId)));
+    // Also remove shData entries for those orphan wallets / stores
+    shData=shData.filter(r=>!r.storeId||validIds.has(String(r.storeId)));
+    // Persist clean data (suppress 2 FB callbacks)
+    _suppressRtSync+=2;
+    save('walletData',walletData.filter(w=>!w._ownerId));
+    save('shData',shData);
+    console.log(`🧹 Dọn ${orphanWals.length} ví mồ côi của ${[...new Set(orphanWals.map(w=>w.storeId))].length} cửa hàng đã xóa`);
+  }
 }
 
 // ══════ FEATURES ══════
@@ -3201,7 +3339,7 @@ function applyFeats(){
   const ptTile=document.getElementById('rd-tile-parttime');
   if(ptTile)features.parttimeEnabled?ptTile.classList.remove('hid'):ptTile.classList.add('hid');
   const ptcb=document.getElementById('feat-parttime');if(ptcb)ptcb.checked=!!features.parttimeEnabled;
-  if(features.parttimeEnabled&&document.getElementById('pt-job-list'))renderPtModule();
+  // renderPtModule() is called only when the user opens the parttime tab (showTab)
   updWScopeOpts();updRecOpts();updWSelects();renderPlatGrid();
   // Store access info in settings
   const desc=document.getElementById('store-access-desc');
@@ -3224,7 +3362,7 @@ function applyFeats(){
       rows.push(`<div style="background:#080d18;border-radius:9px;overflow:hidden">
         <div onclick="document.getElementById('${detailId}').classList.toggle('hid')" style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;cursor:pointer;-webkit-tap-highlight-color:transparent">
           <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-size:16px">🏪</span>
+            <span style="display:flex;align-items:center;color:#94a3b8">${_getStoreIco(s.id)}</span>
             <div><div style="font-size:12px;font-weight:600;color:#f1f5f9">${s.name}</div>
               <div style="font-size:10px;color:#f59e0b">👑 Giám đốc (bạn)</div></div>
           </div>
@@ -3245,7 +3383,7 @@ function applyFeats(){
       rows.push(`<div style="background:#080d18;border-radius:9px;overflow:hidden">
         <div onclick="document.getElementById('${detailId}').classList.toggle('hid')" style="display:flex;align-items:center;justify-content:space-between;padding:8px 11px;cursor:pointer;-webkit-tap-highlight-color:transparent">
           <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-size:16px">🏪</span>
+            <span style="display:flex;align-items:center;color:#94a3b8">${_getStoreIco(s.id)}</span>
             <div><div style="font-size:12px;font-weight:600;color:#f1f5f9">${s.name}</div>
               <div style="font-size:10px;color:#6b7280">Của ${s.ownerName}</div></div>
           </div>
@@ -3313,6 +3451,7 @@ function showTab(id,btn,noAnim){
   if(id==='count'&&!document.getElementById('cnt-'+DENOMS[0]))initCountRows();
 }
 function toast(msg,color='#22c55e',dur=2300){const t=document.getElementById('toast');t.textContent=msg;t.style.background=color;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);}
+function _esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function closeModal(id){document.getElementById(id).classList.add('hid');}
 function closeModalIfOv(e,id){if(e.target.id===id)closeModal(id);}
 document.querySelectorAll('input[type=date]').forEach(el=>el.value=td());
@@ -3599,14 +3738,16 @@ function doTransfer(){
   const fromIsStore=!!fromW?.storeId, toIsStore=!!toW?.storeId;
   // Ví cá nhân → tcData | Ví cửa hàng → shData (tránh lẫn lộn Cá Nhân vs Cửa Hàng)
   if(!fromIsStore){
-    tcData.push({id:tid,type:'chi',category:'Chuyển ví',amount:amt,currency:'VND',walletId:fromId,note:note+' → '+(toW?.name||'?'),date,dt});
+    tcData.push({id:tid,type:'chi',category:'Chuyển ví',amount:amt,currency:'VND',walletId:fromId,
+      note:note+' → '+(toW?.name||'?'),date,dt,toStoreId:toW?.storeId||null});
   } else {
     shData.push({id:tid,storeId:fromW.storeId,type:'transfer-out',category:'Chuyển tiền đi',
       amount:amt,currency:'VND',walletId:fromId,note:`${note} → ${toW?.name||'?'}`,date,dt});
     saveShDataForStore(fromW.storeId);
   }
   if(!toIsStore){
-    tcData.push({id:tid+1,type:'thu',category:'Chuyển ví',amount:amt,currency:'VND',walletId:toId,note:note+' ← '+(fromW?.name||'?'),date,dt});
+    tcData.push({id:tid+1,type:'thu',category:'Chuyển ví',amount:amt,currency:'VND',walletId:toId,
+      note:note+' ← '+(fromW?.name||'?'),date,dt,fromStoreId:fromW?.storeId||null});
   } else {
     shData.push({id:tid+1,storeId:toW.storeId,type:'transfer-in',category:'Tiền về cửa hàng',
       amount:amt,currency:'VND',walletId:toId,note:`${note} ← ${fromW?.name||'?'}`,date,dt});
@@ -3650,24 +3791,35 @@ function renderWallets(){
     totHtml+=Object.entries(pTot).map(([c,v])=>`
       <div class="wt"><div class="wt-c">${_svgPerson}Cá nhân (${c})</div><div class="wt-v ${v>=0?'pos':'neg'}">${fmt(v,c)}</div></div>`).join('');
   }
-  // Từng cửa hàng
-  Object.entries(storeTots).forEach(([sid,tots])=>{
-    const sn=storeData.find(s=>s.id===Number(sid))?.name||'Cửa hàng';
-    Object.entries(tots).forEach(([c,v])=>{
-      totHtml+=`<div class="wt"><div class="wt-c">${_getStoreIco(sid)}${sn} (${c})</div><div class="wt-v ${v>=0?'pos':'neg'}">${fmt(v,c)}</div></div>`;
-    });
-    // Công nợ cửa hàng
-    if(storeDebtTots[sid]){
-      Object.entries(storeDebtTots[sid]).forEach(([c,v])=>{
-        totHtml+=`<div class="wt"><div class="wt-c" style="color:#ef4444">${_svgWarn}Nợ ${sn}</div><div class="wt-v neg">${fmt(v,c)}</div></div>`;
+  // Từng cửa hàng (chỉ hiện khi module cửa hàng đang bật)
+  if(features.storeEnabled){
+    Object.entries(storeTots).forEach(([sid,tots])=>{
+      const sn=storeData.find(s=>s.id===Number(sid))?.name||'Cửa hàng';
+      Object.entries(tots).forEach(([c,v])=>{
+        totHtml+=`<div class="wt"><div class="wt-c">${_getStoreIco(sid)}${sn} (${c})</div><div class="wt-v ${v>=0?'pos':'neg'}">${fmt(v,c)}</div></div>`;
       });
-    }
-  });
+      // Công nợ cửa hàng
+      if(storeDebtTots[sid]){
+        Object.entries(storeDebtTots[sid]).forEach(([c,v])=>{
+          totHtml+=`<div class="wt"><div class="wt-c" style="color:#ef4444">${_svgWarn}Nợ ${sn}</div><div class="wt-v neg">${fmt(v,c)}</div></div>`;
+        });
+      }
+    });
+  }
   // Công nợ cá nhân
   if(Object.keys(pDebtTot).length){
     totHtml+=Object.entries(pDebtTot).map(([c,v])=>`
       <div class="wt"><div class="wt-c" style="color:#ef4444">${_svgWarn}Nợ cá nhân</div><div class="wt-v neg">${fmt(v,c)}</div></div>`).join('');
   }
+  // Lương part-time chờ nhận
+  try{
+    const _ptl=getPtLogs();const _ptj=getPtJobs();
+    const _ptPend=_ptl.reduce((s,l)=>{
+      const job=_ptj.find(j=>j.id===l.jobId);if(!job)return s;
+      return s+Math.max(0,Math.round((l.hours||0)*(job.rate||0))-(l.paidAmount||0));
+    },0);
+    if(_ptPend>0)totHtml+=`<div class="wt"><div class="wt-c" style="color:#a5b4fc">${_svgClock}Lương PT chờ nhận</div><div class="wt-v" style="color:#c4b5fd">${fmt(_ptPend)}</div></div>`;
+  }catch(e){}
   document.getElementById('wall-tots').innerHTML=totHtml||'<div class="wt"><div class="wt-c">Chưa có ví</div></div>';
 
   function wcard(w){
@@ -3716,13 +3868,71 @@ function renderWallets(){
   }
 
   const personal=walletData.filter(w=>!w.storeId);
-  const sgroups={};walletData.filter(w=>w.storeId).forEach(w=>{if(!sgroups[w.storeId])sgroups[w.storeId]=[];sgroups[w.storeId].push(w);});
+  const sgroups={};
+  if(features.storeEnabled){
+    walletData.filter(w=>w.storeId).forEach(w=>{if(!sgroups[w.storeId])sgroups[w.storeId]=[];sgroups[w.storeId].push(w);});
+  }
   let html=grpSection('personal',`${_svgPerson}Cá nhân`,personal,true);
   Object.entries(sgroups).forEach(([sid,ws])=>{
     const sn=storeData.find(s=>s.id===Number(sid))?.name||'Cửa hàng';
     html+=grpSection('store_'+sid,`${_getStoreIco(sid)}${sn}`,ws,false);
   });
   document.getElementById('wallet-list').innerHTML=html||'<div style="text-align:center;color:#4b5563;padding:16px;font-size:11px">Chưa có ví nào. Nhấn "＋ Thêm ví" để bắt đầu.</div>';
+
+  // ── Ví Part-time: tính pending lương chưa nhận ──
+  (function(){
+    const ptEl=document.getElementById('wallet-pt-section');
+    if(!ptEl)return;
+    try{
+      const ptLogs=getPtLogs();
+      const ptJobs=getPtJobs();
+      const curYM=td().slice(0,7);
+      // Tổng tất cả các tháng chưa nhận (pending = earned - paidAmount)
+      let totalPending=0;
+      const byMonth={};
+      ptLogs.forEach(l=>{
+        const job=ptJobs.find(j=>j.id===l.jobId);
+        if(!job)return;
+        const earned=Math.round((l.hours||0)*(job.rate||0));
+        const paid=l.paidAmount||0;
+        const pend=Math.max(0,earned-paid);
+        if(pend>0){
+          totalPending+=pend;
+          const ym=l.date.slice(0,7);
+          byMonth[ym]=(byMonth[ym]||0)+pend;
+        }
+      });
+      if(totalPending<=0){ptEl.style.display='none';return;}
+      ptEl.style.display='block';
+      // Build month breakdown
+      const sortedMonths=Object.keys(byMonth).sort().reverse();
+      const monthRows=sortedMonths.map(ym=>{
+        const [y,m]=ym.split('-');
+        const label=`Tháng ${parseInt(m)}/${y}`;
+        return`<div style="display:flex;justify-content:space-between;font-size:11px;color:#a5b4fc;padding:2px 0">
+          <span>${label}</span><span>${fmt(byMonth[ym])}</span>
+        </div>`;
+      }).join('');
+      ptEl.innerHTML=`
+        <div style="background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(99,102,241,0.08));border:1px solid rgba(139,92,246,0.25);border-radius:12px;padding:12px 14px;margin-top:4px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="display:flex;align-items:center;color:#a5b4fc">${_svgClock}</span>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#a5b4fc;letter-spacing:.5px">LƯƠNG PART-TIME CHỜ NHẬN</div>
+                <div style="font-size:10px;color:#6b7280">Chưa chuyển vào ví</div>
+              </div>
+            </div>
+            <div style="font-size:18px;font-weight:800;color:#c4b5fd">${fmt(totalPending)}</div>
+          </div>
+          ${sortedMonths.length>1?`<div style="border-top:1px solid rgba(139,92,246,0.15);padding-top:8px;margin-bottom:8px">${monthRows}</div>`:''}
+          <button onclick="showTab('parttime',document.getElementById('tab-parttime-btn'))" style="width:100%;padding:7px;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.3);border-radius:8px;color:#c4b5fd;font-size:12px;font-weight:600;cursor:pointer">
+            ${_svgMoneyIn}Nhận lương → Tính Lương Part-time
+          </button>
+        </div>`;
+    }catch(e){ptEl.style.display='none';}
+  })();
+
   renderTransferHist();
 }
 
@@ -3854,6 +4064,15 @@ function saveEditTC(){
   tcData[idx]={...tcData[idx],type,category:cat,amount:amt,walletId:wid,note,date:dateVal,dt};
   save('tcData',tcData);closeModal('modal-edit-tc');renderTC();renderWallets();toast('✓ Đã cập nhật giao dịch');
 }
+// Trả về storeId nguồn của một tcData entry 'Chuyển ví thu' (hỗ trợ cả cũ và mới)
+function _tcGetFromStore(tx){
+  if(tx.fromStoreId)return tx.fromStoreId;
+  if(tx.type!=='thu'||tx.category!=='Chuyển ví')return null;
+  // Fallback: tìm shData transfer-out cùng ngày + số tiền → lấy storeId
+  const match=shData.find(s=>s.type==='transfer-out'&&s.date===tx.date&&s.amount===tx.amount);
+  return match?.storeId||null;
+}
+
 function renderTC(){
   // Loại bỏ entries thuộc ví cửa hàng
   const personalTc=tcData.filter(r=>{
@@ -3875,14 +4094,65 @@ function renderTC(){
   const sumLbl=tcFilterMode==='day'?'tháng này':'tháng này';
   document.getElementById('tc-thu').textContent=fmt(thu);document.getElementById('tc-chi').textContent=fmt(chi);
   const du=thu-chi,de=document.getElementById('tc-du');de.textContent=fmt(du);de.className='val '+(du>=0?'pos':'neg');
+
+  // ── Breakdown nguồn thu từ cửa hàng ──
+  const bdEl=document.getElementById('tc-store-breakdown');
+  if(bdEl&&features.storeEnabled&&storeData.length){
+    // Tổng tiền chuyển vào từ mỗi store trong tháng đang xem
+    const storeIn={};
+    monthForSum.filter(r=>r.type==='thu').forEach(r=>{
+      const sid=_tcGetFromStore(r);
+      if(sid)storeIn[sid]=(storeIn[sid]||0)+r.amount;
+    });
+    const entries=Object.entries(storeIn);
+    if(entries.length){
+      const total=entries.reduce((s,[,v])=>s+v,0);
+      const rows=entries.sort((a,b)=>b[1]-a[1]).map(([sid,v])=>{
+        const s=storeData.find(x=>String(x.id)===String(sid));
+        const pct=total?Math.round(v/total*100):0;
+        return`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <span style="font-size:13px">${_getStoreIco(sid)}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:11px;font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${_esc(s?.name||'Cửa hàng')}</div>
+            <div style="height:4px;background:rgba(255,255,255,0.07);border-radius:99px;margin-top:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:99px"></div></div>
+          </div>
+          <span style="font-size:12px;font-weight:700;color:#60a5fa;white-space:nowrap">${fmt(v)}</span>
+          <span style="font-size:10px;color:#4b5563;width:28px;text-align:right">${pct}%</span>
+        </div>`;
+      }).join('');
+      const isOpen=!!window._tcStoreOpen;
+      bdEl.style.display='block';
+      bdEl.innerHTML=`<div style="background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.2);border-radius:12px;overflow:hidden">
+        <div onclick="window._tcStoreOpen=!window._tcStoreOpen;renderTC()" style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;cursor:pointer">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="color:#93c5fd">${_svgShop}</span>
+            <span style="font-size:11px;font-weight:700;color:#93c5fd">Nguồn thu từ cửa hàng</span>
+            <span style="font-size:10px;color:#4b5563">(${entries.length} CH)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:13px;font-weight:800;color:#60a5fa">${fmt(total)}</span>
+            <span style="color:#4b5563;font-size:14px;transition:transform .2s;display:inline-block;transform:${isOpen?'rotate(90deg)':'rotate(0)'}">›</span>
+          </div>
+        </div>
+        ${isOpen?`<div style="padding:4px 12px 10px">${rows}</div>`:''}
+      </div>`;
+    } else {
+      bdEl.style.display='none';
+    }
+  } else if(bdEl){bdEl.style.display='none';}
+
   const filtered=tcFilter==='all'?[...monthTc]:monthTc.filter(r=>r.type===tcFilter);
   const list=document.getElementById('tc-list');
   const emptyLbl=tcFilterMode==='day'?`ngày ${tcDayVal.split('-').reverse().join('/')}`:mLbl;
   if(!filtered.length){list.innerHTML=`<div style="text-align:center;color:#4b5563;padding:18px;font-size:11px">Không có giao dịch trong ${emptyLbl}<br/><span style="color:#6b7280;font-size:10px">← Chuyển ${tcFilterMode==='day'?'ngày':'tháng'} để xem lịch sử →</span></div>`;return;}
   list.innerHTML=filtered.slice().reverse().map(r=>{
     const w=r.walletId?walletData.find(x=>x.id===r.walletId):null;
+    // Badge cửa hàng nguồn (cho 'Chuyển ví thu')
+    const fromSid=_tcGetFromStore(r);
+    const fromStore=fromSid?storeData.find(x=>String(x.id)===String(fromSid)):null;
+    const storeBadge=fromStore?`<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.25);border-radius:5px;padding:1px 5px;font-size:9px;font-weight:700;color:#93c5fd;vertical-align:middle;margin-left:2px">${_getStoreIco(fromSid)}${_esc(fromStore.name)}</span>`:'';
     return `<div class="ri ${r.type}"><div class="rli">
-      <span class="rc">${r.category}</span>
+      <span class="rc">${r.category}${storeBadge}</span>
       ${w?`<span class="rw">${_walIco(w)}${w.name}</span>`:''}
       <span class="rn">${r.note||''?r.note+' · ':''}${fmtDT(r.dt||r.date)}</span>
     </div>
@@ -3992,7 +4262,7 @@ function renderPermSection(){
     </div>`:'<div style="font-size:10px;color:#4b5563;margin-top:5px;padding:4px">Tất cả thành viên đã có quyền.</div>';
     return`<div style="background:#111827;border-radius:13px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.06)">
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
-        <span style="font-size:18px">🏪</span>
+        <span style="color:#94a3b8">${_getStoreIco(sp.id)}</span>
         <div><div style="font-size:13px;font-weight:700;color:#f1f5f9">${sp.name}</div>
           <div style="font-size:10px;color:#6b7280">👑 Giám đốc (bạn) — Toàn quyền</div></div>
       </div>
@@ -4001,11 +4271,11 @@ function renderPermSection(){
   const sharedPerms=getMySharedStores();
   const shEl=document.getElementById('perm-shared-list');
   if(shEl&&sharedPerms.length){
-    shEl.innerHTML=`<div style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-top:8px;margin-bottom:5px;padding:0 2px">🏪 Cửa hàng được chia sẻ với bạn</div>`+
+    shEl.innerHTML=`<div style="font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-top:8px;margin-bottom:5px;padding:0 2px">${_svgShop}Cửa hàng được chia sẻ với bạn</div>`+
       sharedPerms.map(sp=>{
         const role=getMyRole(sp.storeId)||'employee';
         return`<div style="background:#111827;border-radius:11px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.06)">
-          <div><div style="font-size:12px;font-weight:600;color:#e2e8f0">🏪 ${sp.name}</div>
+          <div><div style="font-size:12px;font-weight:600;color:#e2e8f0">${_getStoreIco(sp.storeId)}${sp.name}</div>
             <div style="font-size:10px;color:#6b7280">Của ${sp.ownerName}</div></div>
           <div style="font-size:10px;color:${ROLE_CLR[role]||'#9ca3af'};background:rgba(255,255,255,0.05);padding:3px 8px;border-radius:20px">${ROLE_LBL[role]||role}</div>
         </div>`;}).join('');
@@ -4228,7 +4498,7 @@ function createStoreFromWizard(){
   const sid=Date.now();
   const storeType=getSwType();
   const store={id:sid,name,storeType,platforms:[...document.querySelectorAll('#plat-grid .plat-chip.on')].map(el=>el.dataset.val),hasDebt:document.getElementById('sw-debt').checked};
-  storeData.push(store);save('storeData',storeData.filter(s=>!s._ownerId));curStoreId=sid;
+  storeData.push(store);curStoreId=sid;
   regStore(store); // Register in global perms for sharing
   if(document.getElementById('sw-create-wallets').checked){
     let ts=Date.now();
@@ -4239,8 +4509,10 @@ function createStoreFromWizard(){
       const DEBT_DEFS={customer:{name:`Khách hàng nợ ${name}`,note:'Khách chưa thanh toán'},supplier:{name:`Nhà CC nợ ${name}`,note:'Mình nợ nhà cung cấp'},employee:{name:`Nhân viên nợ ${name}`,note:'Tạm ứng nhân viên'},other:{name:`Công nợ khác ${name}`,note:''}};
       Object.entries(pendingDebtTypes).forEach(([k,v])=>{if(v&&DEBT_DEFS[k])walletData.push({id:ts++,...DEBT_DEFS[k],type:'borrowed',currency:'VND',scope:sid,storeId:sid,initialBalance:0});});
     }
+    _suppressRtSync+=2; // storeData + walletData saves below
+    save('storeData',storeData.filter(s=>!s._ownerId));
     save('walletData',walletData);toast(`✓ Đã tạo "${name}" với ${walletData.filter(w=>w.storeId===sid).length} ví`);
-  }else toast(`✓ Đã tạo cửa hàng "${name}"`);
+  }else{_suppressRtSync+=1;save('storeData',storeData.filter(s=>!s._ownerId));toast(`✓ Đã tạo cửa hàng "${name}"`);}
   pendingDebtTypes={customer:false,supplier:true,employee:false,other:false};
   closeModal('modal-store');updWScopeOpts();updRecOpts();updWSelects();renderShState();renderWallets();
 }
@@ -4268,11 +4540,11 @@ function delStore(){
   if(storeData.length<=1)return toast('⚠️ Cần ít nhất 1 cửa hàng!','#f59e0b');
   const s=storeData.find(x=>x.id===curStoreId);if(!confirm(`Xoá "${s?.name}"?\nToàn bộ giao dịch, ví và dữ liệu cost sẽ bị xoá.`))return;
   const sid=curStoreId;
-  // Remove store + its transactions
+  // Remove store + its transactions (use String compare to avoid type mismatch)
   storeData.splice(storeData.findIndex(x=>x.id===sid),1);
-  shData=shData.filter(r=>r.storeId!==sid);
+  shData=shData.filter(r=>String(r.storeId)!==String(sid));
   // Remove wallets belonging to this store
-  walletData=walletData.filter(w=>w.storeId!==sid);
+  walletData=walletData.filter(w=>String(w.storeId)!==String(sid));
   // Remove cost module data (ingData, semiData, recipeData)
   ['ingData_','semiData_','recipeData_','ingCats_','semiCats_','recipeCats_'].forEach(prefix=>localStorage.removeItem(prefix+sid));
   // Remove cost data from Firebase
@@ -4280,6 +4552,9 @@ function delStore(){
   // Remove from perms
   const p=getPerms();if(p[sid]){delete p[sid];setPerms(p);}
   curStoreId=storeData[0]?.id||null;
+  // Suppress Firebase listener for each save to prevent race condition
+  // (listener fires loadAll on FIRST save, restoring stale shData/walletData from Firebase)
+  _suppressRtSync+=3;
   save('storeData',storeData.filter(s=>!s._ownerId));
   save('shData',shData);
   save('walletData',walletData.filter(w=>!w._ownerId));
@@ -5898,7 +6173,7 @@ function renderLN(){
           ${nextPD?`<div class="lgi"><div class="lgl">Ngày trả tiếp theo</div><div class="lgv" style="color:#f59e0b">${nextPD}</div></div>`:''}
           ${l.dueDate?`<div class="lgi"><div class="lgl">Đến hạn</div><div class="lgv" style="color:#9ca3af;font-size:11px">${l.dueDate}</div></div>`:''}
         </div>
-        ${l.note?`<div style="font-size:10px;color:#6b7280">📝 ${l.note}</div>`:''}
+        ${l.note?`<div style="font-size:10px;color:#6b7280">${_svgPencil}${l.note}</div>`:''}
         <div class="ln-acts">
           ${!l.paid?`<button class="btn-mp" onclick="openPayLoan(${l.id})"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-.1em;margin-right:3px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="14" r="2"/></svg>Trả / Thu</button>`:''}
           <button class="${l.paid?'btn-mu':'btn-settle'}" onclick="togLnPaid(${l.id})">${l.paid?'↩ Mở lại':'✓ Tất toán'}</button>
@@ -5956,101 +6231,178 @@ function getND(rec){
   let d=new Date(now.getFullYear(),rec.day-1,1);if(d<=now)d=new Date(now.getFullYear()+1,rec.day-1,1);return d;
 }
 // ── Module Tính Lương Part-time ──
-function _ptJobKey(){return 'u'+(CU?.id||'0')+'_ptjobs';}
-function _ptLogKey(){return 'u'+(CU?.id||'0')+'_ptlogs';}
-function _ptGoalKey(){return 'u'+(CU?.id||'0')+'_ptgoal';}
-function getPtJobs(){try{return JSON.parse(localStorage.getItem(_ptJobKey())||'[]');}catch{return[];}}
-function savePtJobs(j){localStorage.setItem(_ptJobKey(),JSON.stringify(j));}
-function getPtLogs(){try{return JSON.parse(localStorage.getItem(_ptLogKey())||'[]');}catch{return[];}}
-function savePtLogs(l){localStorage.setItem(_ptLogKey(),JSON.stringify(l));}
-function getPtGoal(){try{return JSON.parse(localStorage.getItem(_ptGoalKey())||'null');}catch{return null;}}
-function savePtGoalData(g){localStorage.setItem(_ptGoalKey(),JSON.stringify(g));}
+function getPtJobs(){try{return load('ptjobs',[])||[];}catch{return[];}}
+function savePtJobs(j){save('ptjobs',j);}
+function getPtLogs(){try{return load('ptlogs',[])||[];}catch{return[];}}
+function savePtLogs(l){save('ptlogs',l);}
+function getPtGoal(){try{return load('ptgoal',null);}catch{return null;}}
+function savePtGoalData(g){save('ptgoal',g);}
 
+// Migration: khớp tcData "Lương: ..." với ptLogs để điền lại paidAmount cho log cũ
+function migratePtPaidAmounts(){
+  const logs=getPtLogs();
+  const jobs=getPtJobs();
+  if(!logs.length||!jobs.length)return;
+  let changed=false;
+  // Với mỗi tcData entry có note bắt đầu bằng "Lương:" → tìm log tương ứng
+  (tcData||[]).forEach(tx=>{
+    if(tx.type!=='thu'||!tx.note||!tx.note.startsWith('Lương:'))return;
+    // Tìm job theo tên trong note: "Lương: [jobname] (Xh × ..."
+    const job=jobs.find(j=>tx.note.includes(j.name));
+    if(!job||!tx.date)return;
+    const log=logs.find(l=>l.date===tx.date&&l.jobId===job.id);
+    if(!log)return;
+    // Nếu log chưa có paidAmount và tx có amount → gán
+    if((log.paidAmount||0)===0&&tx.amount>0){
+      log.paidAmount=(log.paidAmount||0)+tx.amount;
+      changed=true;
+    }
+  });
+  if(changed)savePtLogs(logs);
+}
+
+let _ptJobsOpen=false;
+function ptToggleJobs(){
+  _ptJobsOpen=!_ptJobsOpen;
+  const wrap=document.getElementById('pt-job-list-wrap');
+  const chev=document.getElementById('pt-job-chevron');
+  if(wrap){_ptJobsOpen?wrap.classList.remove('hid'):wrap.classList.add('hid');}
+  if(chev)chev.style.transform=_ptJobsOpen?'rotate(90deg)':'rotate(0)';
+}
+let _ptGoalOpen=true;
+function ptToggleGoal(){
+  _ptGoalOpen=!_ptGoalOpen;
+  const body=document.getElementById('pt-goal-body');
+  const chev=document.getElementById('pt-goal-chevron');
+  if(body)body.style.display=_ptGoalOpen?'flex':'none';
+  if(chev)chev.style.transform=_ptGoalOpen?'rotate(90deg)':'rotate(0)';
+}
+function ptInitGoalChevron(){
+  const chev=document.getElementById('pt-goal-chevron');
+  if(chev)chev.style.transform=_ptGoalOpen?'rotate(90deg)':'rotate(0)';
+}
 function savePtGoal(){
   const raw=Number(document.getElementById('pt-goal-inp')?.dataset.raw)||0;
-  const jobId=Number(document.getElementById('pt-goal-job')?.value)||0;
-  if(!raw){toast('Nhập mục tiêu trước nhé!','#ef4444');return;}
-  savePtGoalData({target:raw,jobId});
+  const dayRaw=Number(document.getElementById('pt-goal-day-inp')?.dataset.raw)||0;
+  if(!raw&&!dayRaw){toast('Nhập ít nhất 1 mục tiêu!','#ef4444');return;}
+  savePtGoalData({target:raw,dayTarget:dayRaw});
   tog('pt-goal-form');
   renderPtModule();
   toast('✓ Đã lưu mục tiêu!');
 }
 
-function renderPtGoal(monthTotEarn,jobs){
+function renderPtGoal(monthTotEarn,jobs,todayEarn){
   const goal=getPtGoal();
+  const now=new Date();
+  const daysLeft=new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate()+1;
+
+  // ── Mục tiêu THÁNG ──
   const dispEl=document.getElementById('pt-goal-display');
   const doneEl=document.getElementById('pt-goal-done');
   const bar=document.getElementById('pt-goal-bar');
-  if(!goal||!goal.target){
-    if(dispEl)dispEl.style.display='none';
-    if(doneEl)doneEl.style.display='none';
-    return;
-  }
-  const pct=Math.min(100,Math.round(monthTotEarn/goal.target*100));
-  const remain=Math.max(0,goal.target-monthTotEarn);
-  if(bar)bar.style.width=pct+'%';
-  const tgtLbl=document.getElementById('pt-goal-target-lbl');
-  const earnLbl=document.getElementById('pt-goal-earned-lbl');
-  const pctLbl=document.getElementById('pt-goal-pct-lbl');
-  if(tgtLbl)tgtLbl.textContent=fmt(goal.target)+'₫';
-  if(earnLbl)earnLbl.textContent='Đã kiếm: '+(monthTotEarn?fmt(monthTotEarn)+'₫':'0₫');
-  if(pctLbl)pctLbl.textContent=pct+'%';
-  if(remain===0){
-    if(dispEl)dispEl.style.display='none';
-    if(doneEl)doneEl.style.display='flex';
-    const overLbl=document.getElementById('pt-goal-over-lbl');
-    const extra=monthTotEarn-goal.target;
-    if(overLbl)overLbl.textContent=extra>0?'Vượt '+fmt(extra)+'₫ so với mục tiêu 🔥':'Đúng mục tiêu!';
-  } else {
-    if(doneEl)doneEl.style.display='none';
-    if(dispEl)dispEl.style.display='flex';
-    const needEl=document.getElementById('pt-goal-remain');
-    const hrsLbl=document.getElementById('pt-goal-hours-lbl');
-    const perDay=document.getElementById('pt-goal-per-day');
-    if(needEl)needEl.textContent=fmt(remain)+'₫';
-    // Tính giờ cần làm
-    const job=jobs.find(j=>j.id===goal.jobId)||jobs[0];
-    if(job&&job.rate>0){
-      const hrsNeed=remain/job.rate;
-      if(hrsLbl)hrsLbl.textContent='≈ '+hrsNeed.toFixed(1)+' giờ làm nữa ('+job.name+')';
-      // Số ngày còn lại trong tháng
-      const now=new Date();
-      const daysLeft=new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate()+1;
-      if(perDay&&daysLeft>0){
-        const hPerDay=(hrsNeed/daysLeft).toFixed(1);
-        perDay.textContent='Còn '+daysLeft+' ngày → cần làm ~'+hPerDay+'h/ngày';
-      }
+  if(goal&&goal.target){
+    const pct=Math.min(100,Math.round(monthTotEarn/goal.target*100));
+    const remain=Math.max(0,goal.target-monthTotEarn);
+    if(bar)bar.style.width=pct+'%';
+    const tgtLbl=document.getElementById('pt-goal-target-lbl');
+    const earnLbl=document.getElementById('pt-goal-earned-lbl');
+    const pctLbl=document.getElementById('pt-goal-pct-lbl');
+    if(tgtLbl)tgtLbl.textContent=fmt(goal.target)+'₫';
+    if(earnLbl)earnLbl.textContent='Đã kiếm: '+(monthTotEarn?fmt(monthTotEarn)+'₫':'0₫');
+    if(pctLbl)pctLbl.textContent=pct+'%';
+    if(remain===0){
+      if(dispEl)dispEl.style.display='none';
+      if(doneEl)doneEl.style.display='flex';
+      const overLbl=document.getElementById('pt-goal-over-lbl');
+      const extra=monthTotEarn-goal.target;
+      if(overLbl)overLbl.textContent=extra>0?'Vượt '+fmt(extra)+'₫ 🔥':'Đúng mục tiêu!';
     } else {
-      if(hrsLbl)hrsLbl.textContent='Thêm công việc để tính giờ';
-      if(perDay)perDay.textContent='';
+      if(doneEl)doneEl.style.display='none';
+      if(dispEl)dispEl.style.display='flex';
+      const needEl=document.getElementById('pt-goal-remain');
+      const perDay=document.getElementById('pt-goal-per-day');
+      if(needEl)needEl.textContent=fmt(remain)+'₫';
+      if(perDay)perDay.textContent=daysLeft>0?'Còn '+daysLeft+' ngày trong tháng':'';
+      const breakdown=document.getElementById('pt-goal-job-breakdown');
+      if(breakdown){
+        breakdown.innerHTML=jobs.length?jobs.map(j=>{
+          const hrs=remain/j.rate;
+          const hPerDay=daysLeft>0?(hrs/daysLeft):0;
+          return`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:rgba(255,255,255,0.04);border-radius:8px">
+            <span style="font-size:11px;color:#cbd5e1;flex:1">${_esc(j.name)}</span>
+            <span style="font-size:11px;color:#a5b4fc;font-weight:600;white-space:nowrap">≈${hrs.toFixed(1)}h${daysLeft>0?' (~'+hPerDay.toFixed(1)+'h/ngày)':''}</span>
+          </div>`;
+        }).join(''):'<div style="font-size:11px;color:#4b5563">Thêm công việc để tính giờ</div>';
+      }
     }
+    // Điền sẵn form
+    const inp=document.getElementById('pt-goal-inp');
+    if(inp&&!inp.dataset.raw*1){inp.dataset.raw=goal.target;inp.value=fmt(goal.target);}
+  } else {
+    if(dispEl)dispEl.style.display='none';
+    if(doneEl)doneEl.style.display='none';
+    if(bar)bar.style.width='0%';
   }
-  // Điền sẵn form nếu có goal
-  const inp=document.getElementById('pt-goal-inp');
-  if(inp&&!inp.dataset.raw*1){inp.dataset.raw=goal.target;inp.value=fmt(goal.target);}
-}
 
-function populatePtGoalJob(jobs){
-  const sel=document.getElementById('pt-goal-job');
-  if(!sel)return;
-  const goal=getPtGoal();
-  sel.innerHTML=jobs.map(j=>`<option value="${j.id}"${goal&&goal.jobId===j.id?' selected':''}>${j.name} — ${fmt(j.rate)}₫/h</option>`).join('')||'<option value="">Chưa có công việc</option>';
+  // ── Mục tiêu NGÀY ──
+  const dayDisp=document.getElementById('pt-goal-day-display');
+  const dayDoneEl=document.getElementById('pt-goal-day-done');
+  const dayNeedEl=document.getElementById('pt-goal-day-need');
+  if(goal&&goal.dayTarget){
+    if(dayDisp)dayDisp.style.display='flex';
+    const te=todayEarn||0;
+    const dpct=Math.min(100,Math.round(te/goal.dayTarget*100));
+    const drem=Math.max(0,goal.dayTarget-te);
+    const dayBar=document.getElementById('pt-goal-day-bar');
+    if(dayBar)dayBar.style.width=dpct+'%';
+    const dtgtLbl=document.getElementById('pt-goal-day-target-lbl');
+    const dearnLbl=document.getElementById('pt-goal-day-earned-lbl');
+    const dpctLbl=document.getElementById('pt-goal-day-pct-lbl');
+    const dremEl=document.getElementById('pt-goal-day-remain');
+    if(dtgtLbl)dtgtLbl.textContent=fmt(goal.dayTarget)+'₫';
+    if(dearnLbl)dearnLbl.textContent='Đã kiếm: '+(te?fmt(te)+'₫':'0₫');
+    if(dpctLbl)dpctLbl.textContent=dpct+'%';
+    if(drem===0){
+      if(dayNeedEl)dayNeedEl.style.display='none';
+      if(dayDoneEl)dayDoneEl.style.display='block';
+    } else {
+      if(dayDoneEl)dayDoneEl.style.display='none';
+      if(dayNeedEl)dayNeedEl.style.display='flex';
+      if(dremEl)dremEl.textContent=fmt(drem)+'₫';
+      const dayBd=document.getElementById('pt-goal-day-breakdown');
+      if(dayBd){
+        dayBd.innerHTML=jobs.length?jobs.map(j=>{
+          const hrs=drem/j.rate;
+          return`<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:rgba(255,255,255,0.04);border-radius:8px">
+            <span style="font-size:11px;color:#cbd5e1;flex:1">${_esc(j.name)}</span>
+            <span style="font-size:11px;color:#60a5fa;font-weight:600;white-space:nowrap">≈${hrs.toFixed(1)}h nữa</span>
+          </div>`;
+        }).join(''):'';
+      }
+    }
+    // Điền sẵn form
+    const dinp=document.getElementById('pt-goal-day-inp');
+    if(dinp&&!dinp.dataset.raw*1){dinp.dataset.raw=goal.dayTarget;dinp.value=fmt(goal.dayTarget);}
+  } else {
+    if(dayDisp)dayDisp.style.display='none';
+  }
 }
 
 function addPtJob(){
-  const name=document.getElementById('pt-job-name').value.trim();
-  const rate=gv(document.getElementById('pt-job-rate'))||0;
-  if(!name)return toast('⚠️ Nhập tên công việc!','#f59e0b');
-  if(!rate)return toast('⚠️ Nhập lương/giờ!','#f59e0b');
+  const nameEl=document.getElementById('pt-job-name');
+  const rateEl=document.getElementById('pt-job-rate');
+  const name=(nameEl?nameEl.value:'').trim();
+  const rate=parseInt(rateEl?rateEl.value:0)||0;
+  if(!name){toast('⚠️ Nhập tên công việc!','#f59e0b');return;}
+  if(rate<1){toast('⚠️ Nhập lương/giờ!','#f59e0b');return;}
   const jobs=getPtJobs();
   jobs.push({id:Date.now(),name,rate});
   savePtJobs(jobs);
-  document.getElementById('pt-job-name').value='';
-  const re=document.getElementById('pt-job-rate');re.value='';re.dataset.raw='0';
-  document.getElementById('pt-add-job').classList.add('hid');
+  if(nameEl)nameEl.value='';
+  if(rateEl)rateEl.value='';
+  closeModal('modal-pt-job');
   renderPtModule();
-  toast('✓ Đã thêm công việc! Chọn bên dưới để ghi công →');
-  setTimeout(()=>{const lc=document.getElementById('pt-log-card');if(lc)lc.scrollIntoView({behavior:'smooth',block:'nearest'});},120);
+  toast('✓ Đã thêm: '+name);
 }
 function delPtJob(id){
   if(!confirm('Xoá công việc này? Lịch sử giờ làm vẫn giữ.'))return;
@@ -6064,21 +6416,135 @@ function calcPtToday(){
   const prev=document.getElementById('pt-today-preview');
   if(prev)prev.textContent=(h&&job)?`→ ${fmt(Math.round(job.rate*h))}₫`:'';
 }
-function logPtToday(){
+// Mở modal chọn hình thức nhận lương
+function openPtLogModal(){
   const jid=Number(document.getElementById('pt-log-job')?.value);
   const job=getPtJobs().find(j=>j.id===jid);
   if(!job)return toast('⚠️ Chọn công việc trước!','#f59e0b');
   const h=parseFloat(document.getElementById('pt-today-h')?.value)||0;
   if(!h||h<=0)return toast('⚠️ Nhập số giờ đã làm!','#f59e0b');
-  const date=td();const logs=getPtLogs();
-  // Nếu đã có log cùng job + ngày → cập nhật, ngược lại thêm mới
+  const amount=Math.round(job.rate*h);
+  // Điền thông tin vào modal
+  const descEl=document.getElementById('pt-pay-desc');
+  const amtEl=document.getElementById('pt-pay-amt');
+  if(descEl)descEl.textContent=`${h}h × ${fmt(job.rate)}₫ (${job.name})`;
+  if(amtEl)amtEl.textContent=fmt(amount)+'₫';
+  // Reset về step 1
+  document.getElementById('pt-pay-step1').style.display='flex';
+  document.getElementById('pt-pay-step2').style.display='none';
+  // Mở modal
+  document.getElementById('modal-pt-pay').classList.remove('hid');
+}
+// Nhận tiền luôn → sang step chọn ví
+function ptPayNow(){
+  // Populate wallet select
+  const wsel=document.getElementById('pt-wallet');
+  if(wsel){
+    const wals=(walletData||[]).filter(w=>!w._ownerId);
+    wsel.innerHTML=wals.length
+      ?wals.map(w=>`<option value="${w.id}">${w.name} (${fmt(calcWBal(w.id))}₫)</option>`).join('')
+      :'<option value="">— Chưa có ví nào —</option>';
+  }
+  document.getElementById('pt-pay-step1').style.display='none';
+  document.getElementById('pt-pay-step2').style.display='flex';
+}
+// Nhận cuối tháng → chỉ ghi giờ, không vào ví
+function ptPayLater(){
+  _ptDoLog(false, null);
+}
+// Xác nhận chọn ví → ghi + vào ví
+function ptConfirmWallet(){
+  const wid=Number(document.getElementById('pt-wallet')?.value)||null;
+  if(!wid)return toast('⚠️ Chọn ví trước!','#f59e0b');
+  _ptDoLog(true, wid);
+}
+// Core: ghi log + tuỳ chọn thêm vào ví
+function _ptDoLog(addToWallet, wid){
+  const jid=Number(document.getElementById('pt-log-job')?.value);
+  const job=getPtJobs().find(j=>j.id===jid);
+  const h=parseFloat(document.getElementById('pt-today-h')?.value)||0;
+  const date=td();
+  const amount=Math.round((job?.rate||0)*h);
+  // Ghi log giờ + track paidAmount
+  const logs=getPtLogs();
   const ex=logs.findIndex(l=>l.date===date&&l.jobId===jid);
-  if(ex>-1)logs[ex].hours=h; else logs.push({date,jobId:jid,hours:h});
+  if(ex>-1){
+    logs[ex].hours=(logs[ex].hours||0)+h;
+    if(addToWallet)logs[ex].paidAmount=(logs[ex].paidAmount||0)+amount;
+  } else {
+    logs.push({date,jobId:jid,hours:h,paidAmount:addToWallet?amount:0});
+  }
   savePtLogs(logs);
+  // Nếu nhận tiền luôn → thêm giao dịch thu vào ví
+  if(addToWallet&&wid&&job){
+    tcData.push({id:Date.now(),type:'thu',note:`Lương: ${job.name} (${h}h × ${fmt(job.rate)}₫)`,amount,currency:'VND',cat:'Thu nhập',walletId:wid,date,dt:new Date().toISOString()});
+    save('tcData',tcData);
+    toast(`✓ ${h}h → ${fmt(amount)}₫ vào ví`,'#22c55e');
+  } else {
+    toast(`✓ Ghi ${h}h (${job?.name||''}) — ${fmt(amount)}₫ chờ nhận`,'#a5b4fc');
+  }
   document.getElementById('pt-today-h').value='';
   document.getElementById('pt-today-preview').textContent='';
+  closeModal('modal-pt-pay');
   renderPtModule();
-  toast(`✓ Ghi ${h}h (${job.name}) — ${fmt(Math.round(job.rate*h))}₫`);
+}
+// Nhận toàn bộ lương chờ → chọn ví → chuyển vào ví
+function ptReceivePending(){
+  const jobs=getPtJobs();
+  const logs=getPtLogs();
+  const ym=_ptViewYM||(td().slice(0,7));
+  // Tính tổng tiền chờ nhận trong tháng đang xem
+  const pending=logs.filter(l=>l.date.startsWith(ym)).reduce((s,l)=>{
+    const j=jobs.find(x=>x.id===l.jobId);
+    const earned=j?Math.round(j.rate*l.hours):0;
+    return s+earned-(l.paidAmount||0);
+  },0);
+  if(pending<=0)return toast('Không có lương chờ nhận!','#6b7280');
+  // Populate wallet select trong modal nhận lương
+  const wsel=document.getElementById('pt-wallet');
+  if(wsel){
+    const wals=(walletData||[]).filter(w=>!w._ownerId);
+    wsel.innerHTML=wals.length
+      ?wals.map(w=>`<option value="${w.id}">${w.name} (${fmt(calcWBal(w.id))}₫)</option>`).join('')
+      :'<option value="">— Chưa có ví nào —</option>';
+  }
+  // Dùng lại modal pay nhưng thay nội dung
+  document.getElementById('pt-pay-desc').textContent='Lương chờ nhận tháng này';
+  document.getElementById('pt-pay-amt').textContent=fmt(pending)+'₫';
+  document.getElementById('pt-pay-step1').style.display='none';
+  document.getElementById('pt-pay-step2').style.display='flex';
+  // Override ptConfirmWallet để xử lý nhận lương hàng loạt
+  window._ptPendingMode=true;
+  window._ptPendingAmt=pending;
+  window._ptPendingYM=ym;
+  document.getElementById('modal-pt-pay').classList.remove('hid');
+}
+function ptConfirmWallet(){
+  const wid=Number(document.getElementById('pt-wallet')?.value)||null;
+  if(!wid)return toast('⚠️ Chọn ví trước!','#f59e0b');
+  if(window._ptPendingMode){
+    // Nhận lương hàng loạt — đánh dấu tất cả log trong tháng là đã trả
+    const jobs=getPtJobs();
+    const logs=getPtLogs();
+    const ym=window._ptPendingYM;
+    let total=0;
+    logs.forEach(l=>{
+      if(!l.date.startsWith(ym))return;
+      const j=jobs.find(x=>x.id===l.jobId);
+      const earned=j?Math.round(j.rate*l.hours):0;
+      const unpaid=earned-(l.paidAmount||0);
+      if(unpaid>0){l.paidAmount=earned;total+=unpaid;}
+    });
+    savePtLogs(logs);
+    tcData.push({id:Date.now(),type:'thu',note:`Lương part-time tháng ${ym}`,amount:total,currency:'VND',cat:'Thu nhập',walletId:wid,date:td(),dt:new Date().toISOString()});
+    save('tcData',tcData);
+    window._ptPendingMode=false;
+    closeModal('modal-pt-pay');
+    renderPtModule();
+    toast(`✓ Nhận ${fmt(total)}₫ vào ví`,'#22c55e');
+  } else {
+    _ptDoLog(true, wid);
+  }
 }
 function delPtLog(date,jobId){
   savePtLogs(getPtLogs().filter(l=>!(l.date===date&&l.jobId===jobId)));
@@ -6088,12 +6554,22 @@ function delPtLog(date,jobId){
 let _ptViewDate=''; // YYYY-MM-DD, lazy-init on first render
 let _ptViewYM='';   // YYYY-MM,    lazy-init on first render
 
+function ptPickDay(val){
+  if(!val)return;
+  const today=td();
+  if(val>today){toast('⚠️ Không thể chọn ngày tương lai','#f59e0b');return;}
+  _ptViewDate=val;
+  // Sync month view to match picked date
+  _ptViewYM=val.slice(0,7);
+  renderPtModule();
+}
 function ptNavDay(delta){
   const today=td();
   if(!_ptViewDate)_ptViewDate=today;
   const d=new Date(_ptViewDate+'T00:00:00');
   d.setDate(d.getDate()+delta);
-  const newD=d.toISOString().slice(0,10);
+  // Use local date parts (not toISOString which returns UTC)
+  const newD=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   if(newD>today)return;
   _ptViewDate=newD;
   renderPtModule();
@@ -6111,6 +6587,8 @@ function ptNavMonth(delta){
 }
 
 function renderPtModule(){
+  // Backfill paidAmount for old logs from tcData history (idempotent)
+  migratePtPaidAmounts();
   const jobs=getPtJobs();
   const logs=getPtLogs();
   const now=new Date();
@@ -6120,6 +6598,13 @@ function renderPtModule(){
   if(!_ptViewYM)_ptViewYM=today.slice(0,7);
   const ym=_ptViewYM;
   const viewDate=_ptViewDate;
+
+  // Job count badge
+  const jcnt=document.getElementById('pt-job-count');
+  if(jcnt)jcnt.textContent=jobs.length?`(${jobs.length} việc)`:'';
+  // Sync chevron state
+  const jchev=document.getElementById('pt-job-chevron');
+  if(jchev)jchev.style.transform=_ptJobsOpen?'rotate(90deg)':'rotate(0)';
 
   // Job list
   const jl=document.getElementById('pt-job-list');
@@ -6150,10 +6635,16 @@ function renderPtModule(){
   const dayLbl=document.getElementById('pt-day-label');
   const dayDt=document.getElementById('pt-day-date');
   const nextDayBtn=document.getElementById('pt-day-next');
-  const diffDays=Math.round((new Date(today+'T00:00:00')-new Date(viewDate+'T00:00:00'))/(86400000));
-  if(dayLbl)dayLbl.textContent=diffDays===0?'Hôm nay':diffDays===1?'Hôm qua':diffDays===2?'Hôm kia':`${diffDays} ngày trước`;
-  if(dayDt)dayDt.textContent=viewDate.split('-').reverse().join('/');
+  const _dayNames=['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+  const _vd=new Date(viewDate+'T00:00:00');
+  const _dayName=_dayNames[_vd.getDay()];
+  const _dateFmt=viewDate.split('-').reverse().join('/');
+  const diffDays=Math.round((new Date(today+'T00:00:00')-_vd)/(86400000));
+  if(dayLbl)dayLbl.textContent=`${_dayName}, ${_dateFmt}`;
+  if(dayDt)dayDt.textContent=diffDays===0?'Hôm nay':diffDays===1?'Hôm qua':diffDays===2?'Hôm kia':`${diffDays} ngày trước`;
   if(nextDayBtn)nextDayBtn.style.opacity=viewDate>=today?'0.3':'1';
+  const dayPicker=document.getElementById('pt-day-picker');
+  if(dayPicker){dayPicker.value=viewDate;dayPicker.max=today;}
 
   // ── Thống kê NGÀY được chọn ──
   const dayLogs=logs.filter(l=>l.date===viewDate);
@@ -6199,12 +6690,32 @@ function renderPtModule(){
   }
   const monthTotH=monthLogs.reduce((s,l)=>s+l.hours,0);
   const monthTotEarn=monthLogs.reduce((s,l)=>{const j=jobs.find(x=>x.id===l.jobId);return s+(j?Math.round(j.rate*l.hours):0);},0);
+  const monthPaid=monthLogs.reduce((s,l)=>s+(l.paidAmount||0),0);
+  const monthPending=Math.max(0,monthTotEarn-monthPaid);
   const mhEl=document.getElementById('pt-month-hours');if(mhEl)mhEl.textContent=`${monthTotH}h tổng cộng`;
   const teEl=document.getElementById('pt-tot-earn');if(teEl)teEl.textContent=monthTotEarn?fmt(monthTotEarn)+'₫':'—';
   const tileVal=document.getElementById('rd-tile-pt-val');if(tileVal)tileVal.textContent=monthTotEarn?fmt(monthTotEarn)+'₫ tháng này':'Part-time';
+  // Ví Part-time — đã nhận / chờ nhận
+  const walSummary=document.getElementById('pt-wallet-summary');
+  const paidAmtEl=document.getElementById('pt-paid-amt');
+  const pendingAmtEl=document.getElementById('pt-pending-amt');
+  const receiveBtn=document.getElementById('pt-receive-btn');
+  const walEmpty=document.getElementById('pt-wallet-empty');
+  if(walSummary){
+    if(monthTotEarn>0){
+      walSummary.style.display='flex';
+      if(walEmpty)walEmpty.style.display='none';
+      if(paidAmtEl)paidAmtEl.textContent=monthPaid?fmt(monthPaid)+'₫':'0₫';
+      if(pendingAmtEl)pendingAmtEl.textContent=monthPending?fmt(monthPending)+'₫':'0₫';
+      if(receiveBtn)receiveBtn.style.display=monthPending>0?'block':'none';
+    } else {
+      walSummary.style.display='none';
+      if(walEmpty)walEmpty.style.display='block';
+    }
+  }
   // Mục tiêu
-  populatePtGoalJob(jobs);
-  renderPtGoal(monthTotEarn,jobs);
+  ptInitGoalChevron();
+  renderPtGoal(monthTotEarn,jobs,dayTotalEarn);
 
   // Lịch sử
   const logList=document.getElementById('pt-log-list');
@@ -6220,36 +6731,6 @@ function renderPtModule(){
         <button onclick="delPtLog('${l.date}',${l.jobId})" style="background:none;border:none;color:#6b7280;font-size:14px;cursor:pointer;padding:0 2px;flex-shrink:0">×</button>
       </div>`;}).join(''):'<div style="font-size:11px;color:#4b5563;text-align:center;padding:8px">Chưa có dữ liệu tháng này</div>';
   }
-}
-function logPtAndAddToWallet(){
-  const jid=Number(document.getElementById('pt-log-job')?.value);
-  const job=getPtJobs().find(j=>j.id===jid);
-  if(!job)return toast('⚠️ Chọn công việc trước!','#f59e0b');
-  const h=parseFloat(document.getElementById('pt-today-h')?.value)||0;
-  if(!h||h<=0)return toast('⚠️ Nhập số giờ đã làm!','#f59e0b');
-  const wid=Number(document.getElementById('pt-wallet')?.value)||null;
-  if(!wid)return toast('⚠️ Chọn ví trước!','#f59e0b');
-  const amount=Math.round(job.rate*h);
-  const date=td();
-  // Ghi công
-  const logs=getPtLogs();
-  const ex=logs.findIndex(l=>l.date===date&&l.jobId===jid);
-  if(ex>-1)logs[ex].hours=h; else logs.push({date,jobId:jid,hours:h});
-  savePtLogs(logs);
-  // Thêm giao dịch thu vào tcData
-  tcData.push({
-    id:Date.now(),type:'thu',
-    note:`Lương: ${job.name} (${h}h × ${fmt(job.rate)}₫)`,
-    amount,currency:'VND',
-    cat:'Thu nhập',walletId:wid,
-    date,dt:new Date().toISOString()
-  });
-  save('tcData',tcData);
-  // Reset input
-  document.getElementById('pt-today-h').value='';
-  document.getElementById('pt-today-preview').textContent='';
-  renderPtModule();
-  toast(`✓ Ghi ${h}h + ${fmt(amount)}₫ → ví`,'#22c55e');
 }
 function togglePartTime(){
   features.parttimeEnabled=document.getElementById('feat-parttime').checked;
